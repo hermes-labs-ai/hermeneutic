@@ -1,0 +1,48 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:8b3e0d2f-5a9c-4e4b-a7f1-2c6f3b8d9e5f",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-04-25T00:00:00Z",
+    "tools": [
+      {
+        "vendor": "Hermes Labs",
+        "name": "hand-crafted",
+        "version": "1.0"
+      }
+    ],
+    "component": {
+      "type": "library",
+      "bom-ref": "pkg:pypi/hermeneutic@0.1.0",
+      "name": "hermeneutic",
+      "version": "0.1.0",
+      "description": "Mine your AI chat logs for the corrections you made — turn them into a pre-flight gate that catches the same drift before the next response ships.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/hermeneutic@0.1.0",
+      "externalReferences": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/hermes-labs-ai/hermeneutic"
+        },
+        {
+          "type": "website",
+          "url": "https://hermes-labs.ai"
+        }
+      ]
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/hermeneutic@0.1.0",
+      "dependsOn": []
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# hermeneutic
+
+> Mine corrections from AI chat logs. Gate the next response.
+
+hermeneutic is a Python library and CLI that mines `(prior_assistant, user_correction, next_assistant)` triples from chat logs and uses the patterns it finds to gate future assistant drafts. Three-stage pipeline: zero-LLM regex (cheap), optional hermes-rubric scoring (local LLM), generic LLM critic called PressureProbe (one API call). Repair pass runs once if the critic says revise.
+
+The architecture decouples the *role* of a reviewer-twin (forces structured verdict + flip-condition) from the *priors* (whose judgment, what severity calibration). Ship the role publicly, keep your priors private. Default calibration is "rigorous-skeptic."
+
+## Install
+
+```
+pip install hermeneutic
+```
+
+## CLI
+
+- `hermeneutic mine <dir> --out triples.jsonl` — extract correction triples from chat logs (Claude Code or OpenAI format).
+- `hermeneutic bucket <triples.jsonl>` — surface-pattern bucket counts.
+- `hermeneutic gate --draft <file>` — run regex-only gate. Exit 0 = pass, 1 = risk.
+
+## Library
+
+```python
+from hermeneutic import Router, PressureProbe
+probe = PressureProbe(judge=any_llm_callable)
+router = Router(probe=probe, repairer=any_llm_repair_callable)
+result = router.gate(request="...", draft="...")
+```
+
+## Empirical basis
+
+Risk patterns derived from 326 corrections mined across 1,423 Claude Code sessions. Top drift mode (post-completion overclaiming) accounts for 44% of all corrections. Five regex rules cover ~65% of the corpus.
+
+## Audit-stack siblings
+
+- scaffold-lint — static analyzer for prompt scaffolds
+- agent-convergence-scorer — multi-agent agreement scoring
+- hermes-rubric — evidence-first structured scoring
+- hermes-seal — cryptographic containment for agent artifacts
+
+## Repository
+
+https://github.com/hermes-labs-ai/hermeneutic
+
+## License
+
+MIT

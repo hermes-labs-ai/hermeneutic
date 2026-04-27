@@ -1,0 +1,43 @@
+seal_version: 1
+repo: hermes-labs-ai/hermeneutic
+granted: '2026-04-25T00:00:00Z'
+expires: '2027-04-25T00:00:00Z'
+categories:
+  continuity:
+    health_endpoint: ''
+    graceful_degradation:
+    - dependency: hermes-rubric
+      on_failure: skip_stage_2
+      verified_by: tests/test_router.py
+      env: {}
+      python_bin: null
+      command: null
+    - dependency: PressureProbe LLM judge
+      on_failure: ship_with_regex_only
+      verified_by: tests/test_router.py
+      env: {}
+      python_bin: null
+      command: null
+  reliability:
+    test_command: python -m pytest -q tests/
+    coverage_min: 0.0
+    no_silent_failures: true
+    scan_paths:
+    - src/hermeneutic
+    silent_failure_check: null
+  compliance:
+    license: MIT
+    sbom: sbom.cdx.json
+    lintlang_clean: false
+    eu_ai_act: passes
+  mom_ready:
+    install: pip install hermeneutic
+    quickstart: README.md#30-second-quickstart
+    errors_human: true
+signing:
+  algorithm: ed25519
+  pubkey: PLACEHOLDER
+  signature: PLACEHOLDER
+  issuer: null
+revocation:
+  list: https://hermes-labs.ai/seal/revoked.json
