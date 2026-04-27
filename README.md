@@ -110,6 +110,18 @@ We ship the role as `PressureProbe`. You bring your own calibration. **The archi
 
 One library. Every audience.
 
+### What changes for you immediately
+
+After `pip install hermeneutic` and one mining pass on your existing logs:
+
+- Every outgoing draft gets a free pre-flight check — most pass in microseconds, only the risky ones cost a downstream LLM call.
+- Confident "Done — shipped 14 files, all green" claims get caught before they ship, with the specific drift pattern named (`completion_with_number`).
+- Subagent-passthrough text ("the agents converged on…") gets flagged so you don't propagate unverified summaries.
+- You build a labeled dataset of *(my draft, gate verdict, your acceptance)* every time the gate fires — that's your data flywheel for v0.2 patterns.
+- Your team's house style gets codified as a `PressureProbe` calibration string instead of living in tribal Slack messages.
+
+The gate doesn't make your AI smarter. It stops the most common drift modes from reaching the user.
+
 ### Extensibility
 
 Both pluggable surfaces are `typing.Protocol` interfaces — no subclassing required, no framework lock-in:
@@ -143,10 +155,23 @@ This isn't a thought experiment. The risk patterns ship with `hermeneutic` becau
 
 - **1,423 sessions** of one heavy AI user
 - **326 corrections** extracted as `(drift, steer, repair)` triples
-- **44%** were post-completion overclaiming — the dominant drift mode
+- **44%** (143/326) were post-completion overclaiming — the dominant drift mode
 - **5 regex rules** cover ~65% of the corpus
 
-Every pattern in `gates/regex.py` traces to corrections caught in the wild. **Your distribution will look different — that's the point.** Run the miner on your own logs and *your* gate writes itself.
+Every pattern in `gates/regex.py` traces to corrections caught in the wild. Methodology, bucket distribution, and pattern derivation are documented in [`evals/triple-mining-receipts.md`](evals/triple-mining-receipts.md). The 326 triples themselves are not shipped (private session content). **Your distribution will look different — that's the point.** Run the miner on your own logs and *your* gate writes itself.
+
+### Verify the gate yourself
+
+The gate should catch its own announcement language. If the demo below ships zero hits, the rules are broken:
+
+```bash
+git clone https://github.com/hermes-labs-ai/hermeneutic && cd hermeneutic
+pip install -e .
+bash evals/self_test.sh
+# PASS — gate correctly flagged the deliberately drift-shaped draft.
+```
+
+Then run `hermeneutic mine` against your own chat logs to bucket your distribution and see which rules apply most.
 
 ---
 
