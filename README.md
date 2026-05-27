@@ -221,7 +221,7 @@ Static linters catch the prompt. `hermeneutic` catches the response. You get bot
 
 ## License
 
-MIT. Use it, fork it, ship it. If you build something interesting on top, [tell us](mailto:rbosch@lpci.ai).
+MIT. Use it, fork it, ship it. If you build something interesting on top, [tell us](mailto:roli@hermes-labs.ai).
 
 ---
 

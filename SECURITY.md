@@ -12,7 +12,7 @@ Only the latest released version receives security fixes.
 
 Please do **not** open a public GitHub issue for security reports.
 
-Email `rbosch@lpci.ai` with subject `[security] scaffold-lint`. Expect an acknowledgement within 5 business days.
+Email `roli@hermes-labs.ai` with subject `[security] scaffold-lint`. Expect an acknowledgement within 5 business days.
 
 Include:
 
