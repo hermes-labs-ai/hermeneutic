@@ -1,8 +1,10 @@
 # hermeneutic
 
+hermeneutic is an evidence-first drift gate that mines corrections from AI chat logs and gates the next response before drift ships.
+
 **Your AI overclaims. You correct it. Now your AI gets gated.**
 
-> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming — the dominant drift mode. 5 regex rules now catch ~65% of that distribution before the next response ships. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
+> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming — the dominant drift mode. 6 regex rules now catch ~65% of that distribution before the next response ships. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
 
 [![tests](https://img.shields.io/badge/tests-26%20passing-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
@@ -156,7 +158,7 @@ This isn't a thought experiment. The risk patterns ship with `hermeneutic` becau
 - **1,423 sessions** of one heavy AI user
 - **326 corrections** extracted as `(drift, steer, repair)` triples
 - **44%** (143/326) were post-completion overclaiming — the dominant drift mode
-- **5 regex rules** cover ~65% of the corpus
+- **6 regex rules** cover ~65% of the corpus
 
 Every pattern in `gates/regex.py` traces to corrections caught in the wild. Methodology, bucket distribution, and pattern derivation are documented in [`evals/triple-mining-receipts.md`](evals/triple-mining-receipts.md). The 326 triples themselves are not shipped (private session content). **Your distribution will look different — that's the point.** Run the miner on your own logs and *your* gate writes itself.
 
@@ -225,4 +227,4 @@ MIT. Use it, fork it, ship it. If you build something interesting on top, [tell 
 
 ---
 
-Built by [Hermes Labs](https://hermes-labs.ai). We make AI auditable.
+Hermes Labs is an independent AI-reliability lab building open-source tools that catch silent failure modes in production AI. More at [hermes-labs.ai](https://hermes-labs.ai).

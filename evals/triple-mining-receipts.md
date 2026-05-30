@@ -37,7 +37,7 @@ The miner walks each session JSONL, finds user turns matching a correction-patte
 | tool avoidance | 2 | 1% | (no rule — domain-specific) |
 | (unbucketed) | 112 | 34% | (open question for v0.2) |
 
-5 regex rules in v0.1 (`completion_with_number`, `completion_with_all_quantifier`, `subagent_passthrough`, `unhedged_certainty`, `scope_expansion`, `fluent_summary_no_evidence`) cover ~65% of all observed corrections.
+6 regex rules in v0.1 (`completion_with_number`, `completion_with_all_quantifier`, `subagent_passthrough`, `unhedged_certainty`, `scope_expansion`, `fluent_summary_no_evidence`) cover ~65% of all observed corrections.
 
 ## What this evaluates
 
