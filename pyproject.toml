@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hermeneutic"
+version = "0.2.0"
+description = "Mine your AI chat logs for the corrections you made — turn them into a pre-flight gate that catches the same drift before the next response ships."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Rolando Bosch", email = "roli@hermes-labs.ai" },
+]
+maintainers = [
+    { name = "Hermes Labs", email = "roli@hermes-labs.ai" },
+]
+keywords = [
+    "llm",
+    "agent",
+    "chat-logs",
+    "correction-mining",
+    "drift-detection",
+    "ai-audit",
+    "pre-flight-gate",
+    "evaluation",
+    "hermes-labs",
+    "agent-audit",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+hermeneutic = "hermeneutic.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/hermes-labs-ai/hermeneutic"
+Repository = "https://github.com/hermes-labs-ai/hermeneutic"
+Issues = "https://github.com/hermes-labs-ai/hermeneutic/issues"
+Changelog = "https://github.com/hermes-labs-ai/hermeneutic/blob/main/CHANGELOG.md"
+"Hermes Labs" = "https://hermes-labs.ai"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hermeneutic"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/",
+    "tests/",
+    "examples/",
+    "docs/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+"src/hermeneutic/cli.py" = ["E501", "SIM115"]
+"src/hermeneutic/gates/regex.py" = ["E501"]
+"src/hermeneutic/compile.py" = ["E501"]

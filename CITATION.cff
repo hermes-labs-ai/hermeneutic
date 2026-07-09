@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use hermeneutic, please cite it as below."
+title: "hermeneutic: an evidence-first drift gate that mines AI chat-log corrections to gate the next response"
+abstract: >-
+  hermeneutic is an evidence-first drift gate that catches AI response drift
+  before it ships by mining chat logs for the corrections a user already made,
+  classifying the drift, and running those patterns as a three-stage pre-flight
+  gate on outgoing drafts (zero-LLM regex, optional hermes-rubric scoring, then a
+  bring-your-own-calibration LLM critic, PressureProbe). It targets silent failure
+  modes that aggregate evals and observability miss.
+type: software
+version: "0.2.0"
+date-released: 2026-04-25
+authors:
+  - family-names: "Bosch Rodriguez"
+    given-names: "Rolando"
+    orcid: "https://orcid.org/0009-0005-4896-1112"
+    affiliation: "Hermes Labs"
+    email: roli@hermes-labs.ai
+license: MIT
+repository-code: "https://github.com/hermes-labs-ai/hermeneutic"
+url: "https://hermes-labs.ai"
+keywords:
+  - "AI reliability"
+  - "LLM reliability"
+  - "silent failure modes"
+  - "evidence-first"
+  - "hermeneutic drift"
+  - "correction mining"
+  - "pre-flight gate"
+  - "post-completion overclaiming"
+references:
+  - type: article
+    title: "A Taxonomy of Epistemic Failure Modes in LLMs"
+    authors:
+      - family-names: "Bosch Rodriguez"
+        given-names: "Rolando"
+    doi: "10.5281/zenodo.19042469"

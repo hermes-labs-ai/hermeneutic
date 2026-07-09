@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.swp
+.DS_Store
+.coverage
+htmlcov/
+
+# local working notes — never distributed
+HANDOFF.md
+.claude/

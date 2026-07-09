@@ -1,0 +1,36 @@
+{
+  "seed": 42,
+  "n_in_corpus": 100,
+  "n_random": 30,
+  "n_random_failed": 0,
+  "threshold": 0.5,
+  "K": 10,
+  "B1_retrieval_trigger": {
+    "in_corpus_triggered": 98,
+    "in_corpus_silent": 2,
+    "random_triggered": 7,
+    "random_silent": 23,
+    "fisher_odds_ratio": 161.0,
+    "fisher_p": 2.6292716891110696e-17
+  },
+  "B2_bucket_shape_conditional": {
+    "in_corpus_bucket_counts": {
+      "over_confirmation": 235,
+      "missed_constraint": 68,
+      "wrong_target": 15,
+      "scope_creep": 14,
+      "over_completion": 6,
+      "tool_choice": 14
+    },
+    "random_bucket_counts": {
+      "over_confirmation": 4,
+      "missed_constraint": 3,
+      "tool_choice": 1
+    },
+    "chi2": 3.801,
+    "p": 0.5783711540756273,
+    "dof": 5,
+    "error": null
+  },
+  "random_source": "deterministic word-recombiner from /usr/share/dict/words, 3-6 words per prompt, seed=42"
+}
