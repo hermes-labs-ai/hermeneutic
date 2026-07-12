@@ -9,7 +9,8 @@ The architecture decouples the *role* of a reviewer-twin (forces structured verd
 ## Install
 
 ```
-pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.2.0"
+pip install hermeneutic
+# pin: pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.1.7"
 ```
 
 ## CLI
@@ -29,14 +30,14 @@ result = router.gate(request="...", draft="...")
 
 ## Empirical basis
 
-Risk patterns derived from 326 corrections mined across 1,423 Claude Code sessions. Top drift mode (post-completion overclaiming) accounts for 44% of all corrections. Six regex rules cover ~65% of the corpus.
+Risk patterns derived from 326 corrections mined across 1,423 Claude Code sessions. Top drift mode (post-completion overclaiming) accounts for 44% of all corrections. Eight regex rules ship; the original six covered ~65% of the derivation corpus (eight-rule coverage not yet re-measured).
 
 ## Audit-stack siblings
 
 - scaffold-lint — static analyzer for prompt scaffolds
 - agent-convergence-scorer — multi-agent agreement scoring
 - hermes-rubric — evidence-first structured scoring
-- hermes-seal — cryptographic containment for agent artifacts
+- hermes-seal — signed attestation of agent policy versions
 
 ## Repository
 

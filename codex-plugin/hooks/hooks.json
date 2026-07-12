@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "python3 ${PLUGIN_ROOT}/scripts/codex-gate.py", "timeout": 5, "statusMessage": "hermeneutic: checking last turn" }
+        ]
+      }
+    ]
+  }
+}

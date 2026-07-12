@@ -4,14 +4,17 @@ hermeneutic mines your chat logs for the moments you corrected your AI, turns th
 
 **Your AI overclaims. You correct it. Now your AI gets gated.**
 
-> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming - the dominant drift mode. 8 regex rules now catch ~65% of that distribution before the next response ships. **96 tests** covering the gate, the compile layer, the audit log, the harvester, and a doc-consistency CI check. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
+> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming - the dominant drift mode. 8 regex rules ship; the original 6 covered ~65% of that distribution (8-rule coverage not yet re-measured). **110 tests** covering the gate, the compile layer, the audit log, the harvester, the forward-deployed harness, the plugin gate scripts, and a doc-consistency CI check. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
 
-> **Local-iteration eval (2026-04-27):** bucket-aware retrieval lifts leave-one-out recall from 56.7% → **83.7%** on n=104 trials, including 50%/75%/33%/33% on the four rare buckets that the global-top-K baseline missed entirely. In-corpus prompts trigger compile 98/100 vs synthetic-random 7/30 (Fisher's exact p=2.6e-17). Trade-off: 3× wider preamble (1.4 → 4.2 buckets per query). Effectiveness validation (does compile actually reduce LLM misinterpretation?) is the v1.0 milestone.
+> **Validation status (measured 2026-04-27):** bucket-aware retrieval lifts leave-one-out recall from 56.7% → **83.7%** on n=104 trials, including 50%/75%/33%/33% on the four rare buckets that the global-top-K baseline missed entirely. In-corpus prompts trigger compile 98/100 vs synthetic-random 7/30 (Fisher's exact p=2.6e-17). Trade-off: 3× wider preamble (1.4 → 4.2 buckets per query). That validates hermeneutic **as a retrieval system** (frozen embedding-index snapshot; see the Reproducibility note under Eval evidence). Effectiveness (does compile actually reduce LLM misinterpretation?) is the pre-registered v1.0 milestone — **not yet measured**.
 
-[![tests](https://img.shields.io/badge/tests-96%20passing-brightgreen)](tests/)
+[![CI](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml)
+[![tests](https://img.shields.io/badge/tests-110%20passing-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Hermes Labs](https://img.shields.io/badge/by-Hermes%20Labs-black)](https://hermes-labs.ai)
+
+![hermeneutic gate catching an overclaim](docs/demo.gif)
 
 ---
 
@@ -46,7 +49,8 @@ Cheap-to-expensive. Most drafts pass stage 1 untouched. The stage that costs you
 ## 30 seconds
 
 ```bash
-pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.2.0"
+pip install hermeneutic          # or: uv tool install hermeneutic / pipx install hermeneutic
+# pin to a tag instead: pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.1.7"
 
 hermeneutic mine ~/.claude/projects/*/  --out triples.jsonl
 hermeneutic bucket triples.jsonl
@@ -64,7 +68,7 @@ RISK — high
 ### Real-time gating in Claude Code (one command)
 
 ```bash
-pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.2.0"
+pip install hermeneutic
 hermeneutic install-hook
 # Restart Claude Code. Done.
 ```
@@ -76,6 +80,8 @@ The install is idempotent (safe to re-run), preserves any other hooks you have c
 ### Compile your prompts ahead of the LLM (Layer 2, v0.1.5)
 
 The output gate above is half the loop. The other half is a **compiler** that runs *before* the LLM sees your prompt: it retrieves past moments where similar prompts were misinterpreted, and injects a "watch out for X" preamble so the model is calibrated up front.
+
+**Prerequisite:** the compile layer embeds locally via [Ollama](https://ollama.com) (`ollama pull nomic-embed-text`). If Ollama is unreachable the preamble is skipped silently — the gate keeps working, compile just stays quiet.
 
 ```bash
 hermeneutic mine ~/.claude/projects/*/  --out ~/.hermeneutic/triples.jsonl
@@ -103,9 +109,18 @@ user prompt → [Layer 2 compile]  → LLM → [Layer 1 gate] → response
                 └──── shared (drift, steer, repair) corpus ────┘
 ```
 
-See [`evals/compile-walkthrough.md`](evals/compile-walkthrough.md) for two demonstrative cases. Honest framing: the compile layer surfaces *relevant past signal*, not validated effectiveness. The replay-study measurement is the v0.2.0 milestone.
+See [`evals/compile-walkthrough.md`](evals/compile-walkthrough.md) for two demonstrative cases. Honest framing: the compile layer surfaces *relevant past signal*, not validated effectiveness. The replay-study measurement is the v1.0 milestone.
 
 Your AI was about to overclaim. It can't anymore.
+
+### What we explicitly do NOT claim
+
+1. **No effectiveness measurement yet.** Everything above is validated as a *retrieval* system; whether compile actually reduces LLM misinterpretation is the replay study — the v1.0 milestone (N≥30 historical drift moments, ≥20% relative correction-rate reduction floor pre-registered, two backends, blind LLM-judge coding).
+2. **Rare-bucket recall (50%/75%/33%/33%) is real but uneven** - `scope_creep` and `tool_choice` have N=3 triples each, so a single hit/miss moves their rate by 33pp.
+3. **The 3× preamble width** trade-off may turn out to be too noisy for downstream LLMs — v1.0 measures whether wider preambles help or hurt.
+4. **The random baseline is synthetic** (word recombiner). The v1.0 upgrade is real out-of-distribution prompts.
+
+Full context under [Eval evidence](#eval-evidence-local-iteration-2026-04-27) below.
 
 ---
 
@@ -119,7 +134,16 @@ Your AI was about to overclaim. It can't anymore.
 | **Audit** | Opt-in local log of every fire, with reviewable before/after context |
 | **Stats** | `hermeneutic stats` - fire rates, rule distribution, human-vs-agent split |
 | **Harvest** | Replay the gate over months of logs into a labeled review queue - no hand-reading |
+| **Deploy** | Forward-deployed harness: an agent in *your* environment verifies the install end-to-end and leaves a sanitized report |
 | **Library** | Full Python API. Plug into your pipeline in 4 lines. |
+
+### Where it plugs in
+
+| | Claude Code | Codex CLI | Cursor | Windsurf | Cline | OpenHands | MCP hosts | anything |
+|---|---|---|---|---|---|---|---|---|
+| gate every response | ✅ one command | ✅ sentinel | ✅ [recipe](integrations/cursor.md) | ✅ [recipe](integrations/windsurf.md) | ✅ [recipe](integrations/cline.md) | ◐ [preamble](integrations/openhands.md) | 🗺 planned | pipe to `hermeneutic gate` |
+
+Details, honest caveats, and uninstall paths: [`integrations/`](integrations/).
 
 ---
 
@@ -173,6 +197,30 @@ straight back into your corpus. Zero LLM calls end to end.
 
 ---
 
+## Deploy it where you can't see: the forward-deployed harness
+
+Shipping a tool into an environment you will never see is itself a
+completion claim — so it gets gated too. `FORWARD-DEPLOYED-HARNESS.md` is an
+executable mission for the agent already living in the adopter's
+environment: a deterministic step-machine (`forward-deployed/harness.py`)
+drives ENV → BOOT → HARVEST → REPORT → GATE, verifies every step from
+artifacts on disk before the next unlocks, and records progress as a
+tamper-evident hash chain.
+
+```bash
+python3 forward-deployed/harness.py    # prints exactly one next action; repeat until MISSION COMPLETE
+```
+
+The agent can't declare the deployment done — `forward-deployed/gate.py`
+declares it, and only when boot evidence is fresh and green, the suite
+passes *in that environment*, the zero-LLM and privacy invariants hold
+mechanically, and the sanitized report passes the leak-linter
+(`check_report.py`: no out-of-repo paths, no emails, no quoted session
+text). The report is the only thing that leaves the machine, and a human
+sends it. Validated in a design-partner deployment before this release.
+
+---
+
 ## Library use
 
 ```python
@@ -213,12 +261,12 @@ One library. Every audience.
 
 ### What changes for you immediately
 
-After `pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.2.0"` and one mining pass on your existing logs:
+After `pip install hermeneutic` and one mining pass on your existing logs:
 
 - Every outgoing draft gets a free pre-flight check - most pass in microseconds, only the risky ones cost a downstream LLM call.
 - Confident "Done - shipped 14 files, all green" claims get caught before they ship, with the specific drift pattern named (`completion_with_number`).
 - Subagent-passthrough text ("the agents converged on…") gets flagged so you don't propagate unverified summaries.
-- You build a labeled dataset of *(my draft, gate verdict, your acceptance)* every time the gate fires - that's your data flywheel for v0.2 patterns.
+- You build a labeled dataset of *(my draft, gate verdict, your acceptance)* every time the gate fires - that's your data flywheel for the next round of rules.
 - Your team's house style gets codified as a `PressureProbe` calibration string instead of living in tribal Slack messages.
 
 The gate doesn't make your AI smarter. It stops the most common drift modes from reaching the user.
@@ -246,7 +294,7 @@ class MyFormatReader(LogReader):
 READERS["my-format"] = MyFormatReader()
 ```
 
-Default judge calibration is `rigorous-skeptic`; default readers cover Claude Code JSONL and OpenAI ChatCompletion JSON.
+Default judge calibration is `rigorous-skeptic`; default readers cover Claude Code JSONL, Codex CLI session rollouts, and OpenAI ChatCompletion JSON.
 
 ---
 
@@ -256,7 +304,7 @@ We separated "does retrieval work as a retrieval system" from "does compile actu
 
 ### Measurement A - leave-one-out recall (`evals/leave-one-out/`)
 
-For each of 346 mined triples, hide it from the index, query its `orig_prompt`, check if its bucket appears in the bucket-aware top-N-per-bucket retrieval (n=2, threshold=0.5). Compare to a global-top-K baseline and a uniform-random-retrieval baseline.
+For each of 346 mined triples (a re-mine of the same corpus behind the 326-triple derivation study — reader improvements picked up 20 more; see [`evals/triple-mining-receipts.md`](evals/triple-mining-receipts.md)), hide it from the index, query its `orig_prompt`, check if its bucket appears in the bucket-aware top-N-per-bucket retrieval (n=2, threshold=0.5). Compare to a global-top-K baseline and a uniform-random-retrieval baseline.
 
 | Configuration | Overall recall | Rare-bucket recall (n=16) | Avg buckets surfaced/query |
 |---|---|---|---|
@@ -276,6 +324,8 @@ Per-bucket recall under bucket-aware retrieval:
 | `tool_choice` | 3 | 33.3% |
 
 The rare-bucket lift came from a single methodological tweak: instead of top-K globally (where rare-bucket matches were getting outranked at median-rank-62 by majority-bucket triples), we take top-N per bucket above threshold. Diagnosis run + measurement at [`evals/leave-one-out/diagnose_minority.py`](evals/leave-one-out/diagnose_minority.py) and [`test_bucket_aware.py`](evals/leave-one-out/test_bucket_aware.py).
+
+**Reproducibility note (2026-07-12):** these numbers are properties of the frozen 2026-04 embedding index (receipts committed in [`results.json`](evals/leave-one-out/results.json)). Re-running against a freshly rebuilt local index of the same 346-triple corpus reproduces the baseline at 52.9% (55/104) rather than 56.7%, and the bucket-aware headline at 81.7% (85/104) rather than 83.7% — small index-state drift: the local embedding model was updated between builds (`nomic-embed-text` is a moving tag), per-bucket corpus counts are bit-identical, and repeated runs on the rebuilt index are fully deterministic. Treat retrieval numbers as specific to the committed index state, not as embedder-version-independent constants. Future frozen receipts will pin a corpus hash + embedder digest at generation time.
 
 ### Measurement B - input discrimination (`evals/bucket-discrimination/`)
 
@@ -307,7 +357,7 @@ This isn't a thought experiment. The risk patterns ship with `hermeneutic` becau
 - **1,423 sessions** of one heavy AI user
 - **326 corrections** extracted as `(drift, steer, repair)` triples
 - **44%** (143/326) were post-completion overclaiming - the dominant drift mode
-- **8 regex rules** cover ~65% of the corpus
+- **8 regex rules** ship; the original 6 covered ~65% of the corpus (8-rule coverage not yet re-measured)
 
 Every pattern in `gates/regex.py` traces to corrections caught in the wild. Methodology, bucket distribution, and pattern derivation are documented in [`evals/triple-mining-receipts.md`](evals/triple-mining-receipts.md). The 326 triples themselves are not shipped (private session content). **Your distribution will look different - that's the point.** Run the miner on your own logs and *your* gate writes itself.
 

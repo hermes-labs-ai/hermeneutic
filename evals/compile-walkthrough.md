@@ -2,7 +2,7 @@
 
 This is the v0.1.5 demonstrative eval. **All numbers below are measured, not illustrative** — captured by running `hermeneutic compile-index` and `hermeneutic compile` against the author's actual mining corpus on 2026-04-26.
 
-**Honest framing first:** these are measured demonstrations, not validated effectiveness. They show the preamble *contains relevant prior signal*, not that it *causes* better LLM behavior in a controlled study. The latter is the v0.2.0 replay-eval milestone (mine N misinterpretation moments, replay each with-and-without the preamble injected, measure followup-correction reduction).
+**Honest framing first:** these are measured demonstrations, not validated effectiveness. They show the preamble *contains relevant prior signal*, not that it *causes* better LLM behavior in a controlled study. The latter is the v1.0 replay-eval milestone (mine N misinterpretation moments, replay each with-and-without the preamble injected, measure followup-correction reduction).
 
 ## Real corpus stats (measured 2026-04-26)
 
@@ -10,11 +10,13 @@ This is the v0.1.5 demonstrative eval. **All numbers below are measured, not ill
 |---|---|
 | Source | `~/.claude/projects/-Users-rbr-lpci/*.jsonl` (Claude Code session JSONL) |
 | Sessions mined | 1,423 |
-| Triples extracted | **346** |
+| Triples extracted | **346**¹ |
 | Triples with `orig_prompt` (eligible for compile) | **346 (100%)** |
 | Mining wall time | 2.4 seconds |
 | Embedding model | `nomic-embed-text` via local Ollama |
 | Index build wall time | **18.8 seconds** for 346 triples (= ~54ms per Ollama embed call, single-threaded loop) |
+
+¹ 346 vs the 326 cited elsewhere: 326 was the 2026-04-25 gate-derivation mining run; 346 is the later re-mine of the same corpus used for the retrieval evals (miner improvements picked up 20 more triples). Rule derivation receipts stay pinned to the 326-run.
 | Embedding dimension | 768 |
 | On-disk index size | ~5 MB JSON (vectors + ids + sha256 cache key) |
 
@@ -97,12 +99,12 @@ Different prompt shapes get **measurably different** bucket distributions. The c
 
 ## What `compile` does NOT do
 
-- **Does not guarantee the LLM follows the preamble.** It surfaces priors; whether the model uses them is the v0.2.0 measurement.
+- **Does not guarantee the LLM follows the preamble.** It surfaces priors; whether the model uses them is the v1.0 measurement.
 - **Does not understand semantic intent.** Retrieval is cosine similarity on input prompts — surface similarity, not deep intent matching.
 - **Does not work on novel prompt shapes.** If a user asks something the corpus has never seen, the preamble is empty (silent skip — no false-positive injection).
 - **Does not generate suggestions.** The preamble lists *patterns of past steers*; the LLM still chooses what to do.
 
-## What we measure in v0.2.0 (the validation milestone)
+## What we measure in v1.0 (the validation milestone)
 
 - **Replay study:** N≥30 historical misinterpretation moments. For each, replay the original prompt twice (with-preamble vs without-preamble), run the next 1–3 LLM turns, count whether a correction was needed.
 - **Primary metric:** correction-rate reduction. Pre-registered floor: ≥20% relative reduction to claim "compile helps."

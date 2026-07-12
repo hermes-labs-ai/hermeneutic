@@ -25,7 +25,7 @@ The miner walks each session JSONL, finds user turns matching a correction-patte
 
 ## Result
 
-**326 triples** extracted. Bucketed by surface pattern in `cli.py`:
+**326 triples** extracted (this 2026-04-25 derivation run; a later re-mine of the same corpus with reader improvements yields 346 and is the corpus the retrieval evals use). Bucketed by surface pattern in `cli.py`:
 
 | Bucket | N | % | Mapped to risk rule |
 |---|---|---|---|

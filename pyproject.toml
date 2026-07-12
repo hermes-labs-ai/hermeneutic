@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hermeneutic"
-version = "0.2.0"
+version = "0.1.7"
 description = "Mine your AI chat logs for the corrections you made — turn them into a pre-flight gate that catches the same drift before the next response ships."
 readme = "README.md"
 license = { text = "MIT" }

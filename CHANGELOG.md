@@ -5,18 +5,46 @@ All notable changes to hermeneutic are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] — 2026-07-08
+## [0.1.7] — 2026-07-12
 
 ### Fixed (pre-release audit)
 - `gate` input failures are loud and clean: a missing `--draft` file or
   non-UTF-8 input prints a one-line ERROR and exits 2 instead of dumping a
   traceback. Log readers tolerate stray non-UTF-8 bytes (replacement
-  decoding). 2 new tests; **96 tests** total.
+  decoding). 2 new tests; **110 tests** total.
 - Install instructions point at the GitHub release (the package is not on
   PyPI yet); rule-count references reconciled (8 shipped rules).
 - Internal development notes removed from the tree.
 
 ### Added
+- **Integrations for the 2026 agent-harness landscape** (`integrations/`):
+  first-class Claude Code plugin (`claude-plugin/`, `claude plugin validate
+  --strict` clean, installable via `/plugin marketplace add
+  hermes-labs-ai/hermeneutic`) and Codex CLI Stop-hook plugin
+  (`codex-plugin/`, structured-JSON advisory output, honors Codex's
+  no-decision-field advisory semantics), plus verified recipes for Cursor
+  (also loads Claude Code hooks directly), Windsurf/Cascade, Cline, and an
+  honestly-scoped OpenHands preamble (no response-bearing hook exists
+  there). Unverifiable schema fields are flagged inline rather than
+  invented. **4 new tests** on the plugin gate scripts.
+- **PyPI distribution**: `pip install hermeneutic` via a trusted-publishing
+  release workflow (`.github/workflows/release.yml`, OIDC, no stored
+  secrets); `uv tool install` / `pipx` supported by construction.
+- **Demo GIF** (`docs/demo.gif`, re-recordable via `demo.tape`), CI badge,
+  dependabot config, and a root `CLAUDE.md` companion to `AGENTS.md`.
+- **Forward-deployed harness** (`FORWARD-DEPLOYED-HARNESS.md` +
+  `forward-deployed/`): an executable deployment mission for the agent
+  inside an adopter's environment the author never sees. A deterministic
+  step-machine (`harness.py`) drives ENV → BOOT → HARVEST → REPORT → GATE,
+  verifying each step from artifacts on disk before the next unlocks;
+  progress is a tamper-evident hash chain. Ships a boot verifier
+  (`boot.py`: import, suite, self-test, gate smoke trio, sanitized harvest
+  probe), a report leak-linter (`check_report.py`: flags out-of-repo paths,
+  emails, long quotes before a report leaves the machine), the mission's own
+  drift gate (`gate.py`: the deployment cannot be declared done — it must
+  prove it), and an optional consented runtime sentinel (`sentinel.py`,
+  Codex notify hook: reversible, advisory, rule-ids-only). Validated in a
+  design-partner deployment before this release. **10 new tests.**
 - **Codex CLI log reader** (`--format codex`): parses OpenAI Codex session
   rollouts (`~/.codex/sessions/**/rollout-*.jsonl` — `response_item` message
   payloads with `input_text`/`output_text` blocks), skipping injected
@@ -171,7 +199,7 @@ The architectural completion. v0.1.x covered Layer 1 (gate the output); v0.1.5 a
 
 ### Notes
 
-- **Effectiveness validation is deferred to v0.2.0.** v0.1.5 ships demonstrative evidence (compile retrieves relevant past signal) but not measured effectiveness (does compile actually reduce misinterpretation rate?). The v0.2.0 replay study is the validation milestone.
+- **Effectiveness validation is deferred to v1.0.** v0.1.5 ships demonstrative evidence (compile retrieves relevant past signal) but not measured effectiveness (does compile actually reduce misinterpretation rate?). The v1.0 replay study is the validation milestone.
 - **Embeddings are derived from private session content** and stay local at `~/.hermeneutic/`. Nothing public ships with embeddings — every user mines their own.
 - **Cold-start latency:** measured on the author's corpus (346 triples, MacBook M1, Ollama + nomic-embed-text) — **18.8 seconds total = ~54 ms per Ollama embed call**. One-time per re-mine; subsequent `compile-index` calls are no-ops while the source `triples.jsonl` is unchanged (sha256 cache key).
 - **Live end-to-end smoke test:** mine 1,423 sessions → 346 triples → index → `compile` on 3 real prompts → 3 distinct bucket distributions returned with non-trivial top-K matches. See `evals/compile-walkthrough.md` for the unedited compile output on each prompt.

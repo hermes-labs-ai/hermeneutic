@@ -1,0 +1,11 @@
+{
+  "name": "hermeneutic-gate",
+  "displayName": "hermeneutic",
+  "description": "Catches the corrections you've already made, before the next response ships. Advisory only — never blocks. Requires `pip install hermeneutic`.",
+  "version": "0.1.7",
+  "author": { "name": "Rolando Bosch", "email": "roli@hermes-labs.ai", "url": "https://github.com/hermes-labs-ai" },
+  "homepage": "https://github.com/hermes-labs-ai/hermeneutic",
+  "repository": "https://github.com/hermes-labs-ai/hermeneutic",
+  "license": "MIT",
+  "keywords": ["drift-detection", "ai-audit", "pre-flight-gate", "correction-mining"]
+}

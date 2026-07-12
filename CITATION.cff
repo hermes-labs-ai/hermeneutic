@@ -9,8 +9,8 @@ abstract: >-
   bring-your-own-calibration LLM critic, PressureProbe). It targets silent failure
   modes that aggregate evals and observability miss.
 type: software
-version: "0.2.0"
-date-released: 2026-04-25
+version: "0.1.7"
+date-released: 2026-07-12
 authors:
   - family-names: "Bosch Rodriguez"
     given-names: "Rolando"

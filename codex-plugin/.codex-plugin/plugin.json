@@ -1,0 +1,9 @@
+{
+  "name": "hermeneutic-gate",
+  "version": "0.1.7",
+  "description": "Advisory-only Stop-hook drift gate for Codex — regex-only, zero-LLM, no network.",
+  "author": { "name": "Rolando Bosch", "email": "roli@hermes-labs.ai" },
+  "repository": "https://github.com/hermes-labs-ai/hermeneutic",
+  "license": "MIT",
+  "hooks": "./hooks/hooks.json"
+}

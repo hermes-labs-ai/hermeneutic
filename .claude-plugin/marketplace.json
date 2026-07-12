@@ -1,0 +1,12 @@
+{
+  "name": "hermeneutic",
+  "owner": { "name": "Hermes Labs", "url": "https://github.com/hermes-labs-ai" },
+  "plugins": [
+    {
+      "name": "hermeneutic-gate",
+      "source": "./claude-plugin",
+      "description": "Advisory-only Stop-hook drift gate — regex-only, zero-LLM, no network.",
+      "version": "0.1.7"
+    }
+  ]
+}

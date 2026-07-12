@@ -1,7 +1,7 @@
 {
   "upload_type": "software",
   "title": "hermeneutic: an evidence-first drift gate that mines AI chat-log corrections to gate the next response",
-  "version": "0.1.0",
+  "version": "0.1.7",
   "description": "hermeneutic is an evidence-first drift gate that catches AI response drift before it ships by mining chat logs for the corrections a user already made, classifying the drift, and running those patterns as a three-stage pre-flight gate on outgoing drafts (zero-LLM regex, then optional hermes-rubric scoring, then a bring-your-own-calibration LLM critic called PressureProbe). It targets silent failure modes that aggregate evals and observability miss; cheap stages run first so most drafts never reach an LLM call. The shipped regex patterns are derived from 326 corrections mined across 1,423 sessions, documented in evals/triple-mining-receipts.md; the private session triples themselves are not shipped.",
   "creators": [
     { "name": "Bosch Rodriguez, Rolando", "orcid": "0009-0005-4896-1112", "affiliation": "Hermes Labs" }

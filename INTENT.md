@@ -24,6 +24,6 @@ Catches drift in outgoing assistant drafts before it ships, using the correction
 
 ## Provenance
 
-Risk patterns derived empirically from one heavy AI user's corpus: 1,423 Claude Code sessions mined for 326 user corrections. 44% of corrections were post-completion overclaiming (the dominant drift mode). 8 regex rules cover ~65% of the corpus. Your distribution will look different — re-mine your own logs and `your` gate writes itself.
+Risk patterns derived empirically from one heavy AI user's corpus: 1,423 Claude Code sessions mined for 326 user corrections. 44% of corrections were post-completion overclaiming (the dominant drift mode). 8 regex rules ship; the original 6 covered ~65% of the corpus (8-rule coverage not yet re-measured). Your distribution will look different — re-mine your own logs and `your` gate writes itself.
 
 The 326 triples themselves are not shipped (private session content). The miner that produces equivalent triples from your own logs is shipped, and is the entire point.
