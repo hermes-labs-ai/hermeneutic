@@ -165,3 +165,19 @@ def test_cli_harvest_out_creates_missing_parent_dirs(tmp_path):
     rc = main(["harvest", str(tmp_path), "--out", str(out)])
     assert rc == 0
     assert out.is_file()
+
+
+def test_cli_mine_rejects_missing_directory_loudly(tmp_path, capsys):
+    # A typo'd directory must fail loud even when other directories mine fine.
+    good = tmp_path / "good"
+    good.mkdir()
+    _write_log(good / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "did it"),
+        ("user", "no, that's not what i meant"),
+        ("assistant", "ok let me retry"),
+    ])
+    rc = main(["mine", str(good), str(tmp_path / "nope"), "--out",
+               str(tmp_path / "t.jsonl")])
+    assert rc == 2
+    assert "not a directory" in capsys.readouterr().err

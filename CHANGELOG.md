@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `mine` accepts multiple log directories, so the documented
   `hermeneutic mine ~/.claude/projects/*/` glob form works instead of dying
-  on the second expanded path.
+  on the second expanded path; a nonexistent directory argument fails loud
+  (exit 2) instead of being silently skipped.
 - `--out` targets for `mine`, `harvest`, and `promote` create missing parent
   directories, so the forward-deployed harness's printed
   `--out build/report.jsonl` command works in a fresh clone.
@@ -19,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Codex plugin manifest matches the schema the Codex plugin validator
   accepts (no top-level `hooks` field; complete `interface` object) — the
   plugin previously failed validation at install time.
-- 7 new tests; **117 tests** total.
+- 8 new tests; **118 tests** total.
 
 ## [0.1.7] — 2026-07-12
 

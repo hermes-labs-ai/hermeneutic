@@ -27,6 +27,15 @@ def _open_out(path: str, mode: str = "w"):
 
 
 def _cmd_mine(args: argparse.Namespace) -> int:
+    # Fail loud before mining: a typo'd directory must not be silently
+    # skipped just because another directory yielded triples.
+    missing = [d for d in args.directory if not Path(d).is_dir()]
+    if missing:
+        print(
+            "ERROR: not a directory: " + ", ".join(missing),
+            file=sys.stderr,
+        )
+        return 2
     out = _open_out(args.out)
     n = 0
     try:
