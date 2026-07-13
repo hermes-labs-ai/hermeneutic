@@ -5,5 +5,13 @@
   "author": { "name": "Rolando Bosch", "email": "roli@hermes-labs.ai" },
   "repository": "https://github.com/hermes-labs-ai/hermeneutic",
   "license": "MIT",
-  "hooks": "./hooks/hooks.json"
+  "interface": {
+    "displayName": "hermeneutic gate",
+    "shortDescription": "Flags overclaiming in assistant turns before they ship.",
+    "longDescription": "Runs the hermeneutic zero-LLM regex gate over each final assistant message via a Stop hook. Advisory only: it never blocks or edits a turn, it prints a one-line RISK notice when a drift-shaped pattern fires. Hooks are declared in hooks/hooks.json.",
+    "developerName": "Hermes Labs",
+    "category": "developer-tools",
+    "capabilities": ["hooks"],
+    "defaultPrompt": "Gate my outgoing responses for overclaiming."
+  }
 }

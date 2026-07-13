@@ -16,19 +16,37 @@ from hermeneutic.gates.regex import highest_severity, risk_score
 from hermeneutic.triples import READERS, mine_dir
 
 
+def _open_out(path: str, mode: str = "w"):
+    """Open an --out target, creating missing parent directories."""
+    if path == "-":
+        return sys.stdout
+    parent = Path(path).parent
+    if parent and not parent.exists():
+        parent.mkdir(parents=True, exist_ok=True)
+    return open(path, mode, encoding="utf-8")
+
+
 def _cmd_mine(args: argparse.Namespace) -> int:
-    out = sys.stdout if args.out == "-" else open(args.out, "w", encoding="utf-8")
+    out = _open_out(args.out)
     n = 0
     try:
-        for trip in mine_dir(args.directory, fmt=args.format, glob=args.glob):
-            out.write(trip.to_json() + "\n")
-            n += 1
+        for directory in args.directory:
+            for trip in mine_dir(directory, fmt=args.format, glob=args.glob):
+                out.write(trip.to_json() + "\n")
+                n += 1
     finally:
         if out is not sys.stdout:
             out.close()
     print(f"mined {n} triples", file=sys.stderr)
     if n == 0:
-        return _report_zero_parse(args.directory, args.glob, args.format)
+        # Report against the first directory that fails to parse; if every
+        # directory parses fine, the last "parsed OK" verdict stands.
+        rc = 0
+        for directory in args.directory:
+            rc = _report_zero_parse(directory, args.glob, args.format)
+            if rc != 0:
+                return rc
+        return rc
     return 0
 
 
@@ -236,7 +254,7 @@ def _cmd_harvest(args: argparse.Namespace) -> int:
     telemetry_path = args.telemetry or telemetry.sink_path()
     counts: Counter = Counter()
     live_fires = 0
-    out = sys.stdout if args.out == "-" else open(args.out, "w", encoding="utf-8")
+    out = _open_out(args.out)
     try:
         sanitized = getattr(args, "sanitized", False)
         for rec in harvest.harvest_dir(
@@ -271,7 +289,7 @@ def _cmd_harvest(args: argparse.Namespace) -> int:
 def _cmd_promote(args: argparse.Namespace) -> int:
     from hermeneutic import harvest
 
-    out = sys.stdout if args.out == "-" else open(args.out, "a", encoding="utf-8")
+    out = _open_out(args.out, "a")
     n = 0
     try:
         for trip in harvest.promote(args.queue):
@@ -461,7 +479,11 @@ def main(argv: list[str] | None = None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     p_mine = sub.add_parser("mine", help="Mine triples from session logs.")
-    p_mine.add_argument("directory", help="Directory containing session logs.")
+    p_mine.add_argument(
+        "directory",
+        nargs="+",
+        help="One or more directories containing session logs (globs expand fine).",
+    )
     p_mine.add_argument("--format", choices=list(READERS), default="claude-code")
     p_mine.add_argument("--glob", default="*.jsonl")
     p_mine.add_argument("--out", default="-", help="Output path (default stdout).")

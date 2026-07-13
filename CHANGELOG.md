@@ -5,6 +5,22 @@ All notable changes to hermeneutic are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- `mine` accepts multiple log directories, so the documented
+  `hermeneutic mine ~/.claude/projects/*/` glob form works instead of dying
+  on the second expanded path.
+- `--out` targets for `mine`, `harvest`, and `promote` create missing parent
+  directories, so the forward-deployed harness's printed
+  `--out build/report.jsonl` command works in a fresh clone.
+- `forward-deployed/harness.py verify` fails loudly on missing, corrupt, or
+  empty mission state instead of passing vacuously with "0 step(s)".
+- Codex plugin manifest matches the schema the Codex plugin validator
+  accepts (no top-level `hooks` field; complete `interface` object) — the
+  plugin previously failed validation at install time.
+- 7 new tests; **117 tests** total.
+
 ## [0.1.7] — 2026-07-12
 
 ### Fixed (pre-release audit)

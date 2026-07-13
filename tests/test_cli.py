@@ -115,3 +115,53 @@ def test_cli_gate_non_utf8_input_errors_cleanly(capsys, tmp_path):
     assert rc == 2
     err = capsys.readouterr().err
     assert "ERROR" in err and "UTF-8" in err
+
+
+def test_cli_mine_accepts_multiple_directories(tmp_path):
+    # The README quickstart passes a shell glob that expands to many dirs.
+    d1, d2 = tmp_path / "p1", tmp_path / "p2"
+    d1.mkdir()
+    d2.mkdir()
+    _write_log(d1 / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "did it"),
+        ("user", "no, that's not what i meant"),
+        ("assistant", "ok let me retry"),
+    ])
+    _write_log(d2 / "s2.jsonl", [
+        ("user", "run it"),
+        ("assistant", "done"),
+        ("user", "wrong file, i meant the other one"),
+        ("assistant", "fixing"),
+    ])
+    out = tmp_path / "triples.jsonl"
+    rc = main(["mine", str(d1), str(d2), "--out", str(out)])
+    assert rc == 0
+    sessions = {json.loads(ln)["session"] for ln in out.read_text().splitlines() if ln.strip()}
+    assert sessions == {"s1", "s2"}
+
+
+def test_cli_mine_out_creates_missing_parent_dirs(tmp_path):
+    _write_log(tmp_path / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "did it"),
+        ("user", "no, that's not what i meant"),
+        ("assistant", "ok let me retry"),
+    ])
+    out = tmp_path / "build" / "nested" / "triples.jsonl"
+    rc = main(["mine", str(tmp_path), "--out", str(out)])
+    assert rc == 0
+    assert out.is_file()
+
+
+def test_cli_harvest_out_creates_missing_parent_dirs(tmp_path):
+    _write_log(tmp_path / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "Done — shipped 14 files, all tests pass."),
+        ("user", "wait, are you sure?"),
+        ("assistant", "let me check"),
+    ])
+    out = tmp_path / "build" / "report.jsonl"
+    rc = main(["harvest", str(tmp_path), "--out", str(out)])
+    assert rc == 0
+    assert out.is_file()

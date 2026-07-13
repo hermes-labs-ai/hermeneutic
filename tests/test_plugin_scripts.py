@@ -48,3 +48,22 @@ def test_codex_script_clean_text_and_garbage_both_yield_empty_json():
     assert p.returncode == 0 and json.loads(p.stdout) == {}
     p = _run(CODEX_SCRIPT, "not json")
     assert p.returncode == 0 and json.loads(p.stdout) == {}
+
+
+def test_codex_plugin_manifest_shape():
+    """Pin the manifest to the schema the Codex plugin validator accepts:
+    no top-level `hooks` key, and a complete `interface` object."""
+    import json
+    from pathlib import Path
+
+    manifest = json.loads(
+        (Path(__file__).resolve().parent.parent
+         / "codex-plugin" / ".codex-plugin" / "plugin.json").read_text()
+    )
+    assert "hooks" not in manifest, "validator rejects a top-level hooks field"
+    interface = manifest.get("interface")
+    assert isinstance(interface, dict)
+    for field in ("displayName", "shortDescription", "longDescription",
+                  "developerName", "category"):
+        assert isinstance(interface.get(field), str) and interface[field].strip()
+    assert "defaultPrompt" in interface or "default_prompt" in interface

@@ -154,7 +154,20 @@ def _instruction(step: str, note: str = "") -> int:
 
 def main() -> int:
     if len(sys.argv) > 1 and sys.argv[1] == "verify":
-        ok, msg = _verify_chain(_load())
+        # An audit must not pass vacuously: absent, corrupt, or empty state
+        # means there is no mission to attest to.
+        if not STATE.is_file():
+            print("VERIFY: FAIL — no mission state (mission never ran here)")
+            return 1
+        try:
+            chain = json.loads(STATE.read_text())
+        except json.JSONDecodeError:
+            print("VERIFY: FAIL — mission state is not valid JSON (corrupt or hand-edited)")
+            return 1
+        if not chain:
+            print("VERIFY: FAIL — mission state is empty (no steps recorded)")
+            return 1
+        ok, msg = _verify_chain(chain)
         print(("VERIFY: PASS — " if ok else "VERIFY: FAIL — ") + msg)
         return 0 if ok else 1
 

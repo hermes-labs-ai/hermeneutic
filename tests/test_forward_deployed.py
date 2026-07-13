@@ -148,3 +148,42 @@ def test_sentinel_install_lands_at_toml_top_level(tmp_path):
     assert p.returncode == 0
     text = cfg.read_text()
     assert text.index("notify = ") < text.index("[projects."), "notify must precede the first table header"
+
+
+def _run_verify(cwd: Path):
+    return subprocess.run(
+        [sys.executable, str(cwd / "forward-deployed" / "harness.py"), "verify"],
+        capture_output=True, text=True, cwd=cwd,
+    )
+
+
+def _harness_copy(tmp_path: Path) -> Path:
+    fd = tmp_path / "forward-deployed"
+    fd.mkdir()
+    fd.joinpath("harness.py").write_bytes(
+        (REPO / "forward-deployed" / "harness.py").read_bytes()
+    )
+    return tmp_path
+
+
+def test_harness_verify_fails_without_mission_state(tmp_path):
+    root = _harness_copy(tmp_path)
+    p = _run_verify(root)
+    assert p.returncode == 1
+    assert "no mission state" in p.stdout
+
+
+def test_harness_verify_fails_on_empty_chain(tmp_path):
+    root = _harness_copy(tmp_path)
+    (root / "forward-deployed" / "mission-state.json").write_text("[]")
+    p = _run_verify(root)
+    assert p.returncode == 1
+    assert "empty" in p.stdout
+
+
+def test_harness_verify_fails_on_corrupt_state(tmp_path):
+    root = _harness_copy(tmp_path)
+    (root / "forward-deployed" / "mission-state.json").write_text("{not json")
+    p = _run_verify(root)
+    assert p.returncode == 1
+    assert "not valid JSON" in p.stdout
