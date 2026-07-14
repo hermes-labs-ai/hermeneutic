@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Forward-deployed boot: verify hermeneutic fits this harness, in one command.
 
-    python3 forward-deployed/boot.py [--sessions DIR] [--format codex]
+    python3 forward-deployed/boot.py [--sessions DIR] [--format codex] [--glob PATTERN]
 
 Runs the BOOT sequence from FORWARD-DEPLOYED-HARNESS.md and writes
 ``forward-deployed/boot-report.json`` — sanitized by construction: counts,
 categories, and pass/fail only; any path outside this repository is stripped
 from captured output before it is stored.
 
-Exit 0: every step passed — the package fits this harness as shipped.
+Exit 0: every package-controlled step passed — the package fits this harness
+as shipped. The adopter-data probe may be ``not_exercised`` when no matching
+logs are available; that is reported explicitly rather than treated as a defect.
 Exit 1: one or more steps failed — the failures are the adaptation queue.
 
 Stdlib only. Never makes a network call. Never reads log *content* itself —
@@ -28,6 +30,12 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 REPORT = Path(__file__).resolve().parent / "boot-report.json"
+
+PROBE_DEFAULTS = {
+    "claude-code": (Path.home() / ".claude" / "projects", "**/*.jsonl"),
+    "codex": (Path.home() / ".codex" / "sessions", "**/rollout-*.jsonl"),
+    "openai": (None, "**/*.jsonl"),
+}
 
 
 def _sanitize(text: str) -> str:
@@ -55,12 +63,20 @@ def _run(cmd: list[str], timeout: int = 600) -> tuple[int, str]:
         return 124, f"timed out after {timeout}s"
 
 
+def _verdict(steps: list[dict]) -> str:
+    """Unexercised adopter-data probes do not make the package misfit."""
+    allowed = {"pass", "not_exercised"}
+    return "fits-as-shipped" if all(step["status"] in allowed for step in steps) else "adaptation-needed"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--sessions", default=None,
-                    help="Log dir for the harvest probe (default: ~/.claude/projects if present).")
+                    help="Log dir for the harvest probe (default: format-specific location when known).")
     ap.add_argument("--format", default="claude-code", choices=["claude-code", "codex", "openai"],
                     help="Log format for the harvest probe (default: claude-code).")
+    ap.add_argument("--glob", default=None,
+                    help="Log-file glob for the probe (default: recursive pattern for the selected format).")
     args = ap.parse_args()
 
     py = sys.executable
@@ -69,6 +85,10 @@ def main() -> int:
     def record(name: str, ok: bool, detail: str) -> None:
         steps.append({"step": name, "status": "pass" if ok else "FAIL", "detail": detail})
         print(f"  [{'pass' if ok else 'FAIL'}] {name}: {detail}", file=sys.stderr)
+
+    def record_unexercised(name: str, detail: str) -> None:
+        steps.append({"step": name, "status": "not_exercised", "detail": detail})
+        print(f"  [ n/a] {name}: {detail}", file=sys.stderr)
 
     # 1. import + version
     try:
@@ -108,18 +128,26 @@ def main() -> int:
                f"expected {'RISK' if should_fire else 'PASS'}, got {got}")
 
     # 5. harvest probe on real logs (sanitized; count only; temp file removed)
-    sess = Path(args.sessions).expanduser() if args.sessions else Path.home() / ".claude" / "projects"
-    if sess.is_dir():
-        with tempfile.NamedTemporaryFile(suffix=".jsonl", delete=True) as tf:
-            rc, out = _run([py, "-m", "hermeneutic.cli", "harvest", str(sess),
-                            "--format", args.format, "--sanitized", "--out", tf.name])
-            m = re.search(r"harvested (\d+) review candidates", out)
-            n = int(m.group(1)) if m else 0
-            record("harvest_probe", rc == 0 and n > 0,
-                   f"{n} events from {args.format} logs" if m else f"exit {rc}: {out[-300:]}")
+    default_sessions, default_glob = PROBE_DEFAULTS[args.format]
+    sess = Path(args.sessions).expanduser() if args.sessions else default_sessions
+    probe_glob = args.glob or default_glob
+    if sess is not None and sess.is_dir():
+        if not any(sess.glob(probe_glob)):
+            record_unexercised("harvest_probe", f"no {args.format} logs matched; real-log probe skipped")
+        else:
+            with tempfile.NamedTemporaryFile(suffix=".jsonl", delete=True) as tf:
+                rc, out = _run([py, "-m", "hermeneutic.cli", "harvest", str(sess),
+                                "--format", args.format, "--glob", probe_glob,
+                                "--sanitized", "--out", tf.name])
+                m = re.search(r"harvested (\d+) review candidates", out)
+                n = int(m.group(1)) if m else 0
+                record("harvest_probe", rc == 0 and bool(m),
+                       f"{n} events from {args.format} logs" if m else f"exit {rc}: {out[-300:]}")
     else:
-        record("harvest_probe", False,
-               f"no session dir found (looked for a {args.format} dir; pass --sessions)")
+        record_unexercised(
+            "harvest_probe",
+            f"no session dir found for {args.format}; real-log probe skipped (pass --sessions to exercise it)",
+        )
 
     report = {
         "harness": "forward-deployed boot v1",
@@ -129,7 +157,7 @@ def main() -> int:
             "package": getattr(sys.modules.get("hermeneutic"), "__version__", "unimportable"),
         },
         "steps": steps,
-        "verdict": "fits-as-shipped" if all(s["status"] == "pass" for s in steps) else "adaptation-needed",
+        "verdict": _verdict(steps),
     }
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
     print(f"\nverdict: {report['verdict']}  (full result: {REPORT.name})", file=sys.stderr)

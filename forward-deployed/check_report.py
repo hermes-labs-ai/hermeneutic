@@ -3,9 +3,9 @@
 
     python3 forward-deployed/check_report.py FORWARD-DEPLOYED-REPORT.md
 
-Enforces the report's sanitization rule the same way ``--sanitized``
-enforces the harvest's: mechanically, not on trust. Flags lines that look
-like they carry environment or session content:
+Screens the report for common leak shapes before a human reviews it. This is a
+bounded lint, not an exhaustive privacy or anonymity proof. It flags lines
+that look like they carry environment or session content:
 
 - absolute paths outside this repository (``/Users/...``, ``/home/...``, ``C:\\...``)
 - home-relative paths that aren't this repo (``~/projects/...``)

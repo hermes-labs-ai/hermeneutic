@@ -141,3 +141,11 @@ def test_readme_and_changelog_agree_with_each_other():
         f"Fix: pick one count (the actual pytest collection number) and "
         f"update both surfaces to match.\n"
     )
+
+
+def test_cline_recipe_uses_declared_python_and_surfaces_all_risk_levels():
+    recipe = (REPO_ROOT / "integrations" / "cline.md").read_text(encoding="utf-8")
+    assert "jq -r" not in recipe
+    assert "python3 -c" in recipe
+    assert 'case "$verdict" in' in recipe
+    assert "RISK*)" in recipe and "PASS*)" in recipe

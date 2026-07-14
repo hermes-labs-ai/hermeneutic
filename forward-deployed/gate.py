@@ -35,7 +35,48 @@ REPO = Path(__file__).resolve().parent.parent
 BOOT_REPORT = Path(__file__).resolve().parent / "boot-report.json"
 REPORT = REPO / "FORWARD-DEPLOYED-REPORT.md"
 
+MATERIAL_DIRS = (
+    ".claude-plugin",
+    ".github",
+    "claude-plugin",
+    "codex-plugin",
+    "docs",
+    "evals",
+    "examples",
+    "forward-deployed",
+    "integrations",
+    "src",
+    "tests",
+)
+GENERATED_PATHS = {
+    Path("FORWARD-DEPLOYED-REPORT.md"),
+    Path("forward-deployed/boot-report.json"),
+    Path("forward-deployed/mission-state.json"),
+}
+IGNORED_PARTS = {"__pycache__", ".pytest_cache", ".ruff_cache"}
+
 NETWORK_TOKENS = re.compile(r"\b(urllib\.request|urlopen|requests\.|httpx|socket\.create_connection|http\.client)\b")
+
+
+def _material_files() -> list[Path]:
+    """Return release material whose modification invalidates boot evidence."""
+    files = [
+        path
+        for path in REPO.iterdir()
+        if path.is_file() and path.name != ".git" and path.relative_to(REPO) not in GENERATED_PATHS
+    ]
+    for top in MATERIAL_DIRS:
+        root = REPO / top
+        if not root.is_dir():
+            continue
+        files.extend(
+            path
+            for path in root.rglob("*")
+            if path.is_file()
+            and path.relative_to(REPO) not in GENERATED_PATHS
+            and not (set(path.relative_to(REPO).parts) & IGNORED_PARTS)
+        )
+    return files
 
 
 def main() -> int:
@@ -55,13 +96,10 @@ def main() -> int:
             failures.append(
                 f"boot verdict is {verdict!r} — adapt (or finish adapting), then re-run boot.py until fits-as-shipped"
             )
-        # freshness: only THIS package's sources count — never a venv or site-packages
-        newer = [
-            p
-            for top in ("src", "tests", "evals", "forward-deployed")
-            for p in (REPO / top).rglob("*.py")
-            if p != BOOT_REPORT and p.stat().st_mtime > boot_mtime + 1
-        ]
+        # Freshness covers the whole shipped product surface, including plugin
+        # manifests, integration docs, metadata, and non-Python harness files.
+        # Generated receipts and cache/venv directories are deliberately out.
+        newer = [p for p in _material_files() if p.stat().st_mtime > boot_mtime + 1]
         if newer and verdict == "fits-as-shipped":
             failures.append(
                 f"boot evidence is stale: {len(newer)} source file(s) changed after the last boot run — re-run boot.py"

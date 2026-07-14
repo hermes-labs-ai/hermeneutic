@@ -24,6 +24,13 @@ advisory-only means **never emitting a `decision` field** — on Codex Stop,
 `"decision": "block"` does not block; it auto-continues the turn with your
 reason as a new prompt.
 
+The copied-hook path uses the same `python3` shown in the command. Install the
+package into that interpreter first (`python3 -m pip install .` from a source
+checkout, or `python3 -m pip install hermeneutic` after the PyPI release is
+verified). A plugin-packaged script can use an adjacent repository `src/`
+checkout. Missing dependencies are reported visibly as an advisory system
+message rather than silently returning `{}`.
+
 **Path 2 — as a plugin:** [`codex-plugin/`](../codex-plugin/) ships the same
 hook plugin-packaged. Add via a marketplace entry pointing at this repo,
 then `/plugins` inside Codex to enable.
@@ -37,4 +44,5 @@ then `/plugins` inside Codex to enable.
 sentinel into `notify` in `~/.codex/config.toml` (parallel mechanism, not
 superseded; reversible with `sentinel.py uninstall`).
 
-Log mining works regardless: `hermeneutic mine ~/.codex/sessions --format codex`.
+Log mining works regardless:
+`hermeneutic mine ~/.codex/sessions --format codex --glob "**/rollout-*.jsonl"`.

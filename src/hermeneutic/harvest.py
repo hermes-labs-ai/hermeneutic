@@ -72,10 +72,10 @@ class QueueRecord:
 
     def to_sanitized_json(self) -> str:
         """Serialize with ALL text content removed — classification metadata
-        only. A sanitized record is safe to share off the machine the logs
-        live on (design-partner / bug-report mode): kinds, rule ids,
-        severity, content fingerprints and text LENGTHS, never text. The
-        session name is hashed too (it can embed project paths).
+        only: kinds, rule ids, severity, timestamps, content fingerprints and
+        text LENGTHS, never text. The session name is hashed too (it can embed
+        project paths). This reduces exposure but is not anonymization; review
+        the metadata against your policy before sharing it off-machine.
         """
         d = asdict(self)
         for field_name in ("orig_prompt", "assistant_excerpt", "user_reaction"):

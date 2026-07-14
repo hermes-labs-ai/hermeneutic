@@ -49,7 +49,8 @@ triples and uses them twice:
    default path, ever.
 2. **Privacy is structural.** Nothing leaves this machine by default.
    Anything labeled sanitized carries zero message text — counts, rule ids,
-   hashes, lengths only.
+   timestamps, hashes, lengths only. That is data minimization, not proof of
+   anonymity; a human reviews the metadata before sharing it.
 3. **Tense is load-bearing** in the rules: past-tense completion claims
    gate, planned future work does not. Naive stemming destroys the
    distinction.
@@ -94,7 +95,9 @@ gate smoke trio against documented expectations, and a
 sanitized harvest probe over real logs — and writes
 `forward-deployed/boot-report.json` (sanitized by construction; out-of-repo
 paths are stripped before anything is stored). **Exit 0 / `fits-as-shipped`:**
-tell your human, run the real sanitized harvest for them — write it to the
+all package-controlled checks passed; if no matching logs existed, the
+real-log probe is labeled `not_exercised` rather than fabricated as a pass.
+Tell your human, run the real sanitized harvest for them — write it to the
 gitignored `build/` dir (e.g. `--out build/report.jsonl`) so the tree stays
 pristine, and leave `promote` to your human unless they ask — then write the
 report (below). **Exit 1 / `adaptation-needed`:** the failed steps are your work
@@ -140,10 +143,10 @@ report.
 Copy `forward-deployed/REPORT-TEMPLATE.md` to `FORWARD-DEPLOYED-REPORT.md`
 at the repo root and fill it in. It is sanitized by the same rule as
 `--sanitized`: **counts, categories, and this repo's own code — never your
-human's text.** The rule is machine-checked, not merely trusted — but the
-linter points at likely leak shapes (paths, identifiers, long quotes, long
-Hangul runs); English prose it cannot reliably catch, so your judgment
-completes the enforcement. Before handing the report over, run it and
+human's text.** The linter checks common leak shapes (paths, identifiers, long
+quotes, long Hangul runs); it is deliberately not presented as an exhaustive
+privacy or anonymity check. English prose and organization-specific identifiers
+may evade it, so human review completes the process. Before handing the report over, run it and
 resolve every flag:
 
 ```bash

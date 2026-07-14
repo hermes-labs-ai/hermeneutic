@@ -1,6 +1,7 @@
 """The forward-deployed kit: boot verifier + report leak-linter."""
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -14,9 +15,9 @@ def test_check_report_flags_environment_leaks(tmp_path):
     report = tmp_path / "report.md"
     report.write_text(
         "## Boot\n"
-        "failed at /Users/someone/projects/secret-client/app.py\n"
+        "failed at /Users/example/projects/private-fixture/app.py\n"
         "user said: 배포가 완료되었습니다 그리고 서버가 다운되었고 고객이 화가 났습니다 진짜로 큰일났어요\n"
-        "contact me at someone@client-corp.com\n",
+        "contact me at someone@example.invalid\n",
         encoding="utf-8",
     )
     p = subprocess.run([sys.executable, str(CHECK), str(report)], capture_output=True, text=True)
@@ -41,11 +42,47 @@ def test_boot_help_runs():
     assert "boot-report.json" in p.stdout
 
 
+def test_boot_defaults_cover_nested_claude_and_codex_logs():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("fdh_boot", BOOT)
+    boot = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(boot)
+    assert boot.PROBE_DEFAULTS["claude-code"][1] == "**/*.jsonl"
+    assert boot.PROBE_DEFAULTS["codex"][1] == "**/rollout-*.jsonl"
+
+
+def test_boot_allows_unexercised_real_log_probe():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("fdh_boot_verdict", BOOT)
+    boot = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(boot)
+    assert boot._verdict([{"status": "pass"}, {"status": "not_exercised"}]) == "fits-as-shipped"
+    assert boot._verdict([{"status": "FAIL"}]) == "adaptation-needed"
+
+
 def test_gate_reaches_a_verdict():
     p = subprocess.run([sys.executable, str(REPO / "forward-deployed" / "gate.py")],
                        capture_output=True, text=True)
     assert p.returncode in (0, 1)
     assert ("GATE: PASS" in p.stdout) or ("GATE: NOT DONE" in p.stdout)
+
+
+def test_gate_freshness_includes_non_python_release_files(tmp_path, monkeypatch):
+    import importlib.util
+    gate_path = REPO / "forward-deployed" / "gate.py"
+    spec = importlib.util.spec_from_file_location("fdh_gate", gate_path)
+    gate = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gate)
+    (tmp_path / "integrations").mkdir()
+    recipe = tmp_path / "integrations" / "example.md"
+    recipe.write_text("documented integration\n")
+    (tmp_path / ".venv").mkdir()
+    ignored = tmp_path / ".venv" / "local.txt"
+    ignored.write_text("not release material\n")
+    monkeypatch.setattr(gate, "REPO", tmp_path)
+    material = gate._material_files()
+    assert recipe in material
+    assert ignored not in material
 
 
 def test_check_report_allows_dates_and_documented_defaults(tmp_path):
@@ -68,6 +105,12 @@ def _load_harness():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+def test_harness_harvest_skip_instruction_creates_build_parent(capsys):
+    h = _load_harness()
+    assert h._instruction("HARVEST") == 3
+    assert "mkdir -p build && echo" in capsys.readouterr().out
 
 
 def test_harness_chain_detects_tampering():
@@ -187,3 +230,63 @@ def test_harness_verify_fails_on_corrupt_state(tmp_path):
     p = _run_verify(root)
     assert p.returncode == 1
     assert "not valid JSON" in p.stdout
+
+
+def test_harness_normal_mode_preserves_corrupt_state(tmp_path):
+    root = _harness_copy(tmp_path)
+    state = root / "forward-deployed" / "mission-state.json"
+    state.write_text("{not json")
+    p = subprocess.run(
+        [sys.executable, str(root / "forward-deployed" / "harness.py")],
+        capture_output=True,
+        text=True,
+        cwd=root,
+    )
+    assert p.returncode == 1
+    assert "STATE INVALID" in p.stdout
+    assert state.read_text() == "{not json"
+
+
+def _write_recorded_boot_state(root: Path) -> None:
+    h = _load_harness()
+    boot = root / "forward-deployed" / "boot-report.json"
+    boot.write_text('{"verdict": "fits-as-shipped"}\n')
+    artifacts = {"boot-report": h._digest(boot)}
+    at = "2026-07-09T00:00:00Z"
+    entry = {
+        "step": "BOOT",
+        "at": at,
+        "artifacts": artifacts,
+        "hash": h._chain_hash(h.GENESIS, "BOOT", at, artifacts),
+    }
+    (root / "forward-deployed" / "mission-state.json").write_text(
+        json.dumps([entry])
+    )
+
+
+def test_harness_verify_accepts_unchanged_recorded_artifact(tmp_path):
+    root = _harness_copy(tmp_path)
+    _write_recorded_boot_state(root)
+    p = _run_verify(root)
+    assert p.returncode == 0
+    assert "artifacts intact" in p.stdout
+
+
+def test_harness_verify_fails_when_recorded_artifact_changes(tmp_path):
+    root = _harness_copy(tmp_path)
+    _write_recorded_boot_state(root)
+    (root / "forward-deployed" / "boot-report.json").write_text(
+        '{"verdict": "adaptation-needed"}\n'
+    )
+    p = _run_verify(root)
+    assert p.returncode == 1
+    assert "changed after it was recorded" in p.stdout
+
+
+def test_harness_verify_fails_when_recorded_artifact_disappears(tmp_path):
+    root = _harness_copy(tmp_path)
+    _write_recorded_boot_state(root)
+    (root / "forward-deployed" / "boot-report.json").unlink()
+    p = _run_verify(root)
+    assert p.returncode == 1
+    assert "changed after it was recorded" in p.stdout

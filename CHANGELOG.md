@@ -5,7 +5,7 @@ All notable changes to hermeneutic are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.7] — 2026-07-14
 
 ### Fixed
 - `mine` accepts multiple log directories, so the documented
@@ -16,21 +16,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   directories, so the forward-deployed harness's printed
   `--out build/report.jsonl` command works in a fresh clone.
 - `forward-deployed/harness.py verify` fails loudly on missing, corrupt, or
-  empty mission state instead of passing vacuously with "0 step(s)".
+  empty mission state instead of passing vacuously with "0 step(s)", and
+  recomputes recorded artifact digests so changed or deleted evidence cannot
+  retain a passing attestation.
 - Codex plugin manifest matches the schema the Codex plugin validator
   accepts (no top-level `hooks` field; complete `interface` object) — the
   plugin previously failed validation at install time.
-- 8 new tests; **118 tests** total.
-
-## [0.1.7] — 2026-07-12
-
-### Fixed (pre-release audit)
+- 20 new tests; **130 tests** total.
 - `gate` input failures are loud and clean: a missing `--draft` file or
   non-UTF-8 input prints a one-line ERROR and exits 2 instead of dumping a
   traceback. Log readers tolerate stray non-UTF-8 bytes (replacement
   decoding). 2 new tests; **110 tests** total.
-- Install instructions point at the GitHub release (the package is not on
-  PyPI yet); rule-count references reconciled (8 shipped rules).
+- Install instructions use the current source checkout until PyPI publication
+  is verified; rule-count references reconciled (8 shipped rules).
 - Internal development notes removed from the tree.
 
 ### Added
@@ -44,9 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   honestly-scoped OpenHands preamble (no response-bearing hook exists
   there). Unverifiable schema fields are flagged inline rather than
   invented. **4 new tests** on the plugin gate scripts.
-- **PyPI distribution**: `pip install hermeneutic` via a trusted-publishing
-  release workflow (`.github/workflows/release.yml`, OIDC, no stored
-  secrets); `uv tool install` / `pipx` supported by construction.
+- **PyPI distribution**: a trusted-publishing release workflow
+  (`.github/workflows/release.yml`, OIDC, no stored PyPI token) builds the
+  wheel and source distribution, checks their metadata, smoke-tests the
+  wheel, and runs the suite from the exact sdist before publishing.
 - **Demo GIF** (`docs/demo.gif`, re-recordable via `demo.tape`), CI badge,
   dependabot config, and a root `CLAUDE.md` companion to `AGENTS.md`.
 - **Forward-deployed harness** (`FORWARD-DEPLOYED-HARNESS.md` +
@@ -60,17 +59,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   emails, long quotes before a report leaves the machine), the mission's own
   drift gate (`gate.py`: the deployment cannot be declared done — it must
   prove it), and an optional consented runtime sentinel (`sentinel.py`,
-  Codex notify hook: reversible, advisory, rule-ids-only). Validated in a
-  design-partner deployment before this release. **10 new tests.**
+  Codex notify hook: reversible, advisory, rule-ids-only). Local tests verify
+  the harness mechanics; each adopter's report is the evidence for that
+  environment. **10 new tests.**
 - **Codex CLI log reader** (`--format codex`): parses OpenAI Codex session
   rollouts (`~/.codex/sessions/**/rollout-*.jsonl` — `response_item` message
   payloads with `input_text`/`output_text` blocks), skipping injected
   environment/permissions wrappers. Schema verified against live Codex
   sessions, and `mine`/`harvest` run end-to-end on real Codex logs.
 - **`harvest --sanitized`**: emits the review queue with ALL text stripped —
-  kinds, rule ids, severities, content fingerprints and text lengths only,
-  session names hashed. For sharing validation results off-machine (design
-  partners, bug reports) without any log content ever leaving the machine.
+  kinds, rule ids, severities, timestamps, content fingerprints and text
+  lengths only, session names hashed. This is data minimization, not
+  anonymization; review the remaining metadata before sharing it.
   **3 new tests**.
 - **Loud-fail zero-parse** in `mine` and `harvest`: pointing the miner at an
   unsupported log format used to produce silent zero output,

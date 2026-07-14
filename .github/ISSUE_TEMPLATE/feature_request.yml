@@ -1,0 +1,36 @@
+name: Feature request
+description: Propose a new rule, reader, integration, or capability
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The drift or gap this addresses
+      description: What did the tool miss or what workflow is unsupported?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: >
+        Rule changes require mined evidence (see
+        evals/triple-mining-receipts.md). Use synthetic or fully redacted
+        examples only; never paste raw session content or client data.
+    validations:
+      required: false
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Design constraints acknowledged
+      options:
+        - label: The core gate stays zero-LLM (no LLM call on a default path)
+          required: true
+        - label: Existing rules will not be loosened solely to hide a false positive
+          required: true

@@ -67,14 +67,33 @@ packages = ["src/hermeneutic"]
 
 [tool.hatch.build.targets.sdist]
 include = [
+    ".claude-plugin/",
     "src/",
     "tests/",
     "examples/",
     "docs/",
+    "evals/",
+    "forward-deployed/",
+    "integrations/",
+    "claude-plugin/",
+    "codex-plugin/",
+    ".zenodo.json",
+    "AGENTS.md",
+    "BACKLOG.md",
+    "CITATION.cff",
+    "CLAUDE.md",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "FORWARD-DEPLOYED-HARNESS.md",
+    "INTENT.md",
     "README.md",
     "LICENSE",
+    "SECURITY.md",
     "CHANGELOG.md",
+    "demo.tape",
+    "llms.txt",
     "pyproject.toml",
+    "sbom.cdx.json",
 ]
 
 [tool.pytest.ini_options]

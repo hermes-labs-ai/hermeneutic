@@ -4,12 +4,12 @@ hermeneutic mines your chat logs for the moments you corrected your AI, turns th
 
 **Your AI overclaims. You correct it. Now your AI gets gated.**
 
-> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming - the dominant drift mode. 8 regex rules ship; the original 6 covered ~65% of that distribution (8-rule coverage not yet re-measured). **118 tests** covering the gate, the compile layer, the audit log, the harvester, the forward-deployed harness, the plugin gate scripts, and a doc-consistency CI check. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
+> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming - the dominant drift mode. 8 regex rules ship; the original 6 covered ~65% of that distribution (8-rule coverage not yet re-measured). **130 tests** covering the gate, the compile layer, the audit log, the harvester, the forward-deployed harness, the plugin gate scripts, and a doc-consistency CI check. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
 
 > **Validation status (measured 2026-04-27):** bucket-aware retrieval lifts leave-one-out recall from 56.7% → **83.7%** on n=104 trials, including 50%/75%/33%/33% on the four rare buckets that the global-top-K baseline missed entirely. In-corpus prompts trigger compile 98/100 vs synthetic-random 7/30 (Fisher's exact p=2.6e-17). Trade-off: 3× wider preamble (1.4 → 4.2 buckets per query). That validates hermeneutic **as a retrieval system** (frozen embedding-index snapshot; see the Reproducibility note under Eval evidence). Effectiveness (does compile actually reduce LLM misinterpretation?) is the pre-registered v1.0 milestone — **not yet measured**.
 
 [![CI](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml)
-[![tests](https://img.shields.io/badge/tests-118%20passing-brightgreen)](tests/)
+[![tests](https://img.shields.io/badge/tests-130%20passing-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Hermes Labs](https://img.shields.io/badge/by-Hermes%20Labs-black)](https://hermes-labs.ai)
@@ -49,8 +49,9 @@ Cheap-to-expensive. Most drafts pass stage 1 untouched. The stage that costs you
 ## 30 seconds
 
 ```bash
-pip install hermeneutic          # or: uv tool install hermeneutic / pipx install hermeneutic
-# pin to a tag instead: pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.1.7"
+git clone --depth 1 https://github.com/hermes-labs-ai/hermeneutic
+cd hermeneutic && pip install .
+# after the PyPI release is verified, this is equivalent: pip install hermeneutic
 
 hermeneutic mine ~/.claude/projects/*/  --out triples.jsonl
 hermeneutic bucket triples.jsonl
@@ -68,7 +69,7 @@ RISK — high
 ### Real-time gating in Claude Code (one command)
 
 ```bash
-pip install hermeneutic
+# after installing with one of the commands above:
 hermeneutic install-hook
 # Restart Claude Code. Done.
 ```
@@ -111,7 +112,7 @@ user prompt → [Layer 2 compile]  → LLM → [Layer 1 gate] → response
 
 See [`evals/compile-walkthrough.md`](evals/compile-walkthrough.md) for two demonstrative cases. Honest framing: the compile layer surfaces *relevant past signal*, not validated effectiveness. The replay-study measurement is the v1.0 milestone.
 
-Your AI was about to overclaim. It can't anymore.
+The draft was about to overclaim. The gate flagged it before you trusted it.
 
 ### What we explicitly do NOT claim
 
@@ -137,11 +138,16 @@ Full context under [Eval evidence](#eval-evidence-local-iteration-2026-04-27) be
 | **Deploy** | Forward-deployed harness: an agent in *your* environment verifies the install end-to-end and leaves a sanitized report |
 | **Library** | Full Python API. Plug into your pipeline in 4 lines. |
 
+The PyPI wheel contains the CLI, Python library, and built-in Claude Code hook
+installer. The forward-deployed harness, standalone plugin bundles, integration
+recipes, and eval receipts are repository/source-distribution assets; clone the
+tag when you need those surfaces.
+
 ### Where it plugs in
 
 | | Claude Code | Codex CLI | Cursor | Windsurf | Cline | OpenHands | MCP hosts | anything |
 |---|---|---|---|---|---|---|---|---|
-| gate every response | ✅ one command | ✅ sentinel | ✅ [recipe](integrations/cursor.md) | ✅ [recipe](integrations/windsurf.md) | ✅ [recipe](integrations/cline.md) | ◐ [preamble](integrations/openhands.md) | 🗺 planned | pipe to `hermeneutic gate` |
+| gate every response | verified hook | validated local plugin + sentinel | [documented recipe](integrations/cursor.md) | [documented recipe](integrations/windsurf.md) | [documented recipe](integrations/cline.md) | [preamble only](integrations/openhands.md) | planned | pipe to `hermeneutic gate` |
 
 Details, honest caveats, and uninstall paths: [`integrations/`](integrations/).
 
@@ -167,10 +173,10 @@ differently than interactive ones). Add `--json` for dashboards.
 
 Context modes are a privacy dial: `none` (default) logs verdicts and rule ids
 only; `hash` stores SHA-256 fingerprints of the matched windows - enough to
-prove what fired on which content without storing any text; `raw` stores the
+correlate repeated content without storing the text; `raw` stores the
 before/matched/after windows themselves for full local review. In every mode
-the log is a plain JSONL file on your disk. Nothing is transmitted anywhere,
-ever.
+the log is a plain JSONL file on your disk. Hermeneutic's telemetry code does
+not transmit it.
 
 False positives are the point: when a rule misfires, the audit entry is the
 labeled counter-example you tune it with.
@@ -214,10 +220,11 @@ python3 forward-deployed/harness.py    # prints exactly one next action; repeat 
 The agent can't declare the deployment done — `forward-deployed/gate.py`
 declares it, and only when boot evidence is fresh and green, the suite
 passes *in that environment*, the zero-LLM and privacy invariants hold
-mechanically, and the sanitized report passes the leak-linter
-(`check_report.py`: no out-of-repo paths, no emails, no quoted session
-text). The report is the only thing that leaves the machine, and a human
-sends it. Validated in a design-partner deployment before this release.
+mechanically, and the report passes a bounded leak-linter. The linter screens
+common path, email, and pasted-text shapes; it is not an anonymity proof, so a
+human must review the report before deciding whether to send it. This repository
+tests the harness mechanics locally; an adopter's own receipt is the evidence
+that a particular deployment worked in that environment.
 
 ---
 
@@ -408,7 +415,7 @@ Static linters catch the prompt. `hermeneutic` catches the response. You get bot
 - **You want aggregate model evaluation.** This scores individual outgoing drafts. For benchmarks, use a benchmark suite.
 - **You expect it to replace human review.** It raises the floor on the worst drafts; the top of your distribution is unaffected.
 - **You can't afford one extra LLM call on the ~10–20% of drafts that look risky.** Stage 1 (regex) is free; stage 3 (PressureProbe) costs one API call per gated draft.
-- **Your sessions aren't in English.** The stage-1 regex rules match English surface patterns only. An overclaim written in Korean or Japanese passes stage 1 silently — confirmed by direct test, not a hypothetical. Multilingual enforcement is under active development with a design partner; until it lands here, treat non-English drafts as ungated.
+- **Your sessions aren't in English.** The stage-1 regex rules match English surface patterns only. An overclaim written in Korean or Japanese passes stage 1 silently — confirmed by direct test, not a hypothetical. Multilingual enforcement is not shipped; treat non-English drafts as ungated.
 
 ---
 

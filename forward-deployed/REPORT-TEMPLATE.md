@@ -47,5 +47,6 @@
 ## Send checklist (human)
 
 - [ ] `python3 forward-deployed/check_report.py FORWARD-DEPLOYED-REPORT.md` → CLEAN
-- [ ] read it once yourself
+- [ ] manually review for organization-specific names, endpoints, identifiers,
+      and sensitive metadata the bounded linter may not recognize
 - [ ] send to roli@hermes-labs.ai

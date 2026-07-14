@@ -10,7 +10,7 @@ abstract: >-
   modes that aggregate evals and observability miss.
 type: software
 version: "0.1.7"
-date-released: 2026-07-12
+date-released: 2026-07-14
 authors:
   - family-names: "Bosch Rodriguez"
     given-names: "Rolando"

@@ -32,7 +32,15 @@ REPO = HERE.parent
 STATE = HERE / "mission-state.json"
 BOOT_REPORT = HERE / "boot-report.json"
 HARVEST_OUT = REPO / "build" / "report.jsonl"
+HARVEST_SKIP = REPO / "build" / "HARVEST-SKIPPED"
 REPORT = REPO / "FORWARD-DEPLOYED-REPORT.md"
+
+ARTIFACT_PATHS = {
+    "boot-report": BOOT_REPORT,
+    "report.jsonl": HARVEST_OUT,
+    "skipped": HARVEST_SKIP,
+    "report.md": REPORT,
+}
 
 GENESIS = "hermeneutic-forward-deployed-v1"
 
@@ -43,10 +51,10 @@ def _digest(path: Path) -> str:
 
 def _load() -> list[dict]:
     if STATE.is_file():
-        try:
-            return json.loads(STATE.read_text())
-        except json.JSONDecodeError:
-            return []
+        data = json.loads(STATE.read_text())
+        if not isinstance(data, list) or not all(isinstance(entry, dict) for entry in data):
+            raise ValueError("mission state must be a JSON array of step objects")
+        return data
     return []
 
 
@@ -75,6 +83,26 @@ def _verify_chain(chain: list[dict]) -> tuple[bool, str]:
             return False, f"chain breaks at entry {i} ({e.get('step')}) — state was edited by hand"
         prev = e["hash"]
     return True, f"chain intact: {len(chain)} step(s), head {prev[:16]}"
+
+
+def _verify_artifacts(chain: list[dict]) -> tuple[bool, str]:
+    """Recompute the final recorded digest for every durable artifact.
+
+    The hash chain detects edits to mission-state.json. This second check
+    detects a different failure mode: an artifact changed or disappeared
+    after its step was recorded while the state file remained untouched.
+    """
+    recorded: dict[str, str] = {}
+    for entry in chain:
+        for name, digest in entry.get("artifacts", {}).items():
+            if name in ARTIFACT_PATHS:
+                recorded[name] = digest
+
+    for name, expected in recorded.items():
+        actual = _digest(ARTIFACT_PATHS[name])
+        if actual != expected:
+            return False, f"artifact {name!r} changed after it was recorded"
+    return True, f"artifacts intact: {len(recorded)} checked"
 
 
 def _sanitized_file_ok(path: Path) -> tuple[bool, str]:
@@ -125,11 +153,11 @@ def _instruction(step: str, note: str = "") -> int:
             "every change), and re-run boot until fits-as-shipped. Then run me again."
         ),
         "HARVEST": (
-            "CONFIRM WITH YOUR HUMAN FIRST — this reads their session logs (sanitized,\n"
-            "nothing leaves the machine). With their ok:\n"
+            "CONFIRM WITH YOUR HUMAN FIRST — this reads their session logs and writes\n"
+            "a text-stripped queue locally; it does not transmit it. With their ok:\n"
             "    hermeneutic harvest <session-dir> --format <fmt> --sanitized --out build/report.jsonl\n"
             "If they decline, or there are no logs yet:\n"
-            "    echo '<one-line reason>' > build/HARVEST-SKIPPED\n"
+            "    mkdir -p build && echo '<one-line reason>' > build/HARVEST-SKIPPED\n"
             "Then run me again — I verify the output is genuinely sanitized (or record the skip)."
         ),
         "REPORT": (
@@ -160,21 +188,38 @@ def main() -> int:
             print("VERIFY: FAIL — no mission state (mission never ran here)")
             return 1
         try:
-            chain = json.loads(STATE.read_text())
-        except json.JSONDecodeError:
+            chain = _load()
+        except (json.JSONDecodeError, ValueError):
             print("VERIFY: FAIL — mission state is not valid JSON (corrupt or hand-edited)")
             return 1
         if not chain:
             print("VERIFY: FAIL — mission state is empty (no steps recorded)")
             return 1
         ok, msg = _verify_chain(chain)
-        print(("VERIFY: PASS — " if ok else "VERIFY: FAIL — ") + msg)
-        return 0 if ok else 1
+        if not ok:
+            print("VERIFY: FAIL — " + msg)
+            return 1
+        artifacts_ok, artifacts_msg = _verify_artifacts(chain)
+        if not artifacts_ok:
+            print("VERIFY: FAIL — " + artifacts_msg)
+            return 1
+        print("VERIFY: PASS — " + msg + "; " + artifacts_msg)
+        return 0
 
-    chain = _load()
+    try:
+        chain = _load()
+    except (json.JSONDecodeError, ValueError):
+        print("[forward-deployed harness] STATE INVALID — mission state is corrupt or hand-edited.")
+        print("Preserve it for review; move it aside deliberately before restarting the mission.")
+        return 1
     ok, msg = _verify_chain(chain)
     if not ok:
         print(f"[forward-deployed harness] STATE INVALID — {msg}.")
+        print("Delete forward-deployed/mission-state.json and restart the mission honestly.")
+        return 1
+    artifacts_ok, artifacts_msg = _verify_artifacts(chain)
+    if not artifacts_ok:
+        print(f"[forward-deployed harness] STATE INVALID — {artifacts_msg}.")
         print("Delete forward-deployed/mission-state.json and restart the mission honestly.")
         return 1
     done = [e["step"] for e in chain]
@@ -192,9 +237,8 @@ def main() -> int:
         _advance(chain, "BOOT", {"boot-report": _digest(BOOT_REPORT)})
     # HARVEST — sanitized output, mechanically checked (or an explicit human skip)
     if "HARVEST" not in done:
-        skip = REPO / "build" / "HARVEST-SKIPPED"
-        if skip.is_file():
-            _advance(chain, "HARVEST", {"skipped": _digest(skip)})
+        if HARVEST_SKIP.is_file():
+            _advance(chain, "HARVEST", {"skipped": _digest(HARVEST_SKIP)})
         else:
             ok, detail = _sanitized_file_ok(HARVEST_OUT)
             if not ok:

@@ -76,3 +76,11 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 ## License
 
 By contributing, you agree that your contributions are licensed under the MIT License (see [LICENSE](LICENSE)).
+
+## Pull request flow
+
+Open a focused pull request against `main`. Keep unrelated changes separate,
+make every behavior change executable by a test, and wait for the full CI
+matrix—including the built-artifact job—to pass at the latest head SHA. Resolve
+review conversations before merge. Repository settings, rather than this file,
+are the authority for required checks and merge permissions.

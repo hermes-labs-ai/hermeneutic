@@ -38,24 +38,26 @@ def _cmd_mine(args: argparse.Namespace) -> int:
         return 2
     out = _open_out(args.out)
     n = 0
+    mined_by_directory: list[tuple[str, int]] = []
     try:
         for directory in args.directory:
+            directory_n = 0
             for trip in mine_dir(directory, fmt=args.format, glob=args.glob):
                 out.write(trip.to_json() + "\n")
                 n += 1
+                directory_n += 1
+            mined_by_directory.append((directory, directory_n))
     finally:
         if out is not sys.stdout:
             out.close()
     print(f"mined {n} triples", file=sys.stderr)
-    if n == 0:
-        # Report against the first directory that fails to parse; if every
-        # directory parses fine, the last "parsed OK" verdict stands.
-        rc = 0
-        for directory in args.directory:
+    # Diagnose every zero-result argument independently. A valid directory
+    # must not hide a second directory whose files matched but could not parse.
+    for directory, directory_n in mined_by_directory:
+        if directory_n == 0:
             rc = _report_zero_parse(directory, args.glob, args.format)
             if rc != 0:
                 return rc
-        return rc
     return 0
 
 
@@ -521,7 +523,8 @@ def main(argv: list[str] | None = None) -> int:
     p_harvest.add_argument(
         "--sanitized", action="store_true",
         help="Strip ALL text from the queue: kinds, rule ids, severities, "
-             "fingerprints and lengths only. Safe to share off-machine; "
+             "timestamps, fingerprints and lengths only. This is data "
+             "minimization, not anonymization; review before sharing. "
              "review/promote need the un-sanitized queue.",
     )
     p_harvest.set_defaults(func=_cmd_harvest)

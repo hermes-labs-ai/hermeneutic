@@ -1,0 +1,56 @@
+name: Bug report
+description: Something behaved differently than documented
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: hermeneutic version
+      description: "`python -c 'import hermeneutic; print(hermeneutic.__version__)'`"
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: OS and Python version
+      placeholder: "macOS 15 / Python 3.12"
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Exact command or minimal code
+      description: A copy-pasteable reproducer using synthetic data.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: >
+        Include only the output needed to reproduce the bug. Do not paste raw
+        chat logs, credentials, private paths, client names, or personal data.
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - CLI (mine/bucket/gate/harvest/promote/stats)
+        - Compile layer (Ollama)
+        - Claude Code hook
+        - Codex plugin
+        - Forward-deployed harness
+        - Python library API
+        - Other
+    validations:
+      required: true

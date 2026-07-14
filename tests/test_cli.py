@@ -141,6 +141,24 @@ def test_cli_mine_accepts_multiple_directories(tmp_path):
     assert sessions == {"s1", "s2"}
 
 
+def test_cli_mine_rejects_zero_parse_directory_even_when_another_mines(tmp_path, capsys):
+    good, unreadable = tmp_path / "good", tmp_path / "unreadable"
+    good.mkdir()
+    unreadable.mkdir()
+    _write_log(good / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "did it"),
+        ("user", "no, that's not what i meant"),
+        ("assistant", "ok let me retry"),
+    ])
+    (unreadable / "unknown.jsonl").write_text('{"unexpected": "schema"}\n')
+
+    rc = main(["mine", str(good), str(unreadable), "--out", str(tmp_path / "triples.jsonl")])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "ZERO EVENTS" in err and "could not parse any turns" in err
+
+
 def test_cli_mine_out_creates_missing_parent_dirs(tmp_path):
     _write_log(tmp_path / "s1.jsonl", [
         ("user", "go"),

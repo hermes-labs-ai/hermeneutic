@@ -8,7 +8,7 @@ This is the v0.1.5 demonstrative eval. **All numbers below are measured, not ill
 
 | Stat | Value |
 |---|---|
-| Source | `~/.claude/projects/-Users-rbr-lpci/*.jsonl` (Claude Code session JSONL) |
+| Source | `~/.claude/projects/<project-dir>/*.jsonl` (Claude Code session JSONL) |
 | Sessions mined | 1,423 |
 | Triples extracted | **346**¹ |
 | Triples with `orig_prompt` (eligible for compile) | **346 (100%)** |

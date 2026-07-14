@@ -6,9 +6,23 @@ from the transcript JSONL, pipes it through `hermeneutic gate`, writes a
 one-line stderr notice if RISK fires. Always exits 0.
 """
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+
+def _gate_env() -> dict[str, str]:
+    """Use an adjacent source checkout when this script is plugin-packaged."""
+    env = os.environ.copy()
+    try:
+        source = Path(__file__).resolve().parents[2] / "src"
+    except IndexError:
+        return env
+    if source.is_dir():
+        existing = env.get("PYTHONPATH")
+        env["PYTHONPATH"] = str(source) + (os.pathsep + existing if existing else "")
+    return env
 
 
 def main() -> int:
@@ -51,12 +65,21 @@ def main() -> int:
         proc = subprocess.run(
             [sys.executable, "-m", "hermeneutic.cli", "gate"],
             input=last_text, capture_output=True, text=True, timeout=5,
+            env=_gate_env(),
         )
     except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        print("[hermeneutic] gate unavailable — check the hook's Python install.", file=sys.stderr)
         return 0
 
-    if proc.returncode != 0 and proc.stdout.strip():
-        print(f"[hermeneutic] {proc.stdout.splitlines()[0]}", file=sys.stderr)
+    first_line = proc.stdout.strip().splitlines()[0] if proc.stdout.strip() else ""
+    if first_line.startswith("RISK"):
+        print(f"[hermeneutic] {first_line}", file=sys.stderr)
+    elif proc.returncode != 0:
+        print(
+            "[hermeneutic] gate unavailable — install hermeneutic in the "
+            f"hook interpreter ({sys.executable}).",
+            file=sys.stderr,
+        )
 
     return 0  # advisory only — never block
 
