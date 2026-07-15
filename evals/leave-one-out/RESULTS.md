@@ -1,57 +1,39 @@
-# Leave-one-out retrieval recall — measured (v0.9)
-**Corpus:** 346 mined triples, 346 indexed (have orig_prompt), 104 eligible (user_correction matches a bucket).
-**Method:** boolean-mask leave-one-out — for each eligible triple, query with its own cached vector and mask out self.
-**Trials succeeded:** 104/104. **Wall time:** 0.6 s. **Embed model:** nomic-embed-text (dim=768).
+# Production-path leave-one-out retrieval measurement
 
-## v0.9 headline: bucket-aware retrieval (n_per_bucket=2, threshold=0.5)
-**Overall recall:** 87/104 = **83.7%**
+This current bounded run masks each held-out triple and calls the shipped `hermeneutic.compile.compile_prompt` function. It reuses the frozen cached query vector, so the measurement exercises production filtering, per-bucket selection, global cap, and synthesis without calling a moving Ollama model.
 
-Per-bucket recall:
+## Frozen identity
 
-| true bucket | n | recall |
-|---|---|---|
-| `over_confirmation` | 59 | 91.5% |
-| `missed_constraint` | 29 | 86.2% |
-| `wrong_target` | 6 | 50.0% |
-| `over_completion` | 4 | 75.0% |
-| `scope_creep` | 3 | 33.3% |
-| `tool_choice` | 3 | 33.3% |
+- Corpus: 346 triples, SHA-256 `920bfcac721e0df2b18894461daf5d5fd8d847d90974a4572e7749322900172b`
+- Index: 346 vectors, SHA-256 `d1477ef2384dacc46117337d5b4aff2a2398032ee7b4ce3de2c7c4cee496dda1`
+- Compile source SHA-256: `502798af9c74d4944d66217fc6d349a9f203d3522723e05be5433207dc7501a5`
+- Model tag recorded in index: `nomic-embed-text` (dimension 768; cached vectors, no live model call)
+- Trials: 104 bucketed; 242 unbucketed entries excluded
 
-## Legacy comparison: global top-K (pre-v0.9 baseline)
-Held-out triple's bucket appears in top-K returned matches:
+## Current result
 
-| K | Cosine retrieval | Random-retrieval baseline | Δ |
-|---|---|---|---|
-| 1 | **16.3%** (17/104) | 11.5% | +4.8 pp |
-| 3 | **41.3%** (43/104) | 29.7% | +11.6 pp |
-| 5 | **56.7%** (59/104) | 44.5% | +12.2 pp |
-| 10 | **66.3%** (69/104) | 64.8% | +1.5 pp |
+| Shipped profile | k | Threshold | Per bucket | Same-bucket recall | Triggered | Mean buckets | Mean matches |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| cli and compile hook defaults | 5 | 0.4 | 2 | **88/104 (84.62%)** | 104/104 | 3.29 | 4.96 |
+| python library defaults | 10 | 0.5 | 2 | **94/104 (90.38%)** | 102/104 | 4.93 | 8.25 |
 
-**Reading:** if Δ is positive, cosine retrieval is doing better than random sampling K from the corpus. If Δ is near zero or negative, the embedding signal is not adding value over a uniform sample.
+The installed CLI and built-in compile hook use the first profile. Direct Python callers that omit `k` and `threshold` use the second. These are corpus-specific retrieval measurements, not model-effectiveness results.
 
-## Per-bucket breakdown of cosine retrieval (K=5)
-Where retrieval succeeds and fails, by held-out triple's true bucket:
+## Per-bucket current recall
 
-| true bucket | n | bucket-hit@5 |
-|---|---|---|
-| `over_confirmation` | 59 | 81.4% |
-| `missed_constraint` | 29 | 37.9% |
-| `wrong_target` | 6 | 0.0% |
-| `over_completion` | 4 | 0.0% |
-| `scope_creep` | 3 | 0.0% |
-| `tool_choice` | 3 | 0.0% |
+| Bucket | Trials | CLI/hook defaults | Python defaults |
+|---|---:|---:|---:|
+| `missed_constraint` | 29 | 27/29 (93.10%) | 27/29 (93.10%) |
+| `over_completion` | 4 | 0/4 (0.00%) | 4/4 (100.00%) |
+| `over_confirmation` | 59 | 59/59 (100.00%) | 55/59 (93.22%) |
+| `scope_creep` | 3 | 0/3 (0.00%) | 2/3 (66.67%) |
+| `tool_choice` | 3 | 0/3 (0.00%) | 2/3 (66.67%) |
+| `wrong_target` | 6 | 2/6 (33.33%) | 4/6 (66.67%) |
 
-## Same-session sanity check
-Top-K matches contain at least one triple from the same source session as the held-out triple (signal that prompts within a session cluster):
+## Historical experiments
 
-| K | Hits | Rate |
-|---|---|---|
-| 1 | 22/104 | 21.2% |
-| 3 | 29/104 | 27.9% |
-| 5 | 34/104 | 32.7% |
-| 10 | 49/104 | 47.1% |
+The prior **83.7% (87/104)** leave-one-out result and **98/100 versus 7/30** discrimination result remain dated frozen experiments. They are not current production-path headlines: the former used a different bucket-surfacing rule and omitted the global cap; the latter used global top-K and asymmetric trigger definitions. Their original aggregate receipts remain in this repository for provenance.
 
-## Honest caveats
-- Bucket-hit measures whether retrieval finds a *similar-class* historical correction. It does NOT measure whether the *exact* held-out correction would have been the top match (that would be circular — it was masked out).
-- The bucket-hit floor is the corpus-wide most-common-bucket rate. If retrieval is no better than chance, bucket-hit@K=1 ≈ max-bucket-share. A meaningfully-higher rate than the chance floor indicates retrieval is doing prompt-specific work.
-- Skipped 242 index entries because their user_correction text didn't match any of the 8 buckets — these are the unbucketed-rest from the v0.1 corpus study.
+## Interpretation boundary
+
+Same-bucket recall asks whether the production retrieval function surfaces at least one warning from the held-out correction's category after the held-out item is removed. It does not measure generalization to other users, the quality of the warning, false positives on normal prompts, or whether an LLM follows the injected context. Downstream effectiveness remains unmeasured.

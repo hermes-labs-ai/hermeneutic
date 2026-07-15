@@ -446,7 +446,7 @@ def _cmd_install_compile_hook(args: argparse.Namespace) -> int:
         return 1
     print(f"wrapper: {result['wrapper_state']} at {result['wrapper_path']}")
     print(f"settings.json: {result['settings_state']}")
-    if result["settings_state"] == "added":
+    if result["settings_state"] in {"added", "migrated"}:
         print("\nDone. Restart Claude Code for the compile hook to take effect.")
     elif result["settings_state"] == "already-present":
         print("\nAlready installed — wrapper refreshed, settings.json untouched.")

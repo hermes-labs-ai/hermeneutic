@@ -1,216 +1,143 @@
 {
-  "n_total_triples": 346,
-  "n_indexed": 346,
-  "n_eligible_for_recall": 104,
-  "n_skipped_unbucketed": 242,
-  "n_trials_attempted": 104,
-  "n_trials_succeeded": 104,
-  "n_trials_failed": 0,
-  "v09_bucket_aware": {
-    "method": "top-N per bucket above threshold 0.5 (n_per_bucket=2)",
-    "hits": 87,
-    "rate": 0.8365,
-    "per_bucket": {
-      "wrong_target": {
-        "hits": 3,
-        "total": 6,
-        "rate": 0.5
-      },
-      "over_completion": {
-        "hits": 3,
-        "total": 4,
-        "rate": 0.75
-      },
-      "missed_constraint": {
-        "hits": 25,
-        "total": 29,
-        "rate": 0.8621
-      },
-      "over_confirmation": {
-        "hits": 54,
-        "total": 59,
-        "rate": 0.9153
-      },
-      "scope_creep": {
-        "hits": 1,
-        "total": 3,
-        "rate": 0.3333
-      },
-      "tool_choice": {
-        "hits": 1,
-        "total": 3,
-        "rate": 0.3333
-      }
+  "schema_version": 2,
+  "measurement": "production_path_leave_one_out_same_bucket_recall",
+  "identity": {
+    "corpus_sha256": "920bfcac721e0df2b18894461daf5d5fd8d847d90974a4572e7749322900172b",
+    "index_sha256": "d1477ef2384dacc46117337d5b4aff2a2398032ee7b4ce3de2c7c4cee496dda1",
+    "compile_source_sha256": "502798af9c74d4944d66217fc6d349a9f203d3522723e05be5433207dc7501a5",
+    "triples": 346,
+    "indexed": 346,
+    "eligible_bucketed_trials": 104,
+    "skipped_unbucketed": 242,
+    "model_tag_recorded_in_index": "nomic-embed-text",
+    "embedding_dimension": 768,
+    "private_text_emitted": false
+  },
+  "method": {
+    "production_function": "hermeneutic.compile.compile_prompt",
+    "self_masked": true,
+    "query_embedding": "held-out triple's cached frozen vector",
+    "live_ollama_calls": 0,
+    "bucket_counts": {
+      "missed_constraint": 29,
+      "over_completion": 4,
+      "over_confirmation": 59,
+      "scope_creep": 3,
+      "tool_choice": 3,
+      "wrong_target": 6
     }
   },
-  "legacy_global_topk": {
-    "method": "top-K global cosine (pre-v0.9 baseline)",
-    "bucket_hits": {
-      "1": 17,
-      "3": 43,
-      "5": 59,
-      "10": 69
+  "current_results": {
+    "cli_and_compile_hook_defaults": {
+      "config": {
+        "k": 5,
+        "threshold": 0.4,
+        "n_per_bucket": 2
+      },
+      "same_bucket_hits": 88,
+      "triggered": 104,
+      "per_bucket": {
+        "missed_constraint": {
+          "hits": 27,
+          "trials": 29,
+          "recall": 0.931
+        },
+        "over_completion": {
+          "hits": 0,
+          "trials": 4,
+          "recall": 0.0
+        },
+        "over_confirmation": {
+          "hits": 59,
+          "trials": 59,
+          "recall": 1.0
+        },
+        "scope_creep": {
+          "hits": 0,
+          "trials": 3,
+          "recall": 0.0
+        },
+        "tool_choice": {
+          "hits": 0,
+          "trials": 3,
+          "recall": 0.0
+        },
+        "wrong_target": {
+          "hits": 2,
+          "trials": 6,
+          "recall": 0.3333
+        }
+      },
+      "same_bucket_recall": 0.8462,
+      "trigger_rate": 1.0,
+      "mean_buckets_surfaced": 3.2885,
+      "mean_matches_surfaced": 4.9615
     },
-    "bucket_hit_rate": {
-      "1": 0.1635,
-      "3": 0.4135,
-      "5": 0.5673,
-      "10": 0.6635
-    },
-    "random_baseline_rate": {
-      "1": 0.1154,
-      "3": 0.2971,
-      "5": 0.4452,
-      "10": 0.6481
+    "python_library_defaults": {
+      "config": {
+        "k": 10,
+        "threshold": 0.5,
+        "n_per_bucket": 2
+      },
+      "same_bucket_hits": 94,
+      "triggered": 102,
+      "per_bucket": {
+        "missed_constraint": {
+          "hits": 27,
+          "trials": 29,
+          "recall": 0.931
+        },
+        "over_completion": {
+          "hits": 4,
+          "trials": 4,
+          "recall": 1.0
+        },
+        "over_confirmation": {
+          "hits": 55,
+          "trials": 59,
+          "recall": 0.9322
+        },
+        "scope_creep": {
+          "hits": 2,
+          "trials": 3,
+          "recall": 0.6667
+        },
+        "tool_choice": {
+          "hits": 2,
+          "trials": 3,
+          "recall": 0.6667
+        },
+        "wrong_target": {
+          "hits": 4,
+          "trials": 6,
+          "recall": 0.6667
+        }
+      },
+      "same_bucket_recall": 0.9038,
+      "trigger_rate": 0.9808,
+      "mean_buckets_surfaced": 4.9327,
+      "mean_matches_surfaced": 8.25
     }
   },
-  "same_session_hits": {
-    "1": 22,
-    "3": 29,
-    "5": 34,
-    "10": 49
-  },
-  "per_bucket_breakdown_topk": {
-    "missed_constraint": {
-      "1": {
-        "hits": 0,
-        "total": 29,
-        "rate": 0.0
-      },
-      "3": {
-        "hits": 5,
-        "total": 29,
-        "rate": 0.1724
-      },
-      "5": {
-        "hits": 11,
-        "total": 29,
-        "rate": 0.3793
-      },
-      "10": {
-        "hits": 14,
-        "total": 29,
-        "rate": 0.4828
-      }
+  "historical_receipts": {
+    "leave_one_out_2026_04_27": {
+      "reported": "87/104 (83.7%)",
+      "status": "historical_only",
+      "reason": "The former evaluator required at least n_per_bucket candidates before a bucket counted as surfaced and omitted compile_prompt's global k cap, so it did not execute the exact production selection path."
     },
-    "over_confirmation": {
-      "1": {
-        "hits": 17,
-        "total": 59,
-        "rate": 0.2881
-      },
-      "3": {
-        "hits": 38,
-        "total": 59,
-        "rate": 0.6441
-      },
-      "5": {
-        "hits": 48,
-        "total": 59,
-        "rate": 0.8136
-      },
-      "10": {
-        "hits": 54,
-        "total": 59,
-        "rate": 0.9153
-      }
-    },
-    "scope_creep": {
-      "1": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      },
-      "3": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      },
-      "5": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      },
-      "10": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      }
-    },
-    "over_completion": {
-      "1": {
-        "hits": 0,
-        "total": 4,
-        "rate": 0.0
-      },
-      "3": {
-        "hits": 0,
-        "total": 4,
-        "rate": 0.0
-      },
-      "5": {
-        "hits": 0,
-        "total": 4,
-        "rate": 0.0
-      },
-      "10": {
-        "hits": 0,
-        "total": 4,
-        "rate": 0.0
-      }
-    },
-    "wrong_target": {
-      "1": {
-        "hits": 0,
-        "total": 6,
-        "rate": 0.0
-      },
-      "3": {
-        "hits": 0,
-        "total": 6,
-        "rate": 0.0
-      },
-      "5": {
-        "hits": 0,
-        "total": 6,
-        "rate": 0.0
-      },
-      "10": {
-        "hits": 1,
-        "total": 6,
-        "rate": 0.1667
-      }
-    },
-    "tool_choice": {
-      "1": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      },
-      "3": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      },
-      "5": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      },
-      "10": {
-        "hits": 0,
-        "total": 3,
-        "rate": 0.0
-      }
+    "bucket_discrimination_2026_04_27": {
+      "reported": "98/100 in-corpus prompts triggered versus 7/30 synthetic-random prompts",
+      "status": "historical_only",
+      "reason": "The evaluator used a global-top-K path and asymmetric trigger definitions rather than the shipped bucket-aware compile path."
     }
   },
-  "k_values": [
-    1,
-    3,
-    5,
-    10
-  ],
-  "wall_seconds": 0.6,
-  "model": "nomic-embed-text",
-  "dim": 768
+  "interpretation": {
+    "demonstrates": "Current same-bucket retrieval behavior for two shipped default profiles on one frozen single-user corpus, with the held-out item excluded.",
+    "does_not_demonstrate": [
+      "generalization to new users or out-of-distribution prompts",
+      "embedding-model reproducibility beyond the frozen cached vectors",
+      "quality of the retrieved advice",
+      "reduced downstream model misinterpretation"
+    ]
+  }
 }

@@ -7,8 +7,9 @@ Code sessions too.
 Repo-specific rules for agents:
 
 - **The core gate stays zero-LLM.** Never wire an LLM call into a default
-  path. The only sanctioned network call in the codebase is the localhost
-  Ollama embedding in `compile.py`.
+  path. The optional compiler defaults to localhost Ollama; Python callers can
+  override that URL, and caller-supplied Router components own their network
+  and credential behavior.
 - **Every behavior change gets a test**, and the full suite must stay green:
   `PYTHONPATH=src python -m pytest -q`. The README/CHANGELOG test count is
   enforced by `tests/test_docs_consistency.py` — update all surfaces together.

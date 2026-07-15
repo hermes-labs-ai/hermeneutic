@@ -7,8 +7,8 @@
   "license": "MIT",
   "interface": {
     "displayName": "hermeneutic gate",
-    "shortDescription": "Flags overclaiming in assistant turns before they ship.",
-    "longDescription": "Runs the hermeneutic zero-LLM regex gate over each final assistant message via a Stop hook. Advisory only: it never blocks or edits a turn, it prints a one-line RISK notice when a drift-shaped pattern fires. Hooks are declared in hooks/hooks.json.",
+    "shortDescription": "Advises when fixed English drift patterns match a completed turn.",
+    "longDescription": "Runs the fixed, zero-model hermeneutic English regex gate over each final assistant message via a Stop hook. It is advisory: it never blocks or edits a turn and emits a system message when a pattern matches. The plugin contract is mechanically tested; live host behavior is not certified in v0.1.7.",
     "developerName": "Hermes Labs",
     "category": "developer-tools",
     "capabilities": ["hooks"],

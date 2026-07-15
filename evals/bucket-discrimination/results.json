@@ -1,4 +1,7 @@
 {
+  "status": "historical_only",
+  "production_path_equivalent": false,
+  "known_mismatch": "Uses legacy global top-K selection and asymmetric in-corpus/random trigger definitions; does not execute the shipped bucket-aware compile_prompt path.",
   "seed": 42,
   "n_in_corpus": 100,
   "n_random": 30,

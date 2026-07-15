@@ -1,13 +1,14 @@
 # AGENTS.md — using hermeneutic from a coding agent
 
-This file is for AI coding agents (Claude Code, Cursor, Cline, etc.) that want
-to use `hermeneutic` as a tool.
+This file is for AI coding agents and host applications that want to call the
+standalone `hermeneutic` CLI or Python library.
 
 ## What this tool does
 
-Pre-flight gate for assistant-generated drafts. Catches surface patterns
-historically associated with user corrections (post-completion overclaiming,
-subagent passthrough, unhedged certainty, scope expansion, fluency tells).
+A fixed deterministic English drift check for assistant-generated drafts. It
+flags eight surface shapes including completion overclaiming, relayed authority,
+unhedged certainty, scope expansion, and unsupported quality adjectives. It
+does not read the personal correction corpus or run the optional Router.
 
 ## When to invoke it
 
@@ -20,7 +21,9 @@ when:
 - The draft contains universal quantifiers ("every", "all", "always").
 - You want a cheap second-opinion gate that doesn't require an LLM call.
 
-If `hermeneutic gate` returns nonzero, **do not ship the draft as-is**. Either:
+Inspect the printed verdict as well as the exit code: low-severity `RISK` is
+advisory and exits 0; medium/high `RISK` exits 1. A caller that chooses to hold a
+draft should either:
 1. Add the missing evidence (run the verification commands, paste the output).
 2. Hedge the claim ("appears to" / "based on N samples").
 3. Cut the unverifiable text.
@@ -59,17 +62,23 @@ probe = PressureProbe(judge=your_llm_call, calibration=my_calibration)
 
 ## Mining your own logs
 
-To extend the regex gate, mine your own chat logs and look for new drift modes:
+Mine your own chat logs to build a personal corpus and look for candidate drift
+modes:
 
 ```bash
 hermeneutic mine ~/your/log/dir --format claude-code --out triples.jsonl
 hermeneutic bucket triples.jsonl
 ```
 
-Then add new patterns to `src/hermeneutic/gates/regex.py`.
+Mining does not change the gate. A developer may deliberately add a new pattern
+to `src/hermeneutic/gates/regex.py` only with evidence, tests, review, and a new
+release. The personal corpus can affect optional compile retrieval after
+`compile-index` is rerun.
 
 ## What this tool is NOT
 
 - Not a model evaluator. Scores individual drafts, not aggregate quality.
 - Not foresight. Catches drift modes seen before; novel drifts pass through.
 - Not a replacement for human review. It's a floor-raiser.
+- Not multilingual. The fixed rules check English surface patterns.
+- Not proof that a caller's external Router backends or repair behavior are safe.

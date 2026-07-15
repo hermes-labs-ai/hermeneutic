@@ -1,4 +1,6 @@
-# Bucket-distribution discrimination — measured (seed=42, N_in_corpus=100, N_random=30)
+# Historical bucket-distribution experiment (seed=42, N_in_corpus=100, N_random=30)
+
+**Status: historical only.** This runner uses legacy global top-K selection and asymmetric trigger definitions; it is not equivalent to the shipped bucket-aware `compile_prompt` path. It is retained for provenance, not a current product claim.
 
 ## B1: retrieval-trigger rate (in-corpus vs synthetic random)
 

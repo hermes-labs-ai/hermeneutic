@@ -4,7 +4,6 @@
   "serialNumber": "urn:uuid:466bc778-a89e-4bf9-93a9-6ce0fc8a38c3",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-14T21:41:18Z",
     "tools": [
       {
         "vendor": "Hermes Labs",
@@ -17,7 +16,7 @@
       "bom-ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.7",
       "name": "hermeneutic",
       "version": "0.1.7",
-      "description": "Mine your AI chat logs for the corrections you made — turn them into a pre-flight gate that catches the same drift before the next response ships.",
+      "description": "Mine reusable correction evidence, retrieve similar past corrections, and run a fixed deterministic English drift check.",
       "licenses": [
         {
           "license": {

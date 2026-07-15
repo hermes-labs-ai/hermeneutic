@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Only the latest released version receives security fixes.
+Security fixes target the current maintained 0.1.x line.
 
 | Version | Supported |
 |---------|-----------|
@@ -35,12 +35,12 @@ surface differs by subcommand:
 
 **Compile layer (`compile`, `compile-index`):**
 
-- makes HTTP requests to a **local** Ollama instance at `127.0.0.1:11434`
-  (embeddings). No other network destination exists in the codebase; nothing
-  is sent off-machine.
+- makes HTTP requests for embeddings to Ollama. The built-in CLI defaults to
+  `127.0.0.1:11434`; Python callers can override the `ollama_embed()` URL and
+  must assess that endpoint's transport and data policy.
 - reads/writes the local index under `~/.hermeneutic/`
 
-**Hook installer (`install-hook`, opt-in command):**
+**Hook installers (`install-compile-hook` and compatibility-only `install-hook`, opt-in commands):**
 
 - writes a hook script into `~/.claude/hooks/`
 - edits `~/.claude/settings.json` to register it
@@ -51,22 +51,30 @@ surface differs by subcommand:
   file contains draft text windows — treat it with the sensitivity of the
   logs it derives from. Off by default; never transmitted.
 
-It does **not**:
+The built-in CLI defaults do **not**:
 
-- make network requests to anything other than localhost Ollama (and none at
-  all unless you use the compile layer)
-- execute user-provided code
+- make remote network requests; only the compile commands make HTTP requests,
+  and their built-in endpoint is localhost Ollama
 - handle credentials, tokens, or secrets
+
+The core CLI does not execute text from the mined corpus. The optional Python
+`Router` deliberately calls the rubric executable, judge, and repair functions
+configured by the embedding application. Those components may use networks or
+credentials and must be assessed separately.
 
 Realistic threat model: (a) regex pathological inputs (ReDoS), (b) memory
 pressure on very large inputs, (c) a hostile local process reading an opt-in
 `raw`-mode audit log, (d) the hook installer modifying `~/.claude/settings.json`
-— review the diff it prints before accepting.
+without printing a preview, and (e) sensitive compile context being retained in
+a host transcript. Back up and review host settings and local logs according to
+your environment's policy.
 
 ## Supply chain
 
 - SBOM at `sbom.cdx.json` (CycloneDX 1.5).
-- Zero runtime dependencies — the SBOM lists only the package itself.
+- Zero required Python runtime dependencies — the SBOM lists only the package
+  itself. Optional external tools and caller-supplied Router backends are outside
+  that dependency claim.
 
 ## History
 

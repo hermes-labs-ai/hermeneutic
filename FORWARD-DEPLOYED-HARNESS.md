@@ -23,11 +23,12 @@ receipts. hermeneutic mines those corrections into `(drift, steer, repair)`
 triples and uses them twice:
 
 1. **The gate** (`hermeneutic gate`) — a zero-LLM regex tripwire run on
-   outgoing drafts. It catches the announcement-shaped drift modes (~0ms,
-   deterministic, every fire explainable). It is a floor, not a guarantee.
-2. **The compile layer** (`hermeneutic compile`) — retrieves past
-   corrections similar to the incoming prompt and injects a "watch out for
-   X" preamble before the model acts.
+   outgoing drafts. It catches announcement-shaped drift modes with a local,
+   deterministic regex pass; every fire is explainable. It is a floor, not a
+   guarantee.
+2. **The compile layer** (`hermeneutic compile`) — optionally retrieves past
+   corrections similar to the incoming prompt and prints a "watch out for X"
+   preamble for a caller or supported context hook to inject.
 
 ## The map (what lives where)
 
@@ -38,13 +39,13 @@ triples and uses them twice:
 | `src/hermeneutic/harvest.py` | replay-classify loop (`confirmed_catch` / `possible_false_positive` / `missed_drift`), `promote`, sanitized output |
 | `src/hermeneutic/compile.py` | embeddings (local Ollama, `nomic-embed-text`) + preamble builder |
 | `src/hermeneutic/cli.py` | every command |
-| `evals/` | self-test + frozen eval receipts — reproduces the shipped numbers |
-| `tests/` | the suite — `python -m pytest -q` must stay green (the exact count is pinned in CHANGELOG's latest entry and enforced by a doc-consistency test) |
+| `evals/` | self-test, current bounded receipts, and clearly labeled historical experiments |
+| `tests/` | the suite — `python -m pytest -q` must stay green |
 | `AGENTS.md` | the in-session protocol; meant to be copied into the human's own projects' `AGENTS.md` |
 
 ## Invariants — never break these, whatever you change
 
-1. **The core gate stays zero-LLM.** Deterministic, ~0ms, every fire
+1. **The core gate stays zero-LLM.** Deterministic and local, every fire
    explainable by pointing at a rule and matched text. No LLM call on any
    default path, ever.
 2. **Privacy is structural.** Nothing leaves this machine by default.
@@ -86,7 +87,7 @@ will hand you.
 ## BOOT — what the harness runs first (~2 minutes)
 
 ```bash
-pip install -e '.[dev]'                  # once — pytest ships in the dev extra, boot needs it
+python3 -m pip install -e '.[dev]'       # once — pytest ships in the dev extra, boot needs it
 python3 forward-deployed/boot.py         # add --sessions DIR --format X if logs live elsewhere
 ```
 
@@ -106,7 +107,7 @@ queue, in the order they appear.
 Manual equivalents, when you need to investigate a failure directly:
 
 ```bash
-python -m pytest -q                      # expect: all green, 0 failed (count is pinned in CHANGELOG)
+python3 -m pytest -q                     # expect: all green, 0 failed
 bash evals/self_test.sh                  # expect: PASS
 echo "Done — shipped 14 files, all tests pass." | hermeneutic gate            # → RISK
 echo "Fixed 3 of the 14 failing tests; 11 still fail." | hermeneutic gate     # → PASS (honest partial progress)
@@ -170,14 +171,15 @@ Structure:
 Your human reviews the report and sends it to roli@hermes-labs.ai. Nothing
 sends itself; you have no network duties.
 
-## Definition of done — enforced, not promised
+## Definition of package-controlled completion
 
-This mission ends the way every hermeneutic claim ends: gated. You do not
-declare "deployed and working" — the harness declares it for you when
-`gate.py` exits 0 and the chain closes with an attestation:
+The harness can establish that its package-controlled checks completed; it
+cannot by itself establish that Hermeneutic is deployed and working on real
+adopter logs. `gate.py` exit 0 closes the local verification chain with an
+attestation:
 
 ```bash
-python3 forward-deployed/gate.py       # exit 0 = the claim is earned
+python3 forward-deployed/gate.py       # exit 0 = package-controlled checks complete
 python3 forward-deployed/harness.py    # advances to MISSION COMPLETE + attestation
 ```
 
@@ -186,10 +188,11 @@ the test suite green **in this environment**, the zero-LLM and privacy
 invariants mechanically intact, and the report present and
 `check_report.py`-CLEAN — always: "no adaptations needed" is a valid report,
 a skipped one is not. If the gate says NOT DONE, it lists
-exactly what's missing; finish that, don't argue with it. Tell your human
-the mission is complete only after the gate passes. (Yes: the drift gate
-ships with a drift gate for its own deployment. That is the point of the
-whole tool.)
+exactly what's missing; finish that, don't argue with it. Treat `MISSION
+COMPLETE` as the harness's internal completion state. A live deployment claim
+additionally needs a human-reviewed real-log/adopter receipt; `not_exercised`
+is never evidence of live fit. (Yes: the drift gate ships with a drift gate for
+its own verification chain.)
 
 ## Runtime sentinel (optional, human-consented)
 

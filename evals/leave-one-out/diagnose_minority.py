@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Diagnose why rare buckets hit 0% recall@K=5.
+"""Historical diagnostic for the former global-top-K experiment.
 
 Runs the leave-one-out eval again, but breaks down per rare-bucket triple:
   - What is the true bucket?
@@ -7,7 +7,8 @@ Runs the leave-one-out eval again, but breaks down per rare-bucket triple:
   - At what rank does the FIRST same-bucket match appear?
   - Is it filtered out by threshold=0.4, or just outranked by majority-class?
 
-Outputs a per-rare-triple report so we can see exactly where retrieval fails.
+This does not measure the current production retrieval path. See `runner.py`
+for the current bounded result.
 """
 from __future__ import annotations
 

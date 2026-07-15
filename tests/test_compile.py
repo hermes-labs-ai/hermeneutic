@@ -1,7 +1,11 @@
 """Tests for the compile layer (Layer 2)."""
 from __future__ import annotations
 
+import io
 import json
+import runpy
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -204,13 +208,134 @@ def test_install_compile_hook_idempotent(tmp_path, monkeypatch):
     install_hook.install_compile()
     res = install_hook.install_compile()
     cfg = json.loads((tmp_path / ".claude" / "settings.json").read_text())
+    wrapper = str((tmp_path / ".claude" / "hooks" / "hermeneutic-compile.py").resolve())
     matches = [
         h for entry in cfg["hooks"]["UserPromptSubmit"]
         for h in entry.get("hooks", [])
-        if "hermeneutic-compile.py" in h.get("command", "")
+        if h.get("args") == [wrapper]
     ]
     assert len(matches) == 1
+    assert matches[0]["command"] == sys.executable
     assert res["settings_state"] == "already-present"
+
+
+def test_compile_hook_emits_exact_userpromptsubmit_additional_context(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    result = install_hook.install_compile()
+    wrapper = Path(result["wrapper_path"])
+    preamble = "[hermeneutic compile-preamble — derived from 1 past correction]\n- verify first\n[end preamble]"
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(args[0], 0, stdout=preamble + "\n", stderr=""),
+    )
+    monkeypatch.setattr(
+        sys,
+        "stdin",
+        io.StringIO(json.dumps({
+            "hook_event_name": "UserPromptSubmit",
+            "prompt": "ship the release",
+        })),
+    )
+
+    with pytest.raises(SystemExit) as exc:
+        runpy.run_path(str(wrapper), run_name="__main__")
+
+    assert exc.value.code == 0
+    captured = capsys.readouterr()
+    assert captured.err == ""
+    assert json.loads(captured.out) == {
+        "hookSpecificOutput": {
+            "hookEventName": "UserPromptSubmit",
+            "additionalContext": preamble,
+        }
+    }
+    assert "systemMessage" not in captured.out
+
+
+@pytest.mark.parametrize(
+    ("returncode", "stdout", "stderr"),
+    [
+        (0, "", ""),  # missing corpus or empty compiler result
+        (0, "", "[hermeneutic] ollama probe: FAIL"),  # optional Ollama unavailable
+        (1, "must not inject", "malformed index state"),
+        (2, "must not inject", "compiler error"),
+    ],
+)
+def test_compile_hook_fails_soft_without_invalid_context(
+    tmp_path, monkeypatch, capsys, returncode, stdout, stderr,
+):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    wrapper = Path(install_hook.install_compile()["wrapper_path"])
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            args[0], returncode, stdout=stdout, stderr=stderr,
+        ),
+    )
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps({"prompt": "ship it"})))
+
+    with pytest.raises(SystemExit) as exc:
+        runpy.run_path(str(wrapper), run_name="__main__")
+
+    assert exc.value.code == 0
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err == ""
+
+
+@pytest.mark.parametrize(
+    "payload",
+    ["not json", "[]", "{}", '{"prompt": 7}', '{"prompt": "   "}'],
+)
+def test_compile_hook_ignores_malformed_or_empty_input(tmp_path, monkeypatch, capsys, payload):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    wrapper = Path(install_hook.install_compile()["wrapper_path"])
+
+    def unexpected_run(*args, **kwargs):
+        raise AssertionError("compiler must not run for malformed or empty input")
+
+    monkeypatch.setattr(subprocess, "run", unexpected_run)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(payload))
+    with pytest.raises(SystemExit) as exc:
+        runpy.run_path(str(wrapper), run_name="__main__")
+
+    assert exc.value.code == 0
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err == ""
+
+
+@pytest.mark.parametrize("error", [subprocess.TimeoutExpired("compile", 4), OSError("boom")])
+def test_compile_hook_ignores_subprocess_errors(tmp_path, monkeypatch, capsys, error):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    wrapper = Path(install_hook.install_compile()["wrapper_path"])
+
+    def fail(*args, **kwargs):
+        raise error
+
+    monkeypatch.setattr(subprocess, "run", fail)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps({"prompt": "ship it"})))
+    with pytest.raises(SystemExit) as exc:
+        runpy.run_path(str(wrapper), run_name="__main__")
+
+    assert exc.value.code == 0
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err == ""
 
 
 def test_install_compile_hook_preserves_other_userpromptsubmit(tmp_path, monkeypatch):
@@ -238,3 +363,177 @@ def test_uninstall_compile_when_nothing_installed(tmp_path, monkeypatch):
     res = install_hook.uninstall_compile()
     assert res["wrapper_state"] == "absent"
     assert res["settings_state"] == "absent"
+
+
+def test_install_compile_hook_refuses_foreign_wrapper(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    hooks = tmp_path / ".claude" / "hooks"
+    hooks.mkdir(parents=True)
+    wrapper = hooks / "hermeneutic-compile.py"
+    wrapper.write_text("# user-owned hook\n")
+    from hermeneutic import install_hook
+
+    with pytest.raises(install_hook.InstallError, match="Refusing to overwrite"):
+        install_hook.install_compile()
+
+
+def test_install_compile_hook_rejects_malformed_settings(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    claude = tmp_path / ".claude"
+    claude.mkdir()
+    (claude / "settings.json").write_text("{not json")
+    from hermeneutic import install_hook
+
+    with pytest.raises(install_hook.InstallError, match="malformed JSON"):
+        install_hook.install_compile()
+    assert not (claude / "hooks" / "hermeneutic-compile.py").exists()
+
+
+@pytest.mark.parametrize("settings", [[], {"hooks": []}, {"hooks": {"UserPromptSubmit": {}}}])
+def test_install_compile_hook_rejects_invalid_settings_shape(tmp_path, monkeypatch, settings):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    claude = tmp_path / ".claude"
+    claude.mkdir()
+    (claude / "settings.json").write_text(json.dumps(settings))
+    from hermeneutic import install_hook
+
+    with pytest.raises(install_hook.InstallError, match="invalid hook structure"):
+        install_hook.install_compile()
+    assert not (claude / "hooks" / "hermeneutic-compile.py").exists()
+
+
+def test_uninstall_compile_preserves_foreign_wrapper(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    hooks = tmp_path / ".claude" / "hooks"
+    hooks.mkdir(parents=True)
+    wrapper = hooks / "hermeneutic-compile.py"
+    wrapper.write_text("# user-owned hook\n")
+    from hermeneutic import install_hook
+
+    result = install_hook.uninstall_compile()
+    assert result["wrapper_state"] == "preserved-foreign"
+    assert wrapper.read_text() == "# user-owned hook\n"
+
+
+def test_compile_hook_exec_form_handles_home_path_with_spaces(tmp_path, monkeypatch):
+    home = tmp_path / "home with spaces"
+    monkeypatch.setenv("HOME", str(home))
+    (home / ".claude").mkdir(parents=True)
+    from hermeneutic import install_hook
+
+    result = install_hook.install_compile()
+    settings = json.loads((home / ".claude" / "settings.json").read_text())
+    handler = settings["hooks"]["UserPromptSubmit"][0]["hooks"][0]
+    assert handler == {
+        "type": "command",
+        "command": sys.executable,
+        "args": [str(Path(result["wrapper_path"]).resolve())],
+        "timeout": 5,
+    }
+
+
+def test_install_compile_hook_migrates_exact_legacy_shell_registration(tmp_path, monkeypatch):
+    home = tmp_path / "home with spaces"
+    monkeypatch.setenv("HOME", str(home))
+    (home / ".claude").mkdir(parents=True)
+    from hermeneutic import install_hook
+
+    first = install_hook.install_compile()
+    settings_path = home / ".claude" / "settings.json"
+    settings = json.loads(settings_path.read_text())
+    handler = settings["hooks"]["UserPromptSubmit"][0]["hooks"][0]
+    handler["command"] = f"python3 {Path(first['wrapper_path']).resolve()}"
+    handler.pop("args")
+    settings_path.write_text(json.dumps(settings))
+
+    migrated = install_hook.install_compile()
+    settings = json.loads(settings_path.read_text())
+    handlers = settings["hooks"]["UserPromptSubmit"][0]["hooks"]
+    assert migrated["settings_state"] == "migrated"
+    assert handlers == [{
+        "type": "command",
+        "command": sys.executable,
+        "args": [str(Path(first["wrapper_path"]).resolve())],
+        "timeout": 5,
+    }]
+
+
+def test_uninstall_compile_cleans_exact_legacy_shell_registration(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    result = install_hook.install_compile()
+    settings_path = tmp_path / ".claude" / "settings.json"
+    settings = json.loads(settings_path.read_text())
+    handler = settings["hooks"]["UserPromptSubmit"][0]["hooks"][0]
+    handler["command"] = f"python3 {Path(result['wrapper_path']).resolve()}"
+    handler.pop("args")
+    settings_path.write_text(json.dumps(settings))
+
+    removed = install_hook.uninstall_compile()
+    assert removed == {"wrapper_state": "removed", "settings_state": "removed"}
+
+
+def test_uninstall_compile_preserves_unrelated_similar_command(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    claude = tmp_path / ".claude"
+    claude.mkdir()
+    settings_path = claude / "settings.json"
+    settings_path.write_text(json.dumps({
+        "hooks": {"UserPromptSubmit": [{
+            "hooks": [{"type": "command", "command": "bash /other/hermeneutic-compile.py"}]
+        }]}
+    }))
+    from hermeneutic import install_hook
+
+    install_hook.install_compile()
+    install_hook.uninstall_compile()
+    settings = json.loads(settings_path.read_text())
+    assert settings["hooks"]["UserPromptSubmit"][0]["hooks"][0]["command"] == (
+        "bash /other/hermeneutic-compile.py"
+    )
+
+
+def test_uninstall_compile_preserves_install_when_settings_becomes_malformed(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    result = install_hook.install_compile()
+    (tmp_path / ".claude" / "settings.json").write_text("{not json")
+    removed = install_hook.uninstall_compile()
+    assert removed == {"wrapper_state": "preserved", "settings_state": "malformed"}
+    assert Path(result["wrapper_path"]).is_file()
+
+
+def test_uninstall_compile_preserves_install_when_settings_shape_is_invalid(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    result = install_hook.install_compile()
+    (tmp_path / ".claude" / "settings.json").write_text("[]")
+    removed = install_hook.uninstall_compile()
+    assert removed == {"wrapper_state": "preserved", "settings_state": "malformed"}
+    assert Path(result["wrapper_path"]).is_file()
+
+
+def test_gate_and_compile_installers_uninstall_independently(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / ".claude").mkdir()
+    from hermeneutic import install_hook
+
+    gate = install_hook.install()
+    compile_result = install_hook.install_compile()
+    install_hook.uninstall_compile()
+    settings = json.loads((tmp_path / ".claude" / "settings.json").read_text())
+    assert settings["hooks"]["Stop"]
+    assert Path(gate["wrapper_path"]).is_file()
+    assert not Path(compile_result["wrapper_path"]).exists()
+
+    compile_result = install_hook.install_compile()
+    install_hook.uninstall()
+    settings = json.loads((tmp_path / ".claude" / "settings.json").read_text())
+    assert settings["hooks"]["UserPromptSubmit"]
+    assert Path(compile_result["wrapper_path"]).is_file()

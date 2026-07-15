@@ -1,6 +1,6 @@
-# Compile-layer walkthrough — measured cases on a real corpus
+# Historical compile-layer walkthrough — measured cases on one real corpus
 
-This is the v0.1.5 demonstrative eval. **All numbers below are measured, not illustrative** — captured by running `hermeneutic compile-index` and `hermeneutic compile` against the author's actual mining corpus on 2026-04-26.
+**Status: historical only.** This is the v0.1.5 demonstrative run captured against one author's local corpus on 2026-04-26. The original model/index artifact was not fully pinned, and the outputs do not establish current production-path retrieval quality. They are retained as dated provenance rather than a v0.1.7 headline.
 
 **Honest framing first:** these are measured demonstrations, not validated effectiveness. They show the preamble *contains relevant prior signal*, not that it *causes* better LLM behavior in a controlled study. The latter is the v1.0 replay-eval milestone (mine N misinterpretation moments, replay each with-and-without the preamble injected, measure followup-correction reduction).
 
@@ -16,7 +16,7 @@ This is the v0.1.5 demonstrative eval. **All numbers below are measured, not ill
 | Embedding model | `nomic-embed-text` via local Ollama |
 | Index build wall time | **18.8 seconds** for 346 triples (= ~54ms per Ollama embed call, single-threaded loop) |
 
-¹ 346 vs the 326 cited elsewhere: 326 was the 2026-04-25 gate-derivation mining run; 346 is the later re-mine of the same corpus used for the retrieval evals (miner improvements picked up 20 more triples). Rule derivation receipts stay pinned to the 326-run.
+¹ 346 vs the 326 cited elsewhere: 326 was the 2026-04-25 gate-derivation run; 346 is the separate later frozen corpus used for retrieval evaluation. The available aggregate receipt does not prove an identical source window or attribute the 20-row difference solely to miner changes. Rule derivation receipts stay pinned to the 326-run.
 | Embedding dimension | 768 |
 | On-disk index size | ~5 MB JSON (vectors + ids + sha256 cache key) |
 
@@ -101,7 +101,7 @@ Different prompt shapes get **measurably different** bucket distributions. The c
 
 - **Does not guarantee the LLM follows the preamble.** It surfaces priors; whether the model uses them is the v1.0 measurement.
 - **Does not understand semantic intent.** Retrieval is cosine similarity on input prompts — surface similarity, not deep intent matching.
-- **Does not work on novel prompt shapes.** If a user asks something the corpus has never seen, the preamble is empty (silent skip — no false-positive injection).
+- **May stay silent on novel prompt shapes, but is not guaranteed to.** A prompt below threshold produces no preamble; the separate historical synthetic-random experiment still triggered on 7/30 inputs, so this is not a false-positive guarantee.
 - **Does not generate suggestions.** The preamble lists *patterns of past steers*; the LLM still chooses what to do.
 
 ## What we measure in v1.0 (the validation milestone)
@@ -112,9 +112,9 @@ Different prompt shapes get **measurably different** bucket distributions. The c
 
 That milestone is gated on building the replay harness, which is multi-day work + compute spend. Not in v0.1.5.
 
-## Wrapper-level smoke test (Claude Code Stop hook integration)
+## Historical wrapper-level smoke (unsupported Claude Code Stop adapter)
 
-The v0.1.1 install-hook generates a Python wrapper that reads Claude Code's Stop hook stdin JSON, walks the transcript JSONL bottom-up to find the last assistant turn, pipes that text through `hermeneutic gate`, and surfaces RISK to stderr.
+The v0.1.1 installer generated a Python wrapper that read a transcript path, walked the JSONL bottom-up, piped the recovered assistant text through `hermeneutic gate`, and wrote RISK to stderr. Current Claude Code instead supplies `last_assistant_message` and requires structured output for a visible warning, so this receipt is not evidence for a supported v0.1.7 Stop integration.
 
 Verified end-to-end on 2026-04-26 against a real Claude Code transcript:
 
@@ -124,4 +124,4 @@ $ echo '{"transcript_path": "<real-session.jsonl>", "session_id": "smoke-test"}'
 [exit: 0]
 ```
 
-Gate returned `PASS` on the last assistant turn (no completion-claim drift in that specific turn), so no stderr notice surfaced — exactly the advisory-mode contract. When the gate fires on a drift-shaped turn, the wrapper writes one `[hermeneutic] RISK — high ...` line to stderr and Claude Code surfaces it in the UI.
+The wrapper returned `PASS` on that recovered assistant turn and exited 0. The receipt proves only that the historical local wrapper parsed that transcript and invoked the gate; it did not exercise a RISK case or establish current-host warning visibility.

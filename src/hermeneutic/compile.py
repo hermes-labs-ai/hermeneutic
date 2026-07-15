@@ -5,7 +5,7 @@ sessions where similar prompts were misinterpreted, and synthesize a
 "watch out for X" preamble. Deterministic template-based synthesis; no
 LLM at compile time. Embedding via local Ollama (`nomic-embed-text`).
 
-Storage: ~/.hermeneutic/{triples.jsonl, embeddings.npz, config.json}.
+Storage: ~/.hermeneutic/{triples.jsonl, embeddings.json}.
 """
 from __future__ import annotations
 
@@ -29,15 +29,12 @@ DEFAULT_OLLAMA_URL = "http://127.0.0.1:11434"
 DEFAULT_EMBED_MODEL = "nomic-embed-text"
 DEFAULT_TOP_K = 10                     # max total matches surfaced (cap)
 DEFAULT_N_PER_BUCKET = 2               # max matches surfaced PER bucket (bucket-aware retrieval)
-DEFAULT_SIM_THRESHOLD = 0.5            # cosine floor — raised from 0.4 in v0.9 after measured eval
+DEFAULT_SIM_THRESHOLD = 0.5            # library cosine floor; CLI/hook explicitly use 0.4
 
-# v0.9 bucket-aware retrieval rationale:
-# Leave-one-out eval (evals/leave-one-out/) showed global top-K crowds out rare
-# buckets — same-bucket matches for rare-bucket queries appeared at median rank
-# 62, well outside top-5. Switching to top-N per bucket above threshold lifts
-# overall recall from 56.7% → 83.7% (+27pp) and rare-bucket recall from 0% →
-# 50% (+50pp), at the measured cost of preamble width 1.4 → 4.2 buckets per
-# query. See evals/leave-one-out/RESULTS.md.
+# Bucket-aware retrieval prevents a common category from occupying every slot.
+# The current evaluator in evals/leave-one-out/ calls compile_prompt directly,
+# records both shipped default profiles, and keeps earlier measurements clearly
+# labeled as historical experiments.
 
 # Same buckets the CLI uses (kept here to avoid import cycle with cli.py).
 BUCKET_PATTERNS: list[tuple[str, str, str]] = [
@@ -238,7 +235,7 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
                    model: str = DEFAULT_EMBED_MODEL) -> str:
     """Embed a prompt, retrieve bucket-aware top-N per bucket, return preamble.
 
-    v0.9 retrieval semantics (bucket-aware):
+    Bucket-aware retrieval semantics:
       - Score the query against every indexed vector.
       - Filter to candidates above `threshold` cosine similarity.
       - Group candidates by their bucket (via `bucket_for(user_correction)`).
@@ -247,11 +244,10 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
 
     Returns empty string if no matches clear the threshold or index doesn't exist.
 
-    Why bucket-aware: leave-one-out eval (evals/leave-one-out/) showed global
-    top-K crowds out rare buckets at median rank 62. Bucket-aware lifts overall
-    recall from 56.7% → 83.7% and rare-bucket recall from 0% → 50%. Trade-off:
-    preamble width grows from 1.4 → 4.2 buckets per query. Measured trade-off
-    is documented in evals/leave-one-out/RESULTS.md.
+    Why bucket-aware: a global top-K can let a common correction category crowd
+    out rarer categories. Current and historical aggregate measurements, with
+    their different default profiles and evidence boundaries, are documented in
+    evals/leave-one-out/RESULTS.md.
     """
     if not prompt.strip():
         return ""

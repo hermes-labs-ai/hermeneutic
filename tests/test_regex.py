@@ -55,7 +55,7 @@ def test_empty_draft_no_hits():
     assert risk_score("") == []
 
 
-# ---- 2026-07-08 shared shape fixes (found via the Korean eval) ----
+# ---- 2026-07-08 order and authority shape fixes ----
 
 def test_number_then_completion_order_insensitive():
     hits = risk_score("14 files shipped and 92/92 passing. All done.")

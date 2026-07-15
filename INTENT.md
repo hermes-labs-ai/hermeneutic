@@ -1,29 +1,34 @@
-# hermeneutic — Intent
+# Hermeneutic intent
 
-Catches drift in outgoing assistant drafts before it ships, using the corrections you've already made as the training signal. Two-loop architecture: a miner that turns chat-log corrections into `(drift, steer, repair)` triples, and a router that runs those patterns as a 3-stage pre-flight gate (zero-LLM regex → optional rubric → generic LLM critic with bring-your-own-calibration).
+Hermeneutic makes user corrections reusable without pretending that one mechanism does every job.
+
+## Public surfaces
+
+1. **Mine and bucket:** supported local chat logs become correction triples and aggregate categories.
+2. **Compile and retrieve:** an optional local Ollama embedding index retrieves relevant prior corrections and renders a deterministic prompt preamble.
+3. **Deterministic gate:** eight fixed English regex rules check outgoing text. Mining does not rewrite them.
+4. **Programmable Router:** callers may compose the fixed gate with an optional `hermes-rubric` executable, a caller-supplied `PressureProbe`, and a caller-supplied repairer.
+5. **Audit and review:** opt-in local telemetry plus harvest/review/promote mechanics create a reviewable correction loop.
 
 ## Accepts
 
-- Mines `(prior_assistant, user_correction, next_assistant)` triples from any chat-log directory (Claude Code JSONL, OpenAI ChatCompletion JSON; pluggable via `LogReader` subclass).
-- Runs a 3-stage gate on outgoing drafts: stage 1 zero-LLM regex (~0ms, evidence-derived patterns), stage 2 optional `hermes-rubric` adapter, stage 3 `PressureProbe` (LLM-as-critic with bring-your-own calibration).
-- Returns a structured `GateResult` audit trail: which stage shipped the draft, which risk patterns matched, the LLM verdict, and whether a repair pass ran.
-- Treats the architecture as public and the calibration as private — `PressureProbe` is BYO, the default `rigorous-skeptic` calibration is generic and replaceable.
+- Transparent local evidence and deterministic behavior where possible.
+- Personalization in the corpus and retrieval layer.
+- Explicit caller ownership of blocking, external providers, repair policy, privacy, latency, and cost.
+- New fixed gate rules only when a code change includes evidence, tests, and review.
 
 ## Refuses
 
-- No new drift detection beyond patterns mined from real corrections. Risk regexes ship with empirical justification (the 326-triple study) — extension PRs require the contributor to provide their own mined evidence.
-- No model evaluation. Scores individual outgoing drafts, not aggregate model quality.
-- No replacement for human review. The gate raises the floor; it does not raise the ceiling.
-- No silent foresight claim. The gate catches drift modes already seen corrected; novel drifts pass through until you re-mine.
+- No claim that the gate writes itself.
+- No claim that a `PASS` proves correctness or that a hook prevents every response.
+- No multilingual claim; the fixed gate is English-only.
+- No default model-evaluation, moderation, security-boundary, or factuality guarantee.
+- No downstream-effectiveness claim without a direct measurement.
 
-## Three guarantees
+## Evidence boundary
 
-1. **Stage 1 is cheap.** Risk regex runs in ~0ms per draft. Most outputs pass through stage 1 untouched. Stage 2 and 3 fire only on drafts that match a high-severity pattern.
-2. **Calibration is replaceable.** `PressureProbe(judge, calibration)` accepts any callable LLM and any calibration string. The architecture forces structured output (verdict + flip-condition + evidence pointer) regardless of who supplies the priors.
-3. **The audit trail is the product.** Every `GateResult` records: matched risk hits, rubric score (if used), twin verdict (if used), whether a repair fired, and the original draft alongside the final output. Persist this and you have a labeled dataset of (gate fired, was it right?) — that is how the gate gets smarter without architectural changes.
+The historical derivation receipt covers 326 corrections from 1,423 sessions belonging to one heavy user. A separate later frozen 346-triple corpus supports current aggregate gate and retrieval measurements, but neither corpus is a representative multi-user benchmark. Private triples are not distributed.
 
-## Provenance
+Current direct gate coverage on the frozen 346-triple corpus is 115/346 (33.24%). Current production-path same-bucket retrieval is 88/104 (84.6%) at CLI/hook defaults and 94/104 (90.4%) at Python defaults. These are single-corpus mechanism measurements, not precision, generalization, or evidence that a model follows the warning.
 
-Risk patterns derived empirically from one heavy AI user's corpus: 1,423 Claude Code sessions mined for 326 user corrections. 44% of corrections were post-completion overclaiming (the dominant drift mode). 8 regex rules ship; the original 6 covered ~65% of the corpus (8-rule coverage not yet re-measured). Your distribution will look different — re-mine your own logs and `your` gate writes itself.
-
-The 326 triples themselves are not shipped (private session content). The miner that produces equivalent triples from your own logs is shipped, and is the entire point.
+The project raises a review floor. Human and domain review remain responsible for the ceiling.

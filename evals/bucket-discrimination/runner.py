@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Bucket-distribution discrimination eval (Measurement B from v0.9 plan).
+"""Historical bucket-distribution discrimination experiment.
+
+This runner uses a legacy global-top-K approximation, not the shipped
+bucket-aware `compile_prompt` path. Its committed output is provenance only.
 
 Two metrics, deliberately separated to avoid the degenerate-χ² trap where
 random prompts mostly produce empty preambles and χ² fires for the wrong
 reason.
 
-  B1: retrieval-trigger rate. For 100 in-corpus orig_prompts vs 100
+  B1: retrieval-trigger rate. For 100 in-corpus orig_prompts vs 30
       synthetic random prompts, count how many produce a non-empty
-      preamble at threshold=0.4. Fisher's exact test on 2×2 contingency.
+      preamble at threshold=0.5. Fisher's exact test on a 2x2 contingency.
 
   B2: bucket-shape discrimination CONDITIONAL on retrieval triggered.
       Within prompts that DID produce a non-empty preamble, tabulate
@@ -68,7 +71,6 @@ def main() -> int:
         return 1
 
     triples = [Triple.from_json(line) for line in triples_path.read_text().splitlines() if line.strip()]
-    eligible = [(i, t) for i, t in enumerate(triples) if t.orig_prompt.strip()]
     rng = random.Random(SEED)
 
     # Sample N_IN_CORPUS positions from the index (cached embeddings)
@@ -81,9 +83,8 @@ def main() -> int:
     print(f"In-corpus: {len(in_corpus_positions)} (cached embeddings)", file=sys.stderr)
     print(f"Random baseline: {len(random_baseline)} (live Ollama embeds)", file=sys.stderr)
 
-    THRESHOLD = 0.5     # v0.9 default
-    K = 10              # v0.9 cap
-    N_PER_BUCKET = 2    # v0.9 default
+    THRESHOLD = 0.5     # historical experiment setting
+    K = 10              # historical global cap
 
     def score_query_vec(q: list[float]) -> list[str]:
         """Return bucket names from top-K matches above threshold (cached scoring)."""
@@ -186,6 +187,12 @@ def main() -> int:
         b2_chi2, b2_p_val, b2_dof, b2_error = None, None, None, "no triggered prompts in either group"
 
     out = {
+        "status": "historical_only",
+        "production_path_equivalent": False,
+        "known_mismatch": (
+            "Uses legacy global top-K selection and asymmetric in-corpus/random trigger definitions; "
+            "does not execute the shipped bucket-aware compile_prompt path."
+        ),
         "seed": SEED,
         "n_in_corpus": len(in_corpus_positions),
         "n_random": n_random_succeeded,
@@ -214,7 +221,8 @@ def main() -> int:
     out_dir = Path(__file__).resolve().parent
     (out_dir / "results.json").write_text(json.dumps(out, indent=2))
 
-    md = [f"# Bucket-distribution discrimination — measured (seed={SEED}, N_in_corpus={len(in_corpus_positions)}, N_random={n_random_succeeded})\n\n"]
+    md = [f"# Historical bucket-distribution experiment (seed={SEED}, N_in_corpus={len(in_corpus_positions)}, N_random={n_random_succeeded})\n\n"]
+    md.append("**Status: historical only.** This runner uses legacy global top-K selection and asymmetric trigger definitions; it is not equivalent to the shipped bucket-aware `compile_prompt` path. Retained for provenance, not a current product claim.\n\n")
     if rand_failed > 0:
         md.append(f"_Note: {rand_failed} random-prompt embed calls failed (Ollama contention) — N_random reduced from {N_RANDOM} to {n_random_succeeded}._\n\n")
     md.append("## B1: retrieval-trigger rate (in-corpus vs synthetic random)\n\n")

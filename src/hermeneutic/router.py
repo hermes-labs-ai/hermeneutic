@@ -11,9 +11,9 @@
                 ▼
           repair pass (1 attempt) → ship
 
-Telemetry: every run returns a `GateResult` with the full audit trail. Persist
-this in your own logs and you'll have a labeled dataset of (gate fired, was it
-right?) — that's how the gate gets smarter without architectural changes.
+Every run returns a `GateResult` with an audit trail. Persisting reviewed
+results can inform later explicit rule engineering; it does not make the fixed
+gate learn or rewrite itself.
 """
 from __future__ import annotations
 

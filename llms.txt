@@ -1,53 +1,67 @@
-# hermeneutic
+# hermeneutic v0.1.7
 
-> Mine corrections from AI chat logs. Gate the next response.
+Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
-hermeneutic is a Python library and CLI that mines `(prior_assistant, user_correction, next_assistant)` triples from chat logs and uses the patterns it finds to gate future assistant drafts. Three-stage pipeline: zero-LLM regex (cheap), optional hermes-rubric scoring (local LLM), generic LLM critic called PressureProbe (one API call). Repair pass runs once if the critic says revise.
+1. mine correction triples from supported Claude Code, Codex, and OpenAI-style chat logs;
+2. optionally retrieve similar prior corrections with a local Ollama embedding index;
+3. run eight fixed deterministic English regex checks on outgoing drafts.
 
-The architecture decouples the *role* of a reviewer-twin (forces structured verdict + flip-condition) from the *priors* (whose judgment, what severity calibration). Ship the role publicly, keep your priors private. Default calibration is "rigorous-skeptic."
+Mining personalizes the corpus and optional retrieval. It does not generate or modify gate rules. The `hermeneutic gate` CLI is regex-only; the optional three-stage `Router` is a separate Python API configured by its caller.
 
-## Install
+## Exact installation
 
-```
-pip install hermeneutic
-# pin: pip install "git+https://github.com/hermes-labs-ai/hermeneutic@v0.1.7"
-```
+After the v0.1.7 PyPI release is verified:
 
-## CLI
-
-- `hermeneutic mine <dir> --out triples.jsonl` — extract correction triples from chat logs (Claude Code or OpenAI format).
-- `hermeneutic bucket <triples.jsonl>` — surface-pattern bucket counts.
-- `hermeneutic gate --draft <file>` — run regex-only gate. Exit 0 = pass, 1 = risk.
-
-## Library
-
-```python
-from hermeneutic import Router, PressureProbe
-probe = PressureProbe(judge=any_llm_callable)
-router = Router(probe=probe, repairer=any_llm_repair_callable)
-result = router.gate(request="...", draft="...")
+```bash
+python3 -m pip install 'hermeneutic==0.1.7'
 ```
 
-## Empirical basis
+For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
-Risk patterns derived from 326 corrections mined across 1,423 Claude Code sessions. Top drift mode (post-completion overclaiming) accounts for 44% of all corrections. Eight regex rules ship; the original six covered ~65% of the derivation corpus (eight-rule coverage not yet re-measured).
+```bash
+git clone --branch v0.1.7 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+cd hermeneutic
+python3 -m pip install .
+```
 
-## Audit-stack siblings
+The core has zero required Python runtime dependencies. Source builds use `hatchling>=1.24`. Optional compile/retrieval needs local Ollama plus `nomic-embed-text`; optional Router stages need external caller-selected tools or functions.
 
-- scaffold-lint — static analyzer for prompt scaffolds
-- agent-convergence-scorer — multi-agent agreement scoring
-- hermes-rubric — evidence-first structured scoring
-- hermes-seal — signed attestation of agent policy versions
+## Central CLI workflow
 
-## Repository
+```bash
+printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
+```
 
-https://github.com/hermes-labs-ai/hermeneutic
+Expected first line: `RISK — highest severity: high`.
 
-## License
+- `hermeneutic mine <dir> --out <triples.jsonl>`: extract correction triples.
+- `hermeneutic bucket <triples.jsonl>`: print fixed category counts.
+- `hermeneutic gate [--draft <file>]`: run the fixed English gate; medium/high risk exits 1.
+- `hermeneutic compile-index --triples <triples.jsonl>`: build the optional local embedding index.
+- `hermeneutic compile [prompt]`: retrieve a deterministic warning preamble when matches exist.
+- `hermeneutic harvest`, `promote`, and `stats`: local review and audit workflow.
 
-MIT
+## Evidence boundary
 
+- Historical derivation: 326 corrections from 1,423 sessions belonging to one user; private triples are not shipped.
+- Current direct gate coverage on the separate later frozen 346-triple corpus: 115/346 (33.24%), retrospective derivation-set coverage and not held out.
+- Current production-path same-bucket retrieval: 88/104 (84.6%) at CLI/hook defaults; 94/104 (90.4%) at Python defaults.
+- Prior 83.7% and 98/100 retrieval figures are historical experiments whose evaluators differed from the current production path.
+- Precision, false-positive rate on ordinary prompts, generalization, and downstream model effectiveness are unmeasured.
 
-## About Hermes Labs
+## Scope and maturity
 
-Hermes Labs — Epistemic Engineering for the agent era: applied epistemology and hermeneutics as engineering discipline. The model is the substrate, language is the operations layer; reliability comes from linguistic infrastructure. hermeneutic is the stack's overclaim gate. More at https://hermes-labs.ai
+The fixed gate is English-only and advisory unless a caller blocks before sending. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
+
+## Privacy
+
+Core mining, bucketing, gate, harvest, review, and promotion are local and make no network calls. The built-in compile path uses localhost Ollama; Python callers can override that URL and own the resulting endpoint policy. Telemetry is off by default. Triples, embeddings, raw telemetry, and injected context can contain sensitive text; review before sharing.
+
+## Project
+
+- Repository: https://github.com/hermes-labs-ai/hermeneutic
+- Documentation: README.md
+- Citation: CITATION.cff
+- Security: SECURITY.md
+- License: MIT
+- Public display author: Rolando Bosch, Hermes Labs

@@ -4,14 +4,14 @@ Thanks for your interest in `hermeneutic`. This document describes how to propos
 
 ## Scope
 
-`hermeneutic` is a focused tool: it mines correction triples from chat logs and gates outgoing assistant drafts. It is **not** a general-purpose evaluation framework, nor a model benchmarker, nor an LLM router for production traffic.
+`hermeneutic` is a focused tool: it mines correction triples, optionally retrieves similar prior corrections, and runs a fixed English check over outgoing drafts. It is **not** a general-purpose evaluation framework, model benchmarker, or default LLM router for production traffic.
 
 **In-scope:** new chat-log readers, new evidence-based risk patterns, calibration recipes for `PressureProbe`, bug fixes, docs, test coverage.
 
 **Out-of-scope:**
 
 - Aggregate model evaluation — use a benchmark suite.
-- Static analysis of prompt scaffolds — that belongs in [scaffold-lint](https://github.com/hermes-labs-ai/scaffold-lint).
+- Static analysis of prompt scaffolds, which is outside this repository's scope.
 - Agent-config structural analysis — that belongs in [lintlang](https://github.com/hermes-labs-ai/lintlang).
 - Anything that adds a mandatory runtime dependency. Stage 2 (hermes-rubric) and stage 3 (your LLM) stay optional and pluggable.
 
@@ -22,16 +22,16 @@ Open an issue first if you're unsure.
 ```bash
 git clone https://github.com/hermes-labs-ai/hermeneutic
 cd hermeneutic
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
+python3 -m pip install -e ".[dev]"
 ```
 
 ## Running the checks
 
 ```bash
-ruff check .
-pytest -ra
+python3 -m ruff check .
+python3 -m pytest -ra
 ```
 
 CI runs the same commands on Python 3.10–3.13.

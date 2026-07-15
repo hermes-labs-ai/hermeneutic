@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "measurement": "retrospective_derivation_set_gate_coverage",
+  "corpus": {
+    "sha256": "920bfcac721e0df2b18894461daf5d5fd8d847d90974a4572e7749322900172b",
+    "triples": 346,
+    "private_text_emitted": false
+  },
+  "gate": {
+    "source": "src/hermeneutic/gates/regex.py",
+    "source_sha256": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
+    "rule_count": 8,
+    "language_scope": "fixed English surface patterns"
+  },
+  "coverage": {
+    "scanned_field": "prior_assistant",
+    "covered_triples": 115,
+    "missed_triples": 231,
+    "coverage_rate": 0.3324,
+    "total_rule_matches": 232
+  },
+  "derivation_set_coverage": {
+    "original_six_direct_hits": 105,
+    "original_six_direct_rate": 0.3035,
+    "current_eight_direct_hits": 115,
+    "current_eight_direct_rate": 0.3324,
+    "unique_rows_added_by_two_later_rules": 10,
+    "historical_approximately_65_percent": "Category mapping on the separate 326-triple derivation run; not a direct regex execution result."
+  },
+  "per_rule": {
+    "completion_with_number": {
+      "severity": "high",
+      "triples_with_rule": 65,
+      "raw_matches": 76,
+      "triple_rate": 0.1879
+    },
+    "completion_with_all_quantifier": {
+      "severity": "high",
+      "triples_with_rule": 5,
+      "raw_matches": 5,
+      "triple_rate": 0.0145
+    },
+    "number_then_completion": {
+      "severity": "high",
+      "triples_with_rule": 52,
+      "raw_matches": 61,
+      "triple_rate": 0.1503
+    },
+    "subagent_passthrough": {
+      "severity": "high",
+      "triples_with_rule": 17,
+      "raw_matches": 27,
+      "triple_rate": 0.0491
+    },
+    "authority_passthrough": {
+      "severity": "med",
+      "triples_with_rule": 0,
+      "raw_matches": 0,
+      "triple_rate": 0.0
+    },
+    "unhedged_certainty": {
+      "severity": "med",
+      "triples_with_rule": 26,
+      "raw_matches": 42,
+      "triple_rate": 0.0751
+    },
+    "scope_expansion": {
+      "severity": "med",
+      "triples_with_rule": 17,
+      "raw_matches": 19,
+      "triple_rate": 0.0491
+    },
+    "fluent_summary_no_evidence": {
+      "severity": "low",
+      "triples_with_rule": 2,
+      "raw_matches": 2,
+      "triple_rate": 0.0058
+    }
+  },
+  "overlap": {
+    "rules_per_triple": {
+      "0": 231,
+      "1": 61,
+      "2": 41,
+      "3": 11,
+      "4": 2
+    },
+    "triples_with_multiple_rules": 54,
+    "pair_rows": {
+      "completion_with_all_quantifier+completion_with_number": 5,
+      "completion_with_all_quantifier+number_then_completion": 4,
+      "completion_with_all_quantifier+unhedged_certainty": 2,
+      "completion_with_number+fluent_summary_no_evidence": 1,
+      "completion_with_number+number_then_completion": 41,
+      "completion_with_number+scope_expansion": 6,
+      "completion_with_number+subagent_passthrough": 3,
+      "completion_with_number+unhedged_certainty": 8,
+      "number_then_completion+scope_expansion": 4,
+      "number_then_completion+subagent_passthrough": 3,
+      "number_then_completion+unhedged_certainty": 4,
+      "scope_expansion+subagent_passthrough": 1,
+      "scope_expansion+unhedged_certainty": 2,
+      "subagent_passthrough+unhedged_certainty": 2
+    }
+  },
+  "correction_bucket_context": {
+    "missed_constraint": {
+      "triples": 29,
+      "covered": 10,
+      "coverage_rate": 0.3448
+    },
+    "over_completion": {
+      "triples": 4,
+      "covered": 2,
+      "coverage_rate": 0.5
+    },
+    "over_confirmation": {
+      "triples": 59,
+      "covered": 20,
+      "coverage_rate": 0.339
+    },
+    "scope_creep": {
+      "triples": 3,
+      "covered": 1,
+      "coverage_rate": 0.3333
+    },
+    "tool_choice": {
+      "triples": 3,
+      "covered": 0,
+      "coverage_rate": 0.0
+    },
+    "unbucketed": {
+      "triples": 242,
+      "covered": 81,
+      "coverage_rate": 0.3347
+    },
+    "wrong_target": {
+      "triples": 6,
+      "covered": 1,
+      "coverage_rate": 0.1667
+    }
+  },
+  "interpretation": {
+    "demonstrates": "How often the current eight-rule gate fires on prior assistant replies in the frozen correction corpus.",
+    "does_not_demonstrate": [
+      "held-out recall",
+      "precision or false-positive rate",
+      "live fire rate",
+      "severity calibration",
+      "reduced downstream model misinterpretation"
+    ]
+  }
+}

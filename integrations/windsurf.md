@@ -1,36 +1,32 @@
-# hermeneutic × Windsurf (Cascade) — advisory response gate
+# Hermeneutic × Windsurf / Cascade
 
-**Prereqs:** `pip install hermeneutic`; Windsurf with Cascade hooks enabled.
+Maturity: `REMOVE`.
 
-`.windsurf/hooks.json` at the workspace root:
+Hermeneutic v0.1.7 does not ship a supported Windsurf integration or executable
+recipe. The former recipe had three release-blocking gaps:
 
-```json
-{
-  "hooks": {
-    "post_cascade_response_with_transcript": [
-      {
-        "command": "bash -c 'python3 .windsurf/hooks/hermeneutic_gate.py'",
-        "show_output": true
-      }
-    ]
-  }
-}
-```
+- it referenced an absent `.windsurf/hooks/hermeneutic_gate.py` helper;
+- it treated the transcript payload key as unknown, while current Windsurf docs
+  specify `tool_info.transcript_path` for
+  `post_cascade_response_with_transcript`;
+- it relied on `show_output: true` to display an advisory, while current docs
+  state that `show_output` does not apply to that hook.
 
-Cascade post-hooks architecturally **cannot block** — which matches
-hermeneutic's advisory stance exactly: by the time the hook fires the
-response has already reached you, and the gate's job is to flag it.
-`hermeneutic_gate.py` reads the stdin JSON, extracts the last assistant
-message from the transcript, pipes it to `hermeneutic gate`, and on exit 1
-prints `[hermeneutic] RISK <rule-ids> — advisory, already sent` to stderr
-(visible in the Cascade UI via `show_output: true`).
+The current transcript is JSONL under `~/.windsurf/transcripts/` and can contain
+source files, command output, tool arguments, search results, rules, and full
+conversation history. Windsurf also warns that its per-step schema may change.
+Any future adapter must therefore ship a robust parser, use a real user-visible
+notification or explicit local-log contract, disclose the transcript's data
+sensitivity and retention behavior, provide install/uninstall tests, and carry
+a live-host receipt.
 
-> **UNVERIFIED field:** the docs promise the `_with_transcript` variant
-> carries the full transcript, but do not name the JSON key. Confirmed base
-> fields: `agent_action_name`, `trajectory_id`, `timestamp`, `model_name`.
-> Dump the stdin payload once (`cat > /tmp/cascade-payload.json`) to find
-> the transcript key in your Windsurf version before relying on this.
+No Windsurf version was tested. Do not infer support from the presence of
+Cascade hooks.
 
-Uninstall: delete `.windsurf/hooks.json`.
+If the obsolete configuration was copied into a project, remove only its
+`post_cascade_response_with_transcript` entry from `.windsurf/hooks.json` and
+delete any locally created Hermeneutic helper. Review other hook entries before
+deleting the whole file.
 
-Sources: docs.windsurf.com/windsurf/cascade/hooks (→ docs.devin.ai/desktop/cascade/hooks), fetched 2026-07-12.
+Source checked 2026-07-15:
+[Windsurf Cascade hooks](https://docs.windsurf.com/windsurf/cascade/hooks).

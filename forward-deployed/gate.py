@@ -14,9 +14,9 @@ ships. Exit 0 means the forward-deployed mission is actually complete:
 2. **The suite passes here, now** — ``pytest -q`` green in THIS environment,
    not the author's.
 3. **Invariants hold mechanically** — no network imports outside
-   ``compile.py`` (the gate stays zero-LLM; localhost Ollama embeddings are
-   the single sanctioned exception), and the sanitized serializer still
-   strips text fields.
+   ``compile.py`` (the gate stays zero-LLM; compile defaults to localhost
+   Ollama, while Python callers may override its URL), and the sanitized
+   serializer still strips text fields.
 4. **The mission carries its receipt, always** — ``FORWARD-DEPLOYED-REPORT.md``
    exists at the repo root ("no adaptations needed" is a valid report) and
    passes ``check_report.py`` CLEAN.
@@ -119,7 +119,7 @@ def main() -> int:
 
     # -- 3. invariants, mechanically ------------------------------------------
     for path in sorted((REPO / "src" / "hermeneutic").rglob("*.py")):
-        if path.name == "compile.py":  # sanctioned: localhost Ollama embeddings
+        if path.name == "compile.py":  # the only network-capable module; default URL is localhost Ollama
             continue
         hits = NETWORK_TOKENS.findall(path.read_text(encoding="utf-8", errors="replace"))
         if hits:

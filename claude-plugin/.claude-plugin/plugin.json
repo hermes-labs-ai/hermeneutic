@@ -1,7 +1,7 @@
 {
   "name": "hermeneutic-gate",
   "displayName": "hermeneutic",
-  "description": "Catches the corrections you've already made, before the next response ships. Advisory only — never blocks. Requires `pip install hermeneutic`.",
+  "description": "Legacy advisory Stop-hook bundle for the fixed English gate. Current Claude Stop compatibility is not certified in v0.1.7; use the CLI directly. Requires the hermeneutic package.",
   "version": "0.1.7",
   "author": { "name": "Rolando Bosch", "email": "roli@hermes-labs.ai", "url": "https://github.com/hermes-labs-ai" },
   "homepage": "https://github.com/hermes-labs-ai/hermeneutic",

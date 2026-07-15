@@ -12,8 +12,8 @@ that look like they carry environment or session content:
 - email addresses and phone-number shapes (the author's contact address is allowed)
 - session-log filenames (``rollout-*.jsonl`` with timestamps)
 - long quoted strings (>120 chars inside quotes — likely pasted content)
-- Hangul runs longer than 40 chars (short Korean examples from this repo's
-  own corpora and docs are fine; long runs look like session text)
+- Hangul-script runs longer than 40 chars (long runs can indicate pasted
+  session text)
 
 Exit 0: clean. Exit 1: review the flagged lines — a human decides; this
 tool only points. Stdlib only, no network.

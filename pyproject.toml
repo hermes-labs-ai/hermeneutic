@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "hermeneutic"
 version = "0.1.7"
-description = "Mine your AI chat logs for the corrections you made — turn them into a pre-flight gate that catches the same drift before the next response ships."
+description = "Mine reusable correction evidence, retrieve similar past corrections, and run a fixed deterministic English drift check."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
@@ -67,7 +67,6 @@ packages = ["src/hermeneutic"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    ".claude-plugin/",
     "src/",
     "tests/",
     "examples/",

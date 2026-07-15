@@ -4,7 +4,7 @@ Scans an outgoing draft for surface patterns that historically attract user
 corrections. Patterns derived empirically from mined triples — extend them by
 mining your own logs and adding the shapes that show up.
 
-This is the load-bearing cheap stage: ~0ms per draft. Most outputs pass
+This is the load-bearing cheap stage: a local regex pass. Most outputs pass
 through untouched. Only drafts that match a risk pattern proceed to the
 LLM-based gates.
 """
@@ -30,10 +30,8 @@ _RAW_PATTERNS: list[tuple[str, str, str, str]] = [
         r"\b(done|shipped|complete[d]?|built|finished|all (tests|of them|done))\b.{0,120}?\b(all|every|each)\b",
         "Completion claim with universal quantifier — confirm scope coverage.",
     ),
-    # Verb-final / inverted order: the numeric claim PRECEDES the completion
-    # verb ("14 files shipped", "92 tests passing, all done"). Found via the
-    # Korean eval (verb-final languages hit it constantly) but English drifts
-    # this way too — the canonical gate must be order-insensitive.
+    # Inverted English order: the numeric claim PRECEDES the completion verb
+    # ("14 files shipped", "92 tests passing, all done").
     (
         "number_then_completion",
         "high",
@@ -49,7 +47,7 @@ _RAW_PATTERNS: list[tuple[str, str, str, str]] = [
     ),
     # Authority passthrough — human-team sign-off relayed as if verified
     # ("the QA team approved it"). Same unverified-relay shape as subagent
-    # passthrough, human flavor. Found via the Korean eval; language-neutral.
+    # passthrough, human flavor.
     (
         "authority_passthrough",
         "med",

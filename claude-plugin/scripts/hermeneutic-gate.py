@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""hermeneutic Stop-hook — advisory mode (never blocks).
+"""Legacy Hermeneutic Claude Code Stop hook retained for compatibility.
+
+This transcript/stderr adapter is not a supported v0.1.7 integration against
+the current Claude Code Stop contract. Prefer the standalone gate CLI or the
+mechanically tested UserPromptSubmit compile hook.
 
 Reads Claude Code Stop-hook stdin JSON, extracts the last assistant turn
 from the transcript JSONL, pipes it through `hermeneutic gate`, writes a

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test ONE methodological tweak: bucket-aware top-K retrieval.
+"""Historical pre-production experiment for bucket-aware top-K retrieval.
 
 Hypothesis: rare-bucket triples are semantically similar to majority-bucket
 triples (rank 60+ in global cosine), so global top-K crowds them out.
@@ -9,10 +9,11 @@ This guarantees rare buckets surface if any same-bucket match clears
 threshold, regardless of global rank.
 
 Compares:
-  - Baseline: top-K=5 global cosine (current compile-prompt behavior)
-  - Tweak:    top-2 per-bucket above threshold=0.4
+  - Baseline: the former global top-K=5 approximation
+  - Tweak:    the bucket-aware idea later implemented differently in production
 
-Reports recall@K rates for the OVERALL corpus AND for the rare-bucket subset.
+This script does not call the current production path. The current measurement
+is `runner.py` in this directory.
 """
 from __future__ import annotations
 

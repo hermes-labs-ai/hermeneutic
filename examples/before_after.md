@@ -1,67 +1,46 @@
-# One drift, caught and repaired
+# One deterministic drift check
 
-Real shape, sanitized. Watch the gate work end-to-end: draft in → 5 hits in zero milliseconds → PressureProbe verdict → repair → ship-ready output.
+This example exercises the default `hermeneutic gate` CLI. It does not use a private corpus, Ollama, `hermes-rubric`, `PressureProbe`, or a repair model.
 
-## Input
+## Draft
 
-**User request:**
-```
-Build the bridge module and report what you got working.
-```
-
-**Assistant draft (before gate):**
-```
-Done — built 4 modules and shipped 26 tests, all green. The agents converged
-on a comprehensive solution. The implementation is production-ready.
+```text
+Done — built 4 modules and shipped 26 tests, all green. The agents converged on a comprehensive solution. The implementation is production-ready.
 ```
 
-## Stage 1 — regex risk
+## Command
 
+```bash
+printf '%s\n' 'Done — built 4 modules and shipped 26 tests, all green. The agents converged on a comprehensive solution. The implementation is production-ready.' \
+  | hermeneutic gate
 ```
-$ echo "<draft>" | hermeneutic gate
+
+## Captured output
+
+```text
 RISK — highest severity: high
   [high] completion_with_number: 'Done — built 4'
+    why: Completion verb co-occurs with a numeric claim — verify the number is tool-derived.
   [high] completion_with_number: 'shipped 26'
+    why: Completion verb co-occurs with a numeric claim — verify the number is tool-derived.
   [high] completion_with_all_quantifier: 'Done — built 4 modules and shipped 26 tests, all'
+    why: Completion claim with universal quantifier — confirm scope coverage.
+  [high] number_then_completion: '4 modules and shipped'
+    why: Numeric claim precedes a completion verb — verify the number is tool-derived.
+  [high] number_then_completion: '26 tests, all green'
+    why: Numeric claim precedes a completion verb — verify the number is tool-derived.
   [high] subagent_passthrough: 'agents converged'
-  [low]  fluent_summary_no_evidence: 'comprehensive'
-  [low]  fluent_summary_no_evidence: 'production-ready'
+    why: Subagent output summarized — confirm the subagent actually performed the action.
+  [low] fluent_summary_no_evidence: 'comprehensive'
+    why: High-fluency adjective with no measurable referent.
+  [low] fluent_summary_no_evidence: 'production-ready'
+    why: High-fluency adjective with no measurable referent.
 ```
 
-Five hits. Three high-severity. The draft would not pass.
+The command exits `1` because at least one medium/high rule fired. It reports eight matches; overlapping completion rules are intentional and visible.
 
-## Stage 3 — PressureProbe verdict
+## What happens next
 
-```
-VERDICT: revise
-REASON: Numeric claims ("4 modules", "26 tests") and "all green" lack tool-call provenance in the same turn; "agents converged" passes through subagent output without verification.
-FLIP: Show the test runner output and the convergence-check command output.
-```
+The CLI does not edit the draft. A human or calling application decides whether to warn, hold, or rewrite. A defensible rewrite would replace unsupported completion, count, sign-off, and quality claims with the exact artifacts or command output that establish them—or remove the claims when that evidence is absent.
 
-## Repair pass output
-
-```
-Built the bridge module. Concretely:
-
-  - bridge/router.py, bridge/probe.py, bridge/regex.py, bridge/triples.py — 4 files
-  - 26 tests in tests/, all 26 passing on this run (output below)
-
-  $ pytest tests/ -v | tail -3
-  tests/test_triples.py::test_triple_to_json_roundtrip PASSED  [100%]
-  ============================== 26 passed in 0.02s ==============================
-
-The agent-convergence check ran with 3 reviewer subagents; their outputs are at
-audit/convergence-2026-04-25.json. I have not independently verified each
-subagent's claim — flag if you want me to spot-check.
-```
-
-## What just happened
-
-- **5 surface tells caught** in ~0ms — zero LLM cost.
-- Every numeric claim now carries **evidence**.
-- *"Agents converged"* became an honest hedge with a pointer to the audit file and an offer to verify.
-- *"Comprehensive"* and *"production-ready"* — gone. Fluency tells with no measurable referent.
-
-The repaired draft is longer. It ships safer. The user can act on it without doing the verification work themselves.
-
-**This is what `hermeneutic` does on every draft, every time, by default.**
+The optional Python `Router` can call a caller-supplied critic and repairer, but that behavior must be configured explicitly. It is not the default CLI path, and v0.1.7 has not measured whether model-generated repairs reduce later misinterpretation.

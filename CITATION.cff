@@ -1,16 +1,17 @@
 cff-version: 1.2.0
 message: "If you use hermeneutic, please cite it as below."
-title: "hermeneutic: an evidence-first drift gate that mines AI chat-log corrections to gate the next response"
+title: "hermeneutic: local correction evidence, retrieval, and deterministic English drift checks"
 abstract: >-
-  hermeneutic is an evidence-first drift gate that catches AI response drift
-  before it ships by mining chat logs for the corrections a user already made,
-  classifying the drift, and running those patterns as a three-stage pre-flight
-  gate on outgoing drafts (zero-LLM regex, optional hermes-rubric scoring, then a
-  bring-your-own-calibration LLM critic, PressureProbe). It targets silent failure
-  modes that aggregate evals and observability miss.
+  hermeneutic is a local-first Python toolkit that mines correction triples from
+  supported AI chat logs, optionally retrieves similar prior corrections through
+  a local Ollama-backed compiler, and runs eight fixed deterministic English
+  surface checks on outgoing drafts. A separate programmable Python Router can
+  compose optional external rubric, model-critic, and repair callables. The tool
+  is a review aid and reliability floor, not proof of correctness. Historical
+  corpus and retrieval measurements are single-user, and downstream effectiveness
+  has not been measured.
 type: software
 version: "0.1.7"
-date-released: 2026-07-14
 authors:
   - family-names: "Bosch Rodriguez"
     given-names: "Rolando"

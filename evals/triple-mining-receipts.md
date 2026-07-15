@@ -25,7 +25,7 @@ The miner walks each session JSONL, finds user turns matching a correction-patte
 
 ## Result
 
-**326 triples** extracted (this 2026-04-25 derivation run; a later re-mine of the same corpus with reader improvements yields 346 and is the corpus the retrieval evals use). Bucketed by surface pattern in `cli.py`:
+**326 triples** extracted in this 2026-04-25 derivation run. The retrieval evals use a separate later frozen 346-triple corpus; the available aggregate receipts do not establish an identical input window or attribute the 20-row difference to one cause. Bucketed by surface pattern in `cli.py`:
 
 | Bucket | N | % | Mapped to risk rule |
 |---|---|---|---|
@@ -37,11 +37,11 @@ The miner walks each session JSONL, finds user turns matching a correction-patte
 | tool avoidance | 2 | 1% | (no rule — domain-specific) |
 | (unbucketed) | 112 | 34% | (open question for v0.2) |
 
-6 regex rules in v0.1 (`completion_with_number`, `completion_with_all_quantifier`, `subagent_passthrough`, `unhedged_certainty`, `scope_expansion`, `fluent_summary_no_evidence`) cover ~65% of all observed corrections.
+The original receipt mapped six rule concepts to correction categories and estimated that those categories represented about 65% of the 326 corrections. That was not a direct execution of the regex gate over every prior assistant reply. The current eight-rule gate's direct run is reported separately in [`gate-coverage/`](gate-coverage/): 115/346 (33.24%) on the separate later frozen corpus, with no held-out claim.
 
 ## What this evaluates
 
-This is **not** a held-out test of detection accuracy on a labeled benchmark. It is the empirical-derivation receipt: every rule in `gates/regex.py` traces back to a cluster of corrections in this corpus. Future versions should add:
+This is **not** a held-out test of detection accuracy on a labeled benchmark. It is the historical empirical-derivation receipt for the original rule concepts. Two later rule shapes have direct unit evidence but are not attributed to this 326-run. Future versions should add:
 
 - A held-out validation split (mine new sessions, check what fraction the existing rules catch).
 - False-positive rate measurement (what fraction of *non-correction* turns trigger a rule?).
@@ -62,4 +62,4 @@ The gate also catches its own announcement language. Try it:
 echo "Done — built 4 modules and shipped 26 tests, all green." | hermeneutic gate
 ```
 
-Expect 4 high-severity hits: two `completion_with_number`, one `completion_with_all_quantifier`, one `subagent_passthrough` (if the draft mentions agents). This is the meta-test — if the gate doesn't flag drift-shaped *completion text from this very repo*, the rules are too loose.
+The current v0.1.7 gate reports five high-severity hits: two `completion_with_number`, one `completion_with_all_quantifier`, and two `number_then_completion`. This is a deterministic smoke example, not an accuracy benchmark.

@@ -1,4 +1,4 @@
-"""hermeneutic — mine your AI chat logs for corrections, gate the next response."""
+"""Local correction mining, optional retrieval, and fixed English drift checks."""
 
 from hermeneutic.gates.regex import RiskHit, risk_score
 from hermeneutic.gates.twin import LLMJudge, PressureProbe, TwinVerdict

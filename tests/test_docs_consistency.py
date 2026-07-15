@@ -143,9 +143,9 @@ def test_readme_and_changelog_agree_with_each_other():
     )
 
 
-def test_cline_recipe_uses_declared_python_and_surfaces_all_risk_levels():
-    recipe = (REPO_ROOT / "integrations" / "cline.md").read_text(encoding="utf-8")
-    assert "jq -r" not in recipe
-    assert "python3 -c" in recipe
-    assert 'case "$verdict" in' in recipe
-    assert "RISK*)" in recipe and "PASS*)" in recipe
+def test_cline_known_bad_recipe_is_not_published_as_ready():
+    document = (REPO_ROOT / "integrations" / "cline.md").read_text(encoding="utf-8")
+    assert "Maturity: `REMOVE`" in document
+    assert "tool_name" in document and "obsolete" in document
+    assert 'case "$verdict" in' not in document
+    assert "RISK*)" not in document
