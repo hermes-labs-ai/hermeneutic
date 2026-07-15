@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Codex plugin manifest matches the schema the Codex plugin validator
   accepts (no top-level `hooks` field; complete `interface` object) — the
   plugin previously failed validation at install time.
-- 20 new tests; **130 tests** total.
+- 21 new tests; **131 tests** total.
 - `gate` input failures are loud and clean: a missing `--draft` file or
   non-UTF-8 input prints a one-line ERROR and exits 2 instead of dumping a
   traceback. Log readers tolerate stray non-UTF-8 bytes (replacement

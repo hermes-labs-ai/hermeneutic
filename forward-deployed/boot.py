@@ -69,6 +69,13 @@ def _verdict(steps: list[dict]) -> str:
     return "fits-as-shipped" if all(step["status"] in allowed for step in steps) else "adaptation-needed"
 
 
+def _session_dir_status(session_dir: Path | None, explicit: bool) -> str:
+    """Distinguish an optional absent default from a mistyped explicit path."""
+    if session_dir is not None and session_dir.is_dir():
+        return "available"
+    return "invalid" if explicit else "unavailable"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--sessions", default=None,
@@ -131,7 +138,8 @@ def main() -> int:
     default_sessions, default_glob = PROBE_DEFAULTS[args.format]
     sess = Path(args.sessions).expanduser() if args.sessions else default_sessions
     probe_glob = args.glob or default_glob
-    if sess is not None and sess.is_dir():
+    session_status = _session_dir_status(sess, explicit=bool(args.sessions))
+    if session_status == "available":
         if not any(sess.glob(probe_glob)):
             record_unexercised("harvest_probe", f"no {args.format} logs matched; real-log probe skipped")
         else:
@@ -143,6 +151,12 @@ def main() -> int:
                 n = int(m.group(1)) if m else 0
                 record("harvest_probe", rc == 0 and bool(m),
                        f"{n} events from {args.format} logs" if m else f"exit {rc}: {out[-300:]}")
+    elif session_status == "invalid":
+        record(
+            "harvest_probe",
+            False,
+            "explicit --sessions value is not an existing directory",
+        )
     else:
         record_unexercised(
             "harvest_probe",

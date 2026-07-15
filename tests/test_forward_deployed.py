@@ -60,6 +60,16 @@ def test_boot_allows_unexercised_real_log_probe():
     assert boot._verdict([{"status": "FAIL"}]) == "adaptation-needed"
 
 
+def test_boot_rejects_missing_explicit_session_directory(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("fdh_boot_sessions", BOOT)
+    boot = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(boot)
+    missing = tmp_path / "missing"
+    assert boot._session_dir_status(missing, explicit=True) == "invalid"
+    assert boot._session_dir_status(missing, explicit=False) == "unavailable"
+
+
 def test_gate_reaches_a_verdict():
     p = subprocess.run([sys.executable, str(REPO / "forward-deployed" / "gate.py")],
                        capture_output=True, text=True)

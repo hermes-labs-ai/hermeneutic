@@ -4,12 +4,12 @@ hermeneutic mines your chat logs for the moments you corrected your AI, turns th
 
 **Your AI overclaims. You correct it. Now your AI gets gated.**
 
-> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming - the dominant drift mode. 8 regex rules ship; the original 6 covered ~65% of that distribution (8-rule coverage not yet re-measured). **130 tests** covering the gate, the compile layer, the audit log, the harvester, the forward-deployed harness, the plugin gate scripts, and a doc-consistency CI check. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
+> Mined 326 corrections across 1,423 chat sessions. 44% were post-completion overclaiming - the dominant drift mode. 8 regex rules ship; the original 6 covered ~65% of that distribution (8-rule coverage not yet re-measured). **131 tests** covering the gate, the compile layer, the audit log, the harvester, the forward-deployed harness, the plugin gate scripts, and a doc-consistency CI check. Three stages, fail-cheap to fail-expensive. Free, MIT, zero dependencies.
 
 > **Validation status (measured 2026-04-27):** bucket-aware retrieval lifts leave-one-out recall from 56.7% → **83.7%** on n=104 trials, including 50%/75%/33%/33% on the four rare buckets that the global-top-K baseline missed entirely. In-corpus prompts trigger compile 98/100 vs synthetic-random 7/30 (Fisher's exact p=2.6e-17). Trade-off: 3× wider preamble (1.4 → 4.2 buckets per query). That validates hermeneutic **as a retrieval system** (frozen embedding-index snapshot; see the Reproducibility note under Eval evidence). Effectiveness (does compile actually reduce LLM misinterpretation?) is the pre-registered v1.0 milestone — **not yet measured**.
 
 [![CI](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml)
-[![tests](https://img.shields.io/badge/tests-130%20passing-brightgreen)](tests/)
+[![tests](https://img.shields.io/badge/tests-131%20passing-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Hermes Labs](https://img.shields.io/badge/by-Hermes%20Labs-black)](https://hermes-labs.ai)
