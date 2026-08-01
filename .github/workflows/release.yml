@@ -20,7 +20,7 @@ jobs:
       - name: Smoke-test the wheel
         run: |
           python -m pip install dist/*.whl
-          hermeneutic --help
+          bash scripts/smoke-installed-cli.sh
       - name: Test the exact source distribution
         shell: bash
         run: |

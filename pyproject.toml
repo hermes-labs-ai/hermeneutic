@@ -74,6 +74,7 @@ include = [
     "evals/",
     "forward-deployed/",
     "integrations/",
+    "scripts/",
     "claude-plugin/",
     "codex-plugin/",
     ".zenodo.json",
