@@ -32,6 +32,9 @@ python3 -m pip install -e ".[dev]"
 ```bash
 python3 -m ruff check .
 python3 -m pytest -ra
+python3 -m build
+python3 -m pip install --force-reinstall dist/*.whl
+bash scripts/smoke-installed-cli.sh
 ```
 
 CI runs the same commands on Python 3.10–3.13.
