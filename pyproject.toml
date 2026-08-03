@@ -47,6 +47,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
+    "build>=1.2",
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "ruff>=0.5",
@@ -74,6 +75,7 @@ include = [
     "evals/",
     "forward-deployed/",
     "integrations/",
+    "scripts/",
     "claude-plugin/",
     "codex-plugin/",
     ".zenodo.json",
