@@ -1,5 +1,5 @@
 # vhs tape — hermeneutic 30-second demo (renders to docs/demo.gif)
-# Re-record after publication: install hermeneutic==0.1.7 in a venv, put it on PATH, then `vhs demo.tape`
+# Re-record after publication: install hermeneutic==0.1.8 in a venv, put it on PATH, then `vhs demo.tape`
 Output docs/demo.gif
 Set FontSize 15
 Set Width 900

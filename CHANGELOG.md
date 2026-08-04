@@ -2,7 +2,20 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.7] — Unreleased
+## [0.1.8] — 2026-08-04
+
+### Changed
+
+- Exercise the installed wheel and exact source distribution in CI and the
+  release workflow before publication.
+- Update GitHub Actions maintenance versions and add the package Documentation
+  link.
+- Pin release actions immutably and reject release tags that do not match the
+  package version.
+
+No gate rule, mining, retrieval, Router, CLI, or integration behavior changed.
+
+## [0.1.7] — 2026-07-15
 
 ### Publication truth corrections
 

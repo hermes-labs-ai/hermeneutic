@@ -5,7 +5,7 @@ from hermeneutic.gates.twin import LLMJudge, PressureProbe, TwinVerdict
 from hermeneutic.router import GateResult, Router
 from hermeneutic.triples import Triple, mine_dir, mine_file
 
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 
 __all__ = [
     "GateResult",
