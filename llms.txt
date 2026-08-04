@@ -1,4 +1,4 @@
-# hermeneutic v0.1.7
+# hermeneutic v0.1.8
 
 Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
@@ -10,16 +10,16 @@ Mining personalizes the corpus and optional retrieval. It does not generate or m
 
 ## Exact installation
 
-After the v0.1.7 PyPI release is verified:
+Install the current release from PyPI:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.7'
+python3 -m pip install 'hermeneutic==0.1.8'
 ```
 
 For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
 ```bash
-git clone --branch v0.1.7 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+git clone --branch v0.1.8 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
 cd hermeneutic
 python3 -m pip install .
 ```

@@ -6,6 +6,7 @@ Security fixes target the current maintained 0.1.x line.
 
 | Version | Supported |
 |---------|-----------|
+| 0.1.8   | ✅        |
 | 0.1.7   | ✅        |
 | < 0.1.7 | ❌        |
 
