@@ -58,6 +58,7 @@ hermeneutic = "hermeneutic.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/hermes-labs-ai/hermeneutic"
+Documentation = "https://github.com/hermes-labs-ai/hermeneutic#readme"
 Repository = "https://github.com/hermes-labs-ai/hermeneutic"
 Issues = "https://github.com/hermes-labs-ai/hermeneutic/issues"
 Changelog = "https://github.com/hermes-labs-ai/hermeneutic/blob/main/CHANGELOG.md"
