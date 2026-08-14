@@ -6,6 +6,6 @@
   "author": { "name": "Rolando Bosch", "email": "roli@hermes-labs.ai", "url": "https://github.com/hermes-labs-ai" },
   "homepage": "https://github.com/hermes-labs-ai/hermeneutic",
   "repository": "https://github.com/hermes-labs-ai/hermeneutic",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": ["drift-detection", "ai-audit", "pre-flight-gate", "correction-mining"]
 }

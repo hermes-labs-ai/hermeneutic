@@ -5,7 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/v/hermeneutic.svg)](https://pypi.org/project/hermeneutic/)
 [![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/)
 [![CI](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-2ea44f)](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
 
 Many AI workflow failures are not failures of model capability. They are failures of interpretation:
 
@@ -390,7 +390,7 @@ Do not use Hermeneutic as a security boundary, factuality guarantee, moderation 
 - [Security](https://github.com/hermes-labs-ai/hermeneutic/blob/main/SECURITY.md)
 - [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/main/CONTRIBUTING.md)
 - [Citation metadata](https://github.com/hermes-labs-ai/hermeneutic/blob/main/CITATION.cff)
-- [MIT License](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
+- [Apache License 2.0](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
 
 For CLI reference:
 

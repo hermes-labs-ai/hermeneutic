@@ -78,7 +78,7 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the MIT License (see [LICENSE](LICENSE)).
+By contributing, you agree that your contributions are licensed under the Apache License 2.0 (see [LICENSE](LICENSE)).
 
 ## Pull request flow
 

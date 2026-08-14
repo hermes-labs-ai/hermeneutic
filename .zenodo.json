@@ -16,7 +16,7 @@
     "pre-flight gate",
     "post-completion overclaiming"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "related_identifiers": [
     { "identifier": "10.5281/zenodo.21652316", "relation": "isReferencedBy", "scheme": "doi" }
   ]

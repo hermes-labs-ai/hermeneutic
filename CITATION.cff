@@ -18,7 +18,7 @@ authors:
     orcid: "https://orcid.org/0009-0005-4896-1112"
     affiliation: "Hermes Labs"
     email: roli@hermes-labs.ai
-license: MIT
+license: Apache-2.0
 repository-code: "https://github.com/hermes-labs-ai/hermeneutic"
 url: "https://hermes-labs.ai"
 keywords:
