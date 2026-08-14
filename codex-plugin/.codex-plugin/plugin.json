@@ -4,7 +4,7 @@
   "description": "Advisory-only Stop-hook drift gate for Codex — regex-only, zero-LLM, no network.",
   "author": { "name": "Rolando Bosch", "email": "roli@hermes-labs.ai" },
   "repository": "https://github.com/hermes-labs-ai/hermeneutic",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "interface": {
     "displayName": "hermeneutic gate",
     "shortDescription": "Advises when fixed English drift patterns match a completed turn.",

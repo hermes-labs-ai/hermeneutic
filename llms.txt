@@ -63,5 +63,5 @@ Core mining, bucketing, gate, harvest, review, and promotion are local and make 
 - Documentation: README.md
 - Citation: CITATION.cff
 - Security: SECURITY.md
-- License: MIT
+- License: Apache-2.0
 - Public display author: Rolando Bosch, Hermes Labs
