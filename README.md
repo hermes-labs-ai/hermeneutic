@@ -46,6 +46,13 @@ PASS or RISK
 
 The memory layer adapts to your history. The gate remains fixed and transparent.
 
+## Related research
+
+[*Precise Records, Unstable Meanings*](https://doi.org/10.5281/zenodo.21652316)
+examined a two-day stream of Hermeneutic v0.1.7 verdicts as unvalidated
+instrument outputs. The study did not evaluate Hermeneutic's correction mining,
+retrieval, integrations, or downstream effectiveness.
+
 ## See the full loop
 
 ### 1. Carry prior meaning forward

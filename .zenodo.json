@@ -18,6 +18,6 @@
   ],
   "license": "MIT",
   "related_identifiers": [
-    { "identifier": "10.5281/zenodo.20471023", "relation": "isVersionOf", "scheme": "doi" }
+    { "identifier": "10.5281/zenodo.21652316", "relation": "isReferencedBy", "scheme": "doi" }
   ]
 }
