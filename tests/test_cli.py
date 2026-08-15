@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from hermeneutic.cli import main
 
 
@@ -115,6 +117,62 @@ def test_cli_gate_non_utf8_input_errors_cleanly(capsys, tmp_path):
     assert rc == 2
     err = capsys.readouterr().err
     assert "ERROR" in err and "UTF-8" in err
+
+
+@pytest.mark.parametrize(
+    ("payload", "expected_detail"),
+    [
+        (
+            json.dumps({
+                "session": "s1",
+                "orig_prompt": "build it",
+                "prior_assistant": "done",
+                "user_correction": "not yet",
+                "next_assistant": "checking",
+            }),
+            "line 1: missing required field 'timestamp'",
+        ),
+        (
+            '{"session":"s1","timestamp":}',
+            "line 1: invalid JSON",
+        ),
+    ],
+)
+def test_cli_compile_index_reports_malformed_triples(
+    payload, expected_detail, monkeypatch, capsys, tmp_path,
+):
+    monkeypatch.setenv("HERMENEUTIC_HOME", str(tmp_path / "home"))
+    triples = tmp_path / "triples.jsonl"
+    triples.write_text(payload + "\n")
+
+    rc = main(["compile-index", "--triples", str(triples)])
+
+    assert rc == 2
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "ERROR: malformed triples file" in captured.err
+    assert expected_detail in captured.err
+    assert "Traceback" not in captured.err
+
+
+def test_cli_compile_index_accepts_opaque_timestamp_metadata(monkeypatch, capsys, tmp_path):
+    monkeypatch.setenv("HERMENEUTIC_HOME", str(tmp_path / "home"))
+    triples = tmp_path / "triples.jsonl"
+    triples.write_text(json.dumps({
+        "session": "s1",
+        "timestamp": 123,
+        "orig_prompt": "",
+        "prior_assistant": "done",
+        "user_correction": "not yet",
+        "next_assistant": "checking",
+    }) + "\n")
+
+    rc = main(["compile-index", "--triples", str(triples)])
+
+    assert rc == 0
+    captured = capsys.readouterr()
+    assert "state: no-eligible-triples" in captured.out
+    assert captured.err == ""
 
 
 def test_cli_mine_accepts_multiple_directories(tmp_path):
