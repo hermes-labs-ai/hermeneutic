@@ -186,6 +186,10 @@ def _cmd_compile_index(args: argparse.Namespace) -> int:
         return 1
     try:
         res = hcompile.compile_index(triples_path, home=hcompile.home_dir())
+    except hcompile.MalformedTriplesError as e:
+        print(f"ERROR: malformed triples file {triples_path}: {e}", file=sys.stderr)
+        print("Fix the reported JSONL row or re-run `hermeneutic mine` to rebuild the corpus.", file=sys.stderr)
+        return 2
     except hcompile.OllamaUnavailable as e:
         print(f"ERROR: {e}", file=sys.stderr)
         print("Start Ollama and ensure `nomic-embed-text` is pulled, then re-run.", file=sys.stderr)

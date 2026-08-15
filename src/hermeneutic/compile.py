@@ -77,6 +77,15 @@ class OllamaUnavailable(RuntimeError):
     pass
 
 
+class MalformedTriplesError(ValueError):
+    """A triples JSONL row could not be decoded into the corpus schema."""
+
+    def __init__(self, line_number: int, detail: str):
+        self.line_number = line_number
+        self.detail = detail
+        super().__init__(f"line {line_number}: {detail}")
+
+
 def ollama_embed(text: str, *, url: str = DEFAULT_OLLAMA_URL,
                  model: str = DEFAULT_EMBED_MODEL, timeout: float = 10.0,
                  keep_alive: str = "30m") -> list[float]:
@@ -175,6 +184,48 @@ class CompileIndexResult:
     model: str
 
 
+def _load_triples(triples_path: Path) -> list[Triple]:
+    required_fields = (
+        "session", "timestamp", "prior_assistant", "user_correction", "next_assistant",
+    )
+    allowed_fields = {*required_fields, "orig_prompt"}
+    triples: list[Triple] = []
+    for line_number, line in enumerate(triples_path.read_text().splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            raw = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise MalformedTriplesError(
+                line_number,
+                f"invalid JSON at column {exc.colno}: {exc.msg}",
+            ) from None
+        if not isinstance(raw, dict):
+            raise MalformedTriplesError(line_number, "expected a JSON object")
+        missing = [field for field in required_fields if field not in raw]
+        if missing:
+            label = "field" if len(missing) == 1 else "fields"
+            names = ", ".join(repr(field) for field in missing)
+            raise MalformedTriplesError(line_number, f"missing required {label} {names}")
+        unexpected = sorted(set(raw) - allowed_fields)
+        if unexpected:
+            label = "field" if len(unexpected) == 1 else "fields"
+            names = ", ".join(repr(field) for field in unexpected)
+            raise MalformedTriplesError(line_number, f"unexpected {label} {names}")
+        # Timestamp is provenance metadata and is not consumed by compilation;
+        # legacy producers may emit numbers or nulls. Keep requiring the field,
+        # but validate only text that the index reads.
+        for field in allowed_fields - {"timestamp"}:
+            if field in raw and not isinstance(raw[field], str):
+                raise MalformedTriplesError(
+                    line_number,
+                    f"field {field!r} must be a string, got {type(raw[field]).__name__}",
+                )
+        raw.setdefault("orig_prompt", "")
+        triples.append(Triple(**raw))
+    return triples
+
+
 def compile_index(triples_path: Path, *, home: Path = DEFAULT_HOME,
                   embedder: Embedder | None = None,
                   model: str = DEFAULT_EMBED_MODEL) -> CompileIndexResult:
@@ -185,7 +236,7 @@ def compile_index(triples_path: Path, *, home: Path = DEFAULT_HOME,
 
     sha = _sha256_file(triples_path)
     existing = load_index(home)
-    triples = [Triple.from_json(line) for line in triples_path.read_text().splitlines() if line.strip()]
+    triples = _load_triples(triples_path)
     eligible = [(i, t) for i, t in enumerate(triples) if t.orig_prompt.strip()]
     n_legacy = len(triples) - len(eligible)
 
