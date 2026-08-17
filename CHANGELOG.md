@@ -2,6 +2,14 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9] — 2026-08-17
+
+### Changed
+
+- Advance release metadata for the Apache-2.0 successor release.
+
+No gate rule, mining, retrieval, Router, CLI, or integration behavior changed.
+
 ## [0.1.8] — 2026-08-04
 
 ### Changed
