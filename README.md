@@ -89,7 +89,7 @@ When a later prompt resembles that situation:
 Would this retrieval strategy work for other harnesses too, or is it customized to ours? Can we say it is generic?
 ```
 
-Hermeneutic memory retrieves the relevant prior lesson as advisory context. This is the unedited `hermeneutic compile` output for that prompt against the author’s 346-correction corpus — the correction above is the highest-similarity match behind the first line:
+Hermeneutic memory retrieves the relevant prior lesson as advisory context. This is the unedited `hermeneutic compile` output for that prompt against the author’s 346-correction corpus, captured with v0.1.8 (current output additionally appends per-bullet `[evidence: triple-id-N]` markers) — the correction above is the highest-similarity match behind the first line:
 
 ```text
 [hermeneutic compile-preamble — derived from 5 past corrections on similar prompts]
@@ -226,9 +226,11 @@ When relevant matches clear the configured threshold, Hermeneutic emits determin
 
 ```text
 [hermeneutic compile-preamble — derived from 2 past corrections on similar prompts]
-- 2 prior steer(s) in bucket `over_completion`: default to citing evidence (file:line, command output) when claiming completion
+- 2 prior steer(s) in bucket `over_completion`: default to citing evidence (file:line, command output) when claiming completion [evidence: triple-id-3] [evidence: triple-id-7]
 [end preamble]
 ```
+
+Each `[evidence: triple-id-N]` marker cites the one-based nonblank row in the triples JSONL file that supports its bullet, in ascending order without duplicates, so every advice claim traces back to a stored correction. Citation granularity is the advice bullet; markers never cite rows absent from the current corpus file.
 
 Ollama produces embeddings. It does not generate the guidance text.
 
