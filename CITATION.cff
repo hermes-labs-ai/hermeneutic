@@ -11,7 +11,7 @@ abstract: >-
   corpus and retrieval measurements are single-user, and downstream effectiveness
   has not been measured.
 type: software
-version: "0.1.8"
+version: "0.1.9"
 authors:
   - family-names: "Bosch Rodriguez"
     given-names: "Rolando"
