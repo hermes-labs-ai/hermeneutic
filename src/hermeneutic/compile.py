@@ -277,6 +277,7 @@ class CompileMatch:
     similarity: float
     bucket: str
     advice: str
+    triple_id: int  # one-based nonblank JSONL row number in the corpus file
 
 
 def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME,
@@ -295,6 +296,15 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
 
     Returns empty string if no matches clear the threshold or index doesn't exist.
 
+    Each emitted advice bullet carries one `[evidence: triple-id-N]` marker per
+    supporting retrieved match, where N is the one-based nonblank JSONL row
+    number of that match's triple in `triples_path`. Markers only cite rows
+    present in the loaded corpus; if the corpus content no longer matches the
+    index's recorded triples_sha256 the whole compile is skipped (re-index
+    needed), and stale index entries pointing outside the corpus are dropped.
+    Bullet-level citation is the granularity of this slice — no sentence
+    segmentation is performed.
+
     Why bucket-aware: a global top-K can let a common correction category crowd
     out rarer categories. Current and historical aggregate measurements, with
     their different default profiles and evidence boundaries, are documented in
@@ -310,6 +320,10 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
         return ""
 
     triples_path = Path(triples_path)
+    if idx.triples_sha256 != _sha256_file(triples_path):
+        # Corpus changed since indexing — positional triple_indices may resolve
+        # to the wrong rows even when in bounds; silent skip until re-index.
+        return ""
     triples = [Triple.from_json(line) for line in triples_path.read_text().splitlines() if line.strip()]
 
     embed = embedder or (lambda t: ollama_embed(t, model=model))
@@ -326,7 +340,7 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
         sim = _cosine(q, vec)
         if sim < threshold:
             continue
-        if ti >= len(triples):
+        if ti < 0 or ti >= len(triples):
             continue  # triples file changed between index + this call
         bucket = bucket_for(triples[ti].user_correction)
         if bucket is None:
@@ -334,6 +348,7 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
         by_bucket.setdefault(bucket[0], []).append(CompileMatch(
             triple=triples[ti], similarity=sim,
             bucket=bucket[0], advice=bucket[1],
+            triple_id=ti + 1,
         ))
 
     # Bucket-aware: take top-n_per_bucket within each bucket, then global cap k
@@ -350,14 +365,23 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
 
 
 def _synthesize_preamble(matches: list[CompileMatch]) -> str:
-    """Group matches by bucket, emit a deterministic template preamble."""
+    """Group matches by bucket, emit a deterministic template preamble.
+
+    Each bucket bullet keeps its advice text and appends one
+    `[evidence: triple-id-N]` marker per supporting corpus row, in ascending
+    numeric order without duplicates.
+    """
     bucket_counts = Counter(m.bucket for m in matches)
     bucket_advice = {m.bucket: m.advice for m in matches}
+    bucket_ids: dict[str, set[int]] = {}
+    for m in matches:
+        bucket_ids.setdefault(m.bucket, set()).add(m.triple_id)
     lines = [
         f"[hermeneutic compile-preamble — derived from {len(matches)} past corrections on similar prompts]"
     ]
     for bucket, count in sorted(bucket_counts.items(), key=lambda x: (-x[1], x[0])):
-        lines.append(f"- {count} prior steer(s) in bucket `{bucket}`: {bucket_advice[bucket]}")
+        markers = " ".join(f"[evidence: triple-id-{n}]" for n in sorted(bucket_ids[bucket]))
+        lines.append(f"- {count} prior steer(s) in bucket `{bucket}`: {bucket_advice[bucket]} {markers}")
     lines.append("[end preamble]")
     return "\n".join(lines)
 

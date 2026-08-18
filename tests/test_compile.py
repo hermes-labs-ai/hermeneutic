@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import io
 import json
+import re
 import runpy
 import subprocess
 import sys
@@ -192,6 +193,196 @@ def test_e2e_mine_index_compile_on_fixture(tmp_path):
                                   threshold=0.0, embedder=_seeded_embedder())
     assert "compile-preamble" in out
     assert "over_completion" in out  # the fixture correction is "wait, are you sure?"
+
+
+MARKER_RX = re.compile(r"\[evidence: triple-id-(\d+)\]")
+BULLET_RX = re.compile(r"^- (\d+) prior steer\(s\) in bucket `([^`]+)`: (.+)$")
+
+
+def test_e2e_evidence_markers_resolve_to_exact_corpus_rows(fixture_corpus, tmp_path):
+    """E2E: write corpus → index → compile → every marker resolves to its row.
+
+    Every advice bullet must carry `[evidence: triple-id-N]` markers, and each
+    N must be the one-based nonblank JSONL row number of a corpus Triple whose
+    user_correction routes to that bullet's bucket.
+    """
+    home = tmp_path / "home"
+    hcompile.compile_index(fixture_corpus, home=home, embedder=_seeded_embedder())
+    out = hcompile.compile_prompt("build me a thing", fixture_corpus,
+                                  home=home, k=5, threshold=0.0,
+                                  embedder=_seeded_embedder())
+    corpus_rows = [Triple.from_json(line) for line in fixture_corpus.read_text().splitlines() if line.strip()]
+    bullets = [BULLET_RX.match(line) for line in out.splitlines() if line.startswith("- ")]
+    assert bullets and all(bullets)
+
+    seen_ids: list[int] = []
+    for bullet in bullets:
+        bucket, tail = bullet.group(2), bullet.group(3)
+        ids = [int(n) for n in MARKER_RX.findall(tail)]
+        assert ids, f"bullet lacks evidence markers: {bullet.group(0)}"
+        assert ids == sorted(set(ids)), f"markers not ascending/deduplicated: {ids}"
+        for n in ids:
+            assert 1 <= n <= len(corpus_rows), f"triple-id-{n} does not resolve to a loaded corpus row"
+            supporting = corpus_rows[n - 1]
+            resolved = hcompile.bucket_for(supporting.user_correction)
+            assert resolved is not None
+            assert resolved[0] == bucket, (
+                f"triple-id-{n} routes to bucket {resolved[0]!r}, "
+                f"but is cited under {bucket!r}"
+            )
+        seen_ids += ids
+
+    # No markers outside advice bullets (header/footer stay marker-free).
+    assert sorted(seen_ids) == sorted(int(n) for n in MARKER_RX.findall(out))
+    # The fixture retrieves every row (threshold 0, distinct buckets), so the
+    # emitted bucket→ids mapping must be exactly the corpus's own routing.
+    expected: dict[str, list[int]] = {}
+    for row_number, triple in enumerate(corpus_rows, start=1):
+        expected.setdefault(hcompile.bucket_for(triple.user_correction)[0], []).append(row_number)
+    got = {b.group(2): [int(n) for n in MARKER_RX.findall(b.group(3))] for b in bullets}
+    assert got == expected
+
+
+def test_markers_ascend_by_row_number_for_multiple_same_bucket_matches(tmp_path):
+    """Two same-bucket matches cite both rows in ascending numeric order,
+    even when the higher row number is the higher-similarity match."""
+    triples_path = tmp_path / "triples.jsonl"
+    _write_triples(triples_path, [
+        {"session": "s1", "timestamp": "t1", "orig_prompt": "build me a thingy",
+         "prior_assistant": "Done", "user_correction": "are you sure about that?",
+         "next_assistant": "checking"},
+        {"session": "s2", "timestamp": "t2", "orig_prompt": "refactor everything please",
+         "prior_assistant": "Sure", "user_correction": "too much, don't add extra refactors",
+         "next_assistant": "narrowed"},
+        {"session": "s3", "timestamp": "t3", "orig_prompt": "build me a thing",
+         "prior_assistant": "Done", "user_correction": "wait, are you really done? prove it",
+         "next_assistant": "verifying"},
+    ])
+    home = tmp_path / "home"
+    hcompile.compile_index(triples_path, home=home, embedder=_seeded_embedder())
+    out = hcompile.compile_prompt("build me a thing", triples_path,
+                                  home=home, k=5, threshold=0.0,
+                                  embedder=_seeded_embedder())
+    over_completion = [line for line in out.splitlines() if "`over_completion`" in line]
+    assert len(over_completion) == 1
+    assert over_completion[0].endswith("[evidence: triple-id-1] [evidence: triple-id-3]")
+    assert MARKER_RX.findall(over_completion[0]) == ["1", "3"]
+
+
+def test_duplicate_index_entries_do_not_duplicate_markers(tmp_path):
+    """A corrupt index citing the same corpus row twice emits one marker."""
+    triples_path = tmp_path / "triples.jsonl"
+    _write_triples(triples_path, [
+        {"session": "s1", "timestamp": "t1", "orig_prompt": "build me a thing",
+         "prior_assistant": "Done", "user_correction": "wait, are you sure?",
+         "next_assistant": "checking"},
+    ])
+    emb = _seeded_embedder()
+    vec = hcompile._normalize(emb("build me a thing"))
+    hcompile.save_index(hcompile.EmbedIndex(
+        triples_sha256=hcompile._sha256_file(triples_path),
+        model=hcompile.DEFAULT_EMBED_MODEL,
+        dim=len(vec), vectors=[vec, vec], triple_indices=[0, 0],
+    ), home=tmp_path / "home")
+    out = hcompile.compile_prompt("build me a thing", triples_path,
+                                  home=tmp_path / "home", threshold=0.0, embedder=emb)
+    assert "over_completion" in out
+    assert MARKER_RX.findall(out) == ["1"]
+
+
+def test_stale_out_of_range_index_entries_cannot_generate_markers(fixture_corpus, tmp_path):
+    """Out-of-range index entries must never be cited, even when the hash matches.
+
+    Simulates a corrupt index whose triples_sha256 agrees with the corpus but
+    whose triple_indices point past it: truncate the corpus, then rewrite the
+    stored hash to match, so only the bounds check stands between a stale
+    entry and a fabricated citation.
+    """
+    home = tmp_path / "home"
+    hcompile.compile_index(fixture_corpus, home=home, embedder=_seeded_embedder())
+    surviving = [line for line in fixture_corpus.read_text().splitlines() if line.strip()][:2]
+    fixture_corpus.write_text("\n".join(surviving) + "\n")
+    idx = hcompile.load_index(home)
+    idx.triples_sha256 = hcompile._sha256_file(fixture_corpus)
+    hcompile.save_index(idx, home=home)
+    out = hcompile.compile_prompt("build me a thing", fixture_corpus,
+                                  home=home, k=5, threshold=0.0,
+                                  embedder=_seeded_embedder())
+    ids = [int(n) for n in MARKER_RX.findall(out)]
+    assert ids, "surviving rows must still be cited"
+    assert all(1 <= n <= 2 for n in ids)
+    # Buckets only reachable via the removed rows must not appear at all.
+    assert "scope_creep" not in out
+    assert "fabrication" not in out
+    assert "missed_constraint" not in out
+
+
+def test_compile_returns_empty_when_corpus_reordered_at_same_length(tmp_path):
+    """Reordering corpus rows without changing file length must not misattribute.
+
+    Same-length rows defeat the index-bounds check: every stale triple_index
+    still resolves, but to the wrong current Triple. The compile must detect
+    the content change (triples_sha256 mismatch) and emit nothing rather than
+    cite advice and evidence rows under the wrong correction.
+    """
+    row_a = {"session": "s1", "timestamp": "t1", "orig_prompt": "build me a widget",
+             "prior_assistant": "Done", "user_correction": "wait, are you sure?",
+             "next_assistant": "checking"}
+    row_b = {"session": "s2", "timestamp": "t2", "orig_prompt": "fix the login bug",
+             "prior_assistant": "Sure", "user_correction": "too much, simplify!",
+             "next_assistant": "narrowed"}
+    assert len(json.dumps(row_a)) == len(json.dumps(row_b))
+    triples_path = tmp_path / "triples.jsonl"
+    _write_triples(triples_path, [row_a, row_b])
+    home = tmp_path / "home"
+    hcompile.compile_index(triples_path, home=home, embedder=_seeded_embedder())
+    original_size = triples_path.stat().st_size
+
+    _write_triples(triples_path, [row_b, row_a])
+    assert triples_path.stat().st_size == original_size
+    out = hcompile.compile_prompt("build me a widget", triples_path,
+                                  home=home, threshold=0.0, embedder=_seeded_embedder())
+    assert out == ""
+
+
+def test_negative_index_entry_generates_no_bullet_or_marker(tmp_path):
+    """A corrupt negative index entry must not wrap around into a real row."""
+    triples_path = tmp_path / "triples.jsonl"
+    _write_triples(triples_path, [
+        {"session": "s1", "timestamp": "t1", "orig_prompt": "build me a thing",
+         "prior_assistant": "Done", "user_correction": "wait, are you sure?",
+         "next_assistant": "checking"},
+    ])
+    emb = _seeded_embedder()
+    vec = hcompile._normalize(emb("build me a thing"))
+    hcompile.save_index(hcompile.EmbedIndex(
+        triples_sha256=hcompile._sha256_file(triples_path),
+        model=hcompile.DEFAULT_EMBED_MODEL,
+        dim=len(vec), vectors=[vec], triple_indices=[-1],
+    ), home=tmp_path / "home")
+    out = hcompile.compile_prompt("build me a thing", triples_path,
+                                  home=tmp_path / "home", threshold=0.0, embedder=emb)
+    assert out == ""
+
+
+def test_marker_ids_count_nonblank_rows_only(tmp_path):
+    """triple-id-N numbers nonblank JSONL rows; blank lines don't shift IDs."""
+    triples_path = tmp_path / "triples.jsonl"
+    row1 = json.dumps({"session": "s1", "timestamp": "t1", "orig_prompt": "build me a thing",
+                       "prior_assistant": "Done", "user_correction": "wait, are you sure?",
+                       "next_assistant": "checking"})
+    row2 = json.dumps({"session": "s2", "timestamp": "t2", "orig_prompt": "build me a thing",
+                       "prior_assistant": "Sure", "user_correction": "no scope creep please",
+                       "next_assistant": "narrowed"})
+    triples_path.write_text(row1 + "\n\n\n" + row2 + "\n")
+    home = tmp_path / "home"
+    hcompile.compile_index(triples_path, home=home, embedder=_seeded_embedder())
+    out = hcompile.compile_prompt("build me a thing", triples_path,
+                                  home=home, threshold=0.0, embedder=_seeded_embedder())
+    scope_line = [line for line in out.splitlines() if "`scope_creep`" in line]
+    assert len(scope_line) == 1
+    assert MARKER_RX.findall(scope_line[0]) == ["2"]
+    assert sorted(MARKER_RX.findall(out)) == ["1", "2"]
 
 
 def test_compile_index_skips_when_no_triples_file(tmp_path):
