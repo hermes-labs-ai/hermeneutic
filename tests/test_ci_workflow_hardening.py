@@ -1,10 +1,15 @@
 import re
 from pathlib import Path
 
+import pytest
+
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
 
 
 def test_ci_workflow_uses_immutable_actions_and_restricted_checkout() -> None:
+    if not WORKFLOW.exists():
+        pytest.skip("repository workflow contract is not part of the source distribution")
+
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
     action_refs = re.findall(r"^\s*-?\s*uses:\s*([^\s#]+)", workflow, re.MULTILINE)
