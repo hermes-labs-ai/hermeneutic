@@ -89,7 +89,7 @@ When a later prompt resembles that situation:
 Would this retrieval strategy work for other harnesses too, or is it customized to ours? Can we say it is generic?
 ```
 
-Hermeneutic memory retrieves the relevant prior lesson as advisory context. This is the unedited `hermeneutic compile` output for that prompt against the author’s 346-correction corpus, captured with v0.1.8 (current output additionally appends per-bullet `[evidence: triple-id-N]` markers) — the correction above is the highest-similarity match behind the first line:
+Hermeneutic memory retrieves the relevant prior lesson as advisory context. This is the unedited `hermeneutic compile` output for that prompt against the author’s [346-correction corpus](evals/compile-walkthrough.md), captured with v0.1.8 (current output additionally appends per-bullet `[evidence: triple-id-N]` markers) — the correction above is the highest-similarity match behind the first line:
 
 ```text
 [hermeneutic compile-preamble — derived from 5 past corrections on similar prompts]

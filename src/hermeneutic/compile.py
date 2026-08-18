@@ -299,9 +299,11 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
     Each emitted advice bullet carries one `[evidence: triple-id-N]` marker per
     supporting retrieved match, where N is the one-based nonblank JSONL row
     number of that match's triple in `triples_path`. Markers only cite rows
-    present in the loaded corpus; stale index entries pointing outside it are
-    dropped. Bullet-level citation is the granularity of this slice — no
-    sentence segmentation is performed.
+    present in the loaded corpus; if the corpus content no longer matches the
+    index's recorded triples_sha256 the whole compile is skipped (re-index
+    needed), and stale index entries pointing outside the corpus are dropped.
+    Bullet-level citation is the granularity of this slice — no sentence
+    segmentation is performed.
 
     Why bucket-aware: a global top-K can let a common correction category crowd
     out rarer categories. Current and historical aggregate measurements, with
@@ -318,6 +320,10 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
         return ""
 
     triples_path = Path(triples_path)
+    if idx.triples_sha256 != _sha256_file(triples_path):
+        # Corpus changed since indexing — positional triple_indices may resolve
+        # to the wrong rows even when in bounds; silent skip until re-index.
+        return ""
     triples = [Triple.from_json(line) for line in triples_path.read_text().splitlines() if line.strip()]
 
     embed = embedder or (lambda t: ollama_embed(t, model=model))

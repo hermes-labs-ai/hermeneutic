@@ -280,7 +280,8 @@ def test_duplicate_index_entries_do_not_duplicate_markers(tmp_path):
     emb = _seeded_embedder()
     vec = hcompile._normalize(emb("build me a thing"))
     hcompile.save_index(hcompile.EmbedIndex(
-        triples_sha256="stale", model=hcompile.DEFAULT_EMBED_MODEL,
+        triples_sha256=hcompile._sha256_file(triples_path),
+        model=hcompile.DEFAULT_EMBED_MODEL,
         dim=len(vec), vectors=[vec, vec], triple_indices=[0, 0],
     ), home=tmp_path / "home")
     out = hcompile.compile_prompt("build me a thing", triples_path,
@@ -290,11 +291,20 @@ def test_duplicate_index_entries_do_not_duplicate_markers(tmp_path):
 
 
 def test_stale_out_of_range_index_entries_cannot_generate_markers(fixture_corpus, tmp_path):
-    """Rows removed from the corpus after indexing must never be cited."""
+    """Out-of-range index entries must never be cited, even when the hash matches.
+
+    Simulates a corrupt index whose triples_sha256 agrees with the corpus but
+    whose triple_indices point past it: truncate the corpus, then rewrite the
+    stored hash to match, so only the bounds check stands between a stale
+    entry and a fabricated citation.
+    """
     home = tmp_path / "home"
     hcompile.compile_index(fixture_corpus, home=home, embedder=_seeded_embedder())
     surviving = [line for line in fixture_corpus.read_text().splitlines() if line.strip()][:2]
     fixture_corpus.write_text("\n".join(surviving) + "\n")
+    idx = hcompile.load_index(home)
+    idx.triples_sha256 = hcompile._sha256_file(fixture_corpus)
+    hcompile.save_index(idx, home=home)
     out = hcompile.compile_prompt("build me a thing", fixture_corpus,
                                   home=home, k=5, threshold=0.0,
                                   embedder=_seeded_embedder())
@@ -305,6 +315,34 @@ def test_stale_out_of_range_index_entries_cannot_generate_markers(fixture_corpus
     assert "scope_creep" not in out
     assert "fabrication" not in out
     assert "missed_constraint" not in out
+
+
+def test_compile_returns_empty_when_corpus_reordered_at_same_length(tmp_path):
+    """Reordering corpus rows without changing file length must not misattribute.
+
+    Same-length rows defeat the index-bounds check: every stale triple_index
+    still resolves, but to the wrong current Triple. The compile must detect
+    the content change (triples_sha256 mismatch) and emit nothing rather than
+    cite advice and evidence rows under the wrong correction.
+    """
+    row_a = {"session": "s1", "timestamp": "t1", "orig_prompt": "build me a widget",
+             "prior_assistant": "Done", "user_correction": "wait, are you sure?",
+             "next_assistant": "checking"}
+    row_b = {"session": "s2", "timestamp": "t2", "orig_prompt": "fix the login bug",
+             "prior_assistant": "Sure", "user_correction": "too much, simplify!",
+             "next_assistant": "narrowed"}
+    assert len(json.dumps(row_a)) == len(json.dumps(row_b))
+    triples_path = tmp_path / "triples.jsonl"
+    _write_triples(triples_path, [row_a, row_b])
+    home = tmp_path / "home"
+    hcompile.compile_index(triples_path, home=home, embedder=_seeded_embedder())
+    original_size = triples_path.stat().st_size
+
+    _write_triples(triples_path, [row_b, row_a])
+    assert triples_path.stat().st_size == original_size
+    out = hcompile.compile_prompt("build me a widget", triples_path,
+                                  home=home, threshold=0.0, embedder=_seeded_embedder())
+    assert out == ""
 
 
 def test_negative_index_entry_generates_no_bullet_or_marker(tmp_path):
@@ -318,7 +356,8 @@ def test_negative_index_entry_generates_no_bullet_or_marker(tmp_path):
     emb = _seeded_embedder()
     vec = hcompile._normalize(emb("build me a thing"))
     hcompile.save_index(hcompile.EmbedIndex(
-        triples_sha256="stale", model=hcompile.DEFAULT_EMBED_MODEL,
+        triples_sha256=hcompile._sha256_file(triples_path),
+        model=hcompile.DEFAULT_EMBED_MODEL,
         dim=len(vec), vectors=[vec], triple_indices=[-1],
     ), home=tmp_path / "home")
     out = hcompile.compile_prompt("build me a thing", triples_path,
