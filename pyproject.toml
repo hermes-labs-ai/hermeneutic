@@ -57,7 +57,7 @@ dev = [
 hermeneutic = "hermeneutic.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/hermes-labs-ai/hermeneutic"
+Homepage = "https://hermes-labs.ai/hermeneutic"
 Documentation = "https://github.com/hermes-labs-ai/hermeneutic#readme"
 Repository = "https://github.com/hermes-labs-ai/hermeneutic"
 Issues = "https://github.com/hermes-labs-ai/hermeneutic/issues"
