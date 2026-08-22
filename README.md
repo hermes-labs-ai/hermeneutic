@@ -403,4 +403,4 @@ hermeneutic --help
 hermeneutic <command> --help
 ```
 
-Hermeneutic is maintained by [Hermes Labs](https://github.com/hermes-labs-ai).
+Hermeneutic is maintained by [Hermes Labs](https://hermes-labs.ai).
