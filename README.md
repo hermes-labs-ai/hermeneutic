@@ -7,6 +7,8 @@
 [![CI](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-2ea44f)](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
 
+**Product page:** [hermes-labs.ai/hermeneutic](https://hermes-labs.ai/hermeneutic)
+
 Many AI workflow failures are not failures of model capability. They are failures of interpretation:
 
 - what “done” meant;
