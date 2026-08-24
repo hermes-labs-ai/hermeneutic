@@ -136,6 +136,7 @@ Hermeneutic requires Python 3.10 or newer.
 
 ```bash
 pip install hermeneutic
+hermeneutic --version
 ```
 
 Check a saved draft:

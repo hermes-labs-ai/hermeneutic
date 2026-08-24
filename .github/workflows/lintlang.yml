@@ -1,0 +1,39 @@
+name: LintLang
+
+on:
+  pull_request:
+    paths:
+      - AGENTS.md
+      - CLAUDE.md
+      - .github/workflows/lintlang.yml
+  push:
+    branches:
+      - main
+    paths:
+      - AGENTS.md
+      - CLAUDE.md
+      - .github/workflows/lintlang.yml
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  agent-instructions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Run LintLang
+        uses: hermes-labs-ai/lintlang@6be2907d557e534732865d3a3a3c55ea5f1a0ec9 # v0.4.1
+        with:
+          path: AGENTS.md
+          fail-on: fail
+          sarif-file: lintlang.sarif
+
+      - name: Upload LintLang SARIF
+        if: always() && (github.event_name == 'push' || (github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository))
+        uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+        with:
+          sarif_file: lintlang.sarif
