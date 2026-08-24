@@ -12,6 +12,7 @@ import json
 import sys
 from pathlib import Path
 
+from hermeneutic import __version__
 from hermeneutic.gates.regex import highest_severity, risk_score
 from hermeneutic.triples import READERS, mine_dir
 
@@ -491,6 +492,7 @@ def _cmd_uninstall_hook(args: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="hermeneutic", description="Mine corrections, gate the next response.")
+    p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     p_mine = sub.add_parser("mine", help="Mine triples from session logs.")

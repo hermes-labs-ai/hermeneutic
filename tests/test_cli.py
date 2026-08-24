@@ -19,6 +19,14 @@ def _write_log(path: Path, turns):
             }) + "\n")
 
 
+def test_cli_version(capsys):
+    with pytest.raises(SystemExit) as exc_info:
+        main(["--version"])
+
+    assert exc_info.value.code == 0
+    assert capsys.readouterr().out == "hermeneutic 0.1.9\n"
+
+
 def test_cli_mine_writes_jsonl(tmp_path):
     _write_log(tmp_path / "s1.jsonl", [
         ("user", "go"),
