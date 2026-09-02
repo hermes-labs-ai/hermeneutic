@@ -25,6 +25,7 @@ the v0.1.7 release gate.
 
 | Surface | Maturity | What v0.1.7 actually supports |
 |---|---|---|
+| Hermes Agent final-output plugin | `MECHANICALLY_TESTED_INTEGRATION` | The pip entry point registers Hermeneutic's deterministic gate on Hermes Agent's native `transform_llm_output` hook. Medium/high findings append an advisory before delivery; clean and low-severity outputs are unchanged. See [Hermes Agent](hermes-agent.md). |
 | Claude Code compile hook | `MECHANICALLY_TESTED_INTEGRATION` | The corrected `UserPromptSubmit` wrapper emits `hookSpecificOutput.additionalContext`; installer, output shape, fail-soft behavior, and uninstall mechanics are tested. Live Claude Code was not exercised. See [Claude Code](claude-code.md). |
 | Claude Code built-in Stop gate | `REMOVE` | Current Claude Code recommends `last_assistant_message` and requires structured JSON for a user-visible warning. The retained adapter parses a transcript and writes stderr while exiting 0. Do not advertise or newly install it. |
 | Claude Code standalone Stop plugin | `REMOVE` | The plugin has the same unsupported runtime warning path as the built-in Stop adapter. Its bundle may remain for compatibility, but it is not a supported integration. |

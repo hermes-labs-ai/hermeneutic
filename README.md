@@ -153,6 +153,17 @@ generate-response | hermeneutic gate
 
 The standalone gate works offline, requires no model or private logs, and has zero required Python runtime dependencies.
 
+Hermes Agent can run the same gate on its native final-output hook. Install
+Hermeneutic into the Hermes Agent environment and opt in explicitly:
+
+```bash
+pip install hermeneutic
+hermes plugins enable hermeneutic
+```
+
+See the [Hermes Agent integration](integrations/hermes-agent.md) for the exact
+advisory and evidence boundary.
+
 Its exit codes are designed for scripts and hooks:
 
 - `0`: no match, or only a low-severity advisory;
