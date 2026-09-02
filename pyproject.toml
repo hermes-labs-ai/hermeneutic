@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hermeneutic"
-version = "0.1.9"
+version = "0.1.10"
 description = "Mine reusable correction evidence, retrieve similar past corrections, and run a fixed deterministic English drift check."
 readme = "README.md"
 license = { text = "Apache-2.0" }

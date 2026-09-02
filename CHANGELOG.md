@@ -2,6 +2,23 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] — 2026-09-02
+
+### Added
+
+- Cite the exact correction-corpus rows supporting each compiled advice bullet.
+- Add a deterministic `hermeneutic --version` command.
+
+### Fixed
+
+- Refuse to compile against an index whose recorded corpus hash no longer
+  matches the current corpus, preventing stale positional references from
+  citing the wrong correction rows.
+
+### Changed
+
+- Harden release and CI workflows and publish the canonical product links.
+
 ## [0.1.9] — 2026-08-17
 
 ### Changed
