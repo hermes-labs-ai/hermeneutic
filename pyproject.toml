@@ -56,6 +56,9 @@ dev = [
 [project.scripts]
 hermeneutic = "hermeneutic.cli:main"
 
+[project.entry-points."hermes_agent.plugins"]
+hermeneutic = "hermeneutic.hermes_agent_plugin:register"
+
 [project.urls]
 Homepage = "https://hermes-labs.ai/hermeneutic"
 Documentation = "https://github.com/hermes-labs-ai/hermeneutic#readme"
