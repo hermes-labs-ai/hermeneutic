@@ -2,6 +2,17 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.11] — 2026-09-02
+
+### Added
+
+- Add an opt-in Hermes Agent pip plugin that runs the deterministic gate on
+  Hermes Agent's native final-output transform hook before delivery.
+
+Clean and low-severity responses remain unchanged. Medium/high findings append
+a bounded evidence advisory; the plugin does not call a model, read personal
+correction logs, block output, or claim that a pass proves correctness.
+
 ## [0.1.10] — 2026-09-02
 
 ### Added
