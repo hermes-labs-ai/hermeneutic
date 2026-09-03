@@ -32,6 +32,7 @@ the v0.1.7 release gate.
 | Codex copied Stop hook | `MECHANICALLY_TESTED_INTEGRATION` | The shipped script consumes `last_assistant_message`, always returns valid JSON on exit 0, and uses `systemMessage` without a continuation decision. Script mechanics are tested; live Codex was not. See [Codex](codex.md). |
 | Codex plugin bundle | `MECHANICALLY_TESTED_INTEGRATION` | Script and manifest shape are tested. The repository does not ship a Codex marketplace catalog, and plugin installation was not exercised live. |
 | Codex notify sentinel | `MECHANICALLY_TESTED_INTEGRATION` | Install/refusal/uninstall and decision mechanics are tested. Live notifications and Windows were not exercised. |
+| Gemini CLI `AfterAgent` gate | `MECHANICALLY_TESTED_INTEGRATION` | The native response-bearing hook requests one evidence-focused retry and then fails open with a warning. Manifest, hook output, bounded retry, and local host loading are tested. See [Gemini CLI](gemini-cli/README.md). |
 | Cursor via imported Claude hooks | `REMOVE` | Cursor's compatibility mechanism exists, but importing the unsupported Hermeneutic Claude Stop adapter does not make that adapter ready. See [Cursor](cursor.md). |
 | Cursor native two-hook concept | `DESIGN_SKETCH` | The former recipe referenced two absent helpers and returned the wrong `stop` result shape. No executable recipe ships. |
 | Windsurf / Cascade response hook | `REMOVE` | The former recipe referenced an absent helper and relied on `show_output` where current Windsurf docs say it does not apply. See [Windsurf](windsurf.md). |

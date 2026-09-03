@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "AfterAgent": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "hermeneutic-epistemic-gate",
+            "type": "command",
+            "command": "python3 \"${extensionPath}${/}integrations${/}gemini-cli${/}hermeneutic_after_agent.py\"",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}
