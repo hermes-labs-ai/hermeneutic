@@ -2,6 +2,18 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.12] — 2026-09-02
+
+### Added
+
+- Add a native Gemini CLI `AfterAgent` extension that runs the deterministic
+  drift gate on the proposed response and requests one bounded automatic retry
+  when medium- or high-risk patterns are present.
+
+The extension is fail-open on malformed hook input or internal errors and does
+not claim that a clean result proves correctness. Its source-distribution and
+copied-install contracts are exercised in CI.
+
 ## [0.1.11] — 2026-09-02
 
 ### Added
