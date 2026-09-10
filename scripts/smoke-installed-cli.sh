@@ -17,3 +17,15 @@ pass_output="$(
 )"
 printf '%s\n' "$pass_output"
 grep -Fq 'PASS — no risk patterns matched.' <<<"$pass_output"
+
+# Published first-success pair: the neutral counterpart to the risky draft.
+neutral_output="$(
+  printf '%s\n' 'Draft ready for review.' | hermeneutic gate
+)"
+printf '%s\n' "$neutral_output"
+grep -Fq 'PASS — no risk patterns matched.' <<<"$neutral_output"
+
+# A missing draft must stay a distinct error, not collapse into the RISK exit.
+missing_status=0
+hermeneutic gate --draft "$(mktemp -u)/absent.txt" >/dev/null 2>&1 || missing_status=$?
+test "$missing_status" -eq 2

@@ -1,0 +1,172 @@
+"""Lock the published first-success recipe for the standalone gate.
+
+`README.md` publishes a three-step recipe: a risky draft that must fire, a
+neutral draft that must not, and a missing file that must stay a distinct
+error. This module pins both halves of that promise:
+
+* the behavioural half — the exact strings and exit codes a reader copies, so
+  a rule edit that changes what the recipe prints fails here first;
+* the published half — the README block itself, so the recipe, its release
+  pin, and its link to the fail-loud invariant cannot quietly disappear while
+  the behavioural tests stay green.
+
+Scope, precisely: only `README.md` is read. The same risky draft also appears
+in `llms.txt`, `FORWARD-DEPLOYED-HARNESS.md`, `demo.tape` and
+`scripts/smoke-installed-cli.sh`; those surfaces are *not* pinned here, and the
+neutral draft and missing-file case are published only in the README and the
+smoke script.
+
+The gate is also advertised as needing no credentials and no private files.
+`test_gate_recipe_needs_no_credentials_or_private_files` asserts that by
+running the recipe with the environment stripped and `HOME` pointed at a path
+that does not exist.
+"""
+
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+from hermeneutic.cli import main
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+RISKY_DRAFT = "Done — shipped 14 files, all tests pass."
+NEUTRAL_DRAFT = "Draft ready for review."
+RISKY_RULE_IDS = ("completion_with_number", "completion_with_all_quantifier")
+
+# The installed console script is not on PATH inside a stripped environment,
+# so drive the same entry point the script wraps.
+_GATE_ENTRY = "from hermeneutic.cli import main; raise SystemExit(main(['gate']))"
+
+
+def test_published_risky_draft_fires_both_rules(capsys, tmp_path):
+    draft = tmp_path / "risky.txt"
+    draft.write_text(RISKY_DRAFT, encoding="utf-8")
+
+    rc = main(["gate", "--draft", str(draft)])
+
+    out = capsys.readouterr().out
+    assert rc == 1
+    assert "RISK — highest severity: high" in out
+    for rule_id in RISKY_RULE_IDS:
+        assert rule_id in out
+
+
+def test_published_neutral_draft_passes(capsys, tmp_path):
+    draft = tmp_path / "neutral.txt"
+    draft.write_text(NEUTRAL_DRAFT, encoding="utf-8")
+
+    rc = main(["gate", "--draft", str(draft)])
+
+    assert rc == 0
+    assert "PASS — no risk patterns matched." in capsys.readouterr().out
+
+
+def test_missing_draft_stays_a_distinct_error(capsys, tmp_path):
+    rc = main(["gate", "--draft", str(tmp_path / "absent.txt")])
+
+    assert rc == 2, "a missing draft must not collapse into the RISK exit code"
+    captured = capsys.readouterr()
+    assert "not found" in (captured.out + captured.err)
+
+
+def test_gate_recipe_needs_no_credentials_or_private_files(tmp_path):
+    """The recipe must work with no inherited env and no readable home."""
+    stripped = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": str(tmp_path / "no-such-home"),
+        "PYTHONPATH": str(REPO_ROOT / "src"),
+    }
+
+    risky = subprocess.run(
+        [sys.executable, "-c", _GATE_ENTRY],
+        input=RISKY_DRAFT + "\n",
+        capture_output=True,
+        text=True,
+        env=stripped,
+        cwd=os.fspath(tmp_path),
+        check=False,
+    )
+    assert risky.returncode == 1
+    for rule_id in RISKY_RULE_IDS:
+        assert rule_id in risky.stdout
+
+    neutral = subprocess.run(
+        [sys.executable, "-c", _GATE_ENTRY],
+        input=NEUTRAL_DRAFT + "\n",
+        capture_output=True,
+        text=True,
+        env=stripped,
+        cwd=os.fspath(tmp_path),
+        check=False,
+    )
+    assert neutral.returncode == 0
+    assert "PASS — no risk patterns matched." in neutral.stdout
+
+
+# --- the published README block -------------------------------------------
+
+README = REPO_ROOT / "README.md"
+GUIDE = "FORWARD-DEPLOYED-HARNESS.md"
+GUIDE_ANCHOR = "invariants--never-break-these-whatever-you-change"
+
+
+def _readme() -> str:
+    return README.read_text(encoding="utf-8")
+
+
+def test_readme_publishes_the_recipe_this_module_pins():
+    """The behavioural tests are only meaningful if the README still says this."""
+    readme = _readme()
+    assert RISKY_DRAFT in readme
+    assert NEUTRAL_DRAFT in readme
+    for rule_id in RISKY_RULE_IDS:
+        assert rule_id in readme
+    assert "PASS — no risk patterns matched." in readme
+    assert "exits `2`" in readme, "the missing-draft boundary must stay published"
+
+
+def _quick_start() -> str:
+    """The Quick start section only — where a first-time reader installs."""
+    readme = _readme()
+    start = readme.index("## Quick start")
+    return readme[start : readme.index("\n## ", start + len("## Quick start"))]
+
+
+def test_readme_pins_the_packaged_release():
+    """A floating install stops being release-matched the moment 0.1.12 ages out.
+
+    Scoped to the Quick start block: that is the install a first-time reader
+    runs, and a pin elsewhere in the README must not satisfy this on its behalf.
+    """
+    import re
+
+    from hermeneutic import __version__
+
+    quick_start = _quick_start()
+    installs = re.findall(r"^.*pip install hermeneutic.*$", quick_start, re.MULTILINE)
+    assert installs, "Quick start must publish an install command"
+    # Every install line, not merely one of them: an unpinned line next to a
+    # pinned one is still an unpinned recipe for whoever copies that line.
+    for line in installs:
+        assert f"hermeneutic=={__version__}" in line, f"unpinned install: {line.strip()}"
+    assert f"hermeneutic {__version__}" in quick_start
+
+
+def test_readme_links_the_fail_loud_guide_and_the_anchor_resolves():
+    """`|| true` guidance must point at the invariant, not just assert it."""
+    import re
+
+    readme = _readme()
+    assert f"]({GUIDE}#{GUIDE_ANCHOR})" in readme, "no Markdown link to the guide"
+
+    guide = REPO_ROOT / GUIDE
+    slugs = {
+        re.sub(r"[^\w\s-]", "", line.lstrip("#").strip().lower()).replace(" ", "-")
+        for line in guide.read_text(encoding="utf-8").splitlines()
+        if line.startswith("#")
+    }
+    assert GUIDE_ANCHOR in slugs, f"anchor does not resolve in {GUIDE}"
