@@ -43,6 +43,11 @@ RISKY_RULE_IDS = ("completion_with_number", "completion_with_all_quantifier")
 MISSING_DRAFT_NAME = "missing.txt"
 PUBLISHED_MISSING_COMMAND = f"hermeneutic gate --draft {MISSING_DRAFT_NAME}"
 
+# The README's second exit-2 path, quoted verbatim from `_cmd_gate`.
+NON_UTF8_DIAGNOSTIC = (
+    "ERROR: input is not valid UTF-8 text — the gate reads text drafts only."
+)
+
 # The installed console script is not on PATH inside a stripped environment,
 # so drive the same entry point the script wraps.
 _GATE_ENTRY = "from hermeneutic.cli import main; raise SystemExit(main(['gate']))"
@@ -77,6 +82,36 @@ def test_missing_draft_stays_a_distinct_error(capsys, tmp_path):
     assert rc == 2, "a missing draft must not collapse into the RISK exit code"
     captured = capsys.readouterr()
     assert "not found" in (captured.out + captured.err)
+
+
+def test_non_utf8_draft_exits_2_with_the_published_diagnostic(capsys, tmp_path):
+    """The README's other exit-2 path: input the gate cannot read as text.
+
+    Pinned together with its diagnostic, so the published wording cannot drift
+    from what the CLI actually prints, and so a non-UTF-8 draft can never be
+    scored as if it were an empty one.
+    """
+    draft = tmp_path / "not-utf8.txt"
+    # 0xFF is not a legal UTF-8 start byte, so decoding fails outright.
+    draft.write_bytes(b"Done \xff shipped 14 files, all tests pass.")
+
+    rc = main(["gate", "--draft", str(draft)])
+
+    assert rc == 2, "unreadable input must not collapse into PASS or RISK"
+    captured = capsys.readouterr()
+    assert NON_UTF8_DIAGNOSTIC in captured.err
+    assert "PASS" not in captured.out and "RISK" not in captured.out
+
+
+def test_readme_publishes_the_non_utf8_failure_and_its_diagnostic():
+    """The doc must name the real failure, not the mining-side zero-parse one."""
+    # The README wraps prose, so compare against a whitespace-normalised copy.
+    readme = " ".join(_readme().split())
+    assert NON_UTF8_DIAGNOSTIC in readme, "the exact diagnostic must be published"
+    assert "non-UTF-8 file" in readme
+    assert "zero-parse" not in readme, (
+        "zero-parse is the mining invariant; the gate's second exit 2 is non-UTF-8 input"
+    )
 
 
 def test_gate_recipe_needs_no_credentials_or_private_files(tmp_path):
@@ -201,3 +236,69 @@ def test_readme_links_the_fail_loud_guide_and_the_anchor_resolves():
         if line.startswith("#")
     }
     assert GUIDE_ANCHOR in slugs, f"anchor does not resolve in {GUIDE}"
+
+
+# --- outbound-network deny guard ------------------------------------------
+
+# Prepended to the CHILD script, so the denial is installed in the gate's own
+# process before hermeneutic is imported rather than asserted from the parent.
+# A `sitecustomize.py` would shadow the interpreter's own, which on some builds
+# is what puts site-packages on the path.
+_DENY_OUTBOUND = """\
+import socket
+
+
+class OutboundNetworkDenied(RuntimeError):
+    pass
+
+
+def _deny(*args, **kwargs):
+    raise OutboundNetworkDenied("outbound network access attempted")
+
+
+socket.socket = _deny
+socket.create_connection = _deny
+socket.getaddrinfo = _deny
+"""
+
+
+def test_default_gate_runs_with_outbound_network_denied(tmp_path):
+    """The advertised offline claim, enforced inside the gate's own process.
+
+    The prepended denial guard runs before the CLI imports anything, so any
+    socket attempt raises. The published risky/neutral pair must still produce
+    its exact verdicts and exit codes.
+    """
+    env = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": str(tmp_path / "no-such-home"),
+        "PYTHONPATH": str(REPO_ROOT / "src"),
+    }
+
+    def _gate(draft: str) -> subprocess.CompletedProcess:
+        return subprocess.run(
+            [sys.executable, "-c", _DENY_OUTBOUND + "\n" + _GATE_ENTRY],
+            input=draft + "\n",
+            capture_output=True,
+            text=True,
+            env=env,
+            cwd=os.fspath(tmp_path),
+            check=False,
+        )
+
+    # The guard must actually bite, or this test proves nothing.
+    proof = subprocess.run(
+        [sys.executable, "-c", _DENY_OUTBOUND + "\nimport socket\nsocket.socket()\n"],
+        capture_output=True, text=True, env=env, cwd=os.fspath(tmp_path), check=False,
+    )
+    assert proof.returncode != 0
+    assert "OutboundNetworkDenied" in proof.stderr
+
+    risky = _gate(RISKY_DRAFT)
+    assert risky.returncode == 1
+    for rule_id in RISKY_RULE_IDS:
+        assert rule_id in risky.stdout
+
+    neutral = _gate(NEUTRAL_DRAFT)
+    assert neutral.returncode == 0
+    assert "PASS — no risk patterns matched." in neutral.stdout
