@@ -37,6 +37,12 @@ RISKY_DRAFT = "Done — shipped 14 files, all tests pass."
 NEUTRAL_DRAFT = "Draft ready for review."
 RISKY_RULE_IDS = ("completion_with_number", "completion_with_all_quantifier")
 
+# The README publishes this exact command as the missing-file boundary. The
+# behavioural test below drives the same filename, so the published recipe and
+# the behaviour it promises cannot drift apart.
+MISSING_DRAFT_NAME = "missing.txt"
+PUBLISHED_MISSING_COMMAND = f"hermeneutic gate --draft {MISSING_DRAFT_NAME}"
+
 # The installed console script is not on PATH inside a stripped environment,
 # so drive the same entry point the script wraps.
 _GATE_ENTRY = "from hermeneutic.cli import main; raise SystemExit(main(['gate']))"
@@ -66,7 +72,7 @@ def test_published_neutral_draft_passes(capsys, tmp_path):
 
 
 def test_missing_draft_stays_a_distinct_error(capsys, tmp_path):
-    rc = main(["gate", "--draft", str(tmp_path / "absent.txt")])
+    rc = main(["gate", "--draft", str(tmp_path / MISSING_DRAFT_NAME)])
 
     assert rc == 2, "a missing draft must not collapse into the RISK exit code"
     captured = capsys.readouterr()
@@ -126,7 +132,32 @@ def test_readme_publishes_the_recipe_this_module_pins():
     for rule_id in RISKY_RULE_IDS:
         assert rule_id in readme
     assert "PASS — no risk patterns matched." in readme
-    assert "exits `2`" in readme, "the missing-draft boundary must stay published"
+
+
+def test_readme_binds_the_missing_file_command_to_its_exit_code():
+    """The published command and its exit-2 meaning must travel together.
+
+    Asserting the bare substring "exits `2`" is not enough: the README states
+    exit `2` in three places (this recipe, the fail-loud invariant sentence,
+    and the exit-code list), so deleting the recipe line leaves the other two
+    and a substring check still passes. Requiring the exact command adjacent
+    to its exit code fails the moment the recipe itself is removed or its
+    interpretation is separated from it.
+    """
+    import re
+
+    readme = _readme()
+    assert PUBLISHED_MISSING_COMMAND in readme, (
+        f"the published missing-file recipe `{PUBLISHED_MISSING_COMMAND}` is gone"
+    )
+
+    bound = re.compile(
+        re.escape(f"`{PUBLISHED_MISSING_COMMAND}`") + r"[^.\n]{0,40}exits `2`"
+    )
+    assert bound.search(readme), (
+        "the missing-file command must be published together with its exit `2` "
+        "interpretation, not merely somewhere in the same document"
+    )
 
 
 def _quick_start() -> str:
