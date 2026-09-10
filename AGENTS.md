@@ -82,3 +82,23 @@ release. The personal corpus can affect optional compile retrieval after
 - Not a replacement for human review. It's a floor-raiser.
 - Not multilingual. The fixed rules check English surface patterns.
 - Not proof that a caller's external Router backends or repair behavior are safe.
+
+## Working on this repository
+
+Key paths: `src/hermeneutic/` (package source), `tests/` (pytest suite),
+`scripts/smoke-installed-cli.sh` (post-install CLI smoke test), `evals/`
+(committed receipts that numeric claims must trace to).
+
+```bash
+python3 -m pip install -e ".[dev]"
+ruff check src tests
+python3 -m pytest -ra
+python3 -m build
+python3 -m pip install --force-reinstall dist/*.whl
+bash scripts/smoke-installed-cli.sh
+```
+
+Definition of done: `ruff check src tests` and `pytest -ra` pass; every
+behavior change has a test; numeric claims in docs trace to a committed
+`evals/` receipt; no existing gate rule was loosened to silence a false
+positive without mined evidence. See `CLAUDE.md` for the full agent protocol.

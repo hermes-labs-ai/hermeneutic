@@ -20,20 +20,6 @@ permissions:
 
 jobs:
   agent-instructions:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Run LintLang
-        uses: hermes-labs-ai/lintlang@cad2dca3054b8bfb5d0a6b93ecf19f9d74ab64fe # v0.5.0
-        with:
-          path: AGENTS.md
-          fail-on: fail
-          sarif-file: lintlang.sarif
-
-      - name: Upload LintLang SARIF
-        if: always() && (github.event_name == 'push' || (github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository))
-        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
-        with:
-          sarif_file: lintlang.sarif
+    uses: hermes-labs-ai/.github/.github/workflows/reusable-lintlang.yml@main
+    with:
+      path: AGENTS.md
