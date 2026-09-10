@@ -127,11 +127,73 @@ checkout in Qwen's normal headless mode. The deliberately still-risky repair was
 allowed after exactly two main-model requests with zero tool calls, confirming
 that the hardened adapter still blocks once and does not loop.
 
+## Marker contract observation
+
+The documented marker contract was observed by driving the hook script itself,
+as Qwen does, with a fresh `HERMENEUTIC_QWEN_STATE_DIR`. The script below ran
+from the source checkout with `python3`:
+
+```python
+import hashlib, json, os, subprocess, sys, tempfile, time
+from pathlib import Path
+
+hook = "integrations/qwen-code/hermeneutic_stop.py"
+state = Path(tempfile.mkdtemp()) / "state"
+env = {**os.environ, "HERMENEUTIC_QWEN_STATE_DIR": str(state)}
+
+def stop(session, message):
+    payload = {"hook_event_name": "Stop", "session_id": session, "stop_hook_active": True,
+               "last_assistant_message": message, "timestamp": "2026-09-10T00:00:00.000Z"}
+    out = subprocess.run([sys.executable, hook], input=json.dumps(payload),
+                         env=env, text=True, capture_output=True, check=True).stdout
+    return json.loads(out)
+
+print("decision:", stop("receipt-session", "Done — shipped 14 files, all tests pass.")["decision"])
+(marker,) = state.iterdir()
+digest = hashlib.sha256(b"receipt-session").hexdigest()[:32]
+print("name matches prefix + sha256[:32] + suffix:",
+      marker.name == f"hermeneutic-qwen-stop-{digest}.marker.json")
+print("body:", marker.read_text())
+print("modes:", oct(state.stat().st_mode & 0o777), oct(marker.stat().st_mode & 0o777))
+
+bystander = state / "some-other-tool.json"
+bystander.write_text('{"not": "ours"}')
+for path, age in ((marker, 1801), (bystander, 1801)):
+    os.utime(path, (time.time() - age, time.time() - age))
+fresh = state / f"hermeneutic-qwen-stop-{'0' * 32}.marker.json"
+fresh.write_text('{"schema": 1, "blocked_at": null}')
+os.utime(fresh, (time.time() - 1799, time.time() - 1799))
+print("other-session clean run:", stop("another-session", "I ran the focused test."))
+print("remaining:", sorted(p.name for p in state.iterdir()))
+```
+
+Output:
+
+```text
+decision: block
+name matches prefix + sha256[:32] + suffix: True
+body: {"schema": 1, "blocked_at": "2026-09-10T00:00:00.000Z"}
+modes: 0o700 0o600
+other-session clean run: {'continue': True}
+remaining: ['hermeneutic-qwen-stop-00000000000000000000000000000000.marker.json', 'some-other-tool.json']
+```
+
+Here is what each line shows. The marker is named from the first 32 hex
+characters of SHA-256 of the session id. Its body is schema `1` plus the host
+timestamp. The state directory is `0700` and the marker is `0600`. A later run
+from another session swept the owned marker that was 1801 seconds old. It kept
+the owned marker that was 1799 seconds old, which brackets the 1800-second
+(30-minute) TTL. It also kept the equally old non-owned `some-other-tool.json`,
+because only the owned name shape is eligible for cleanup.
+
 ## Mechanical edge coverage
 
 `tests/test_qwen_code_extension.py` covers clean, risky-first, still-risky
 retry, clean retry, missing or malformed payloads, an internal gate exception,
-unwritable or undeletable bounded state, stale unrelated-state cleanup,
+unwritable or undeletable bounded state, a hostile pre-existing marker symlink
+(rejected, target unmodified), partial-marker cleanup after a failed write,
+private default state and marker modes, unsafe
+override state directories, stale unrelated-state cleanup,
 current-session no-expiry bounding, session isolation, the 0.23.2
 `stop_hook_active: true` first-call regression, native manifest wiring,
 shared Gemini/Qwen decision text, and source-distribution inclusion.
@@ -140,8 +202,8 @@ At this source state:
 
 ```text
 python3 -m pytest -q tests/test_qwen_code_extension.py tests/test_gemini_cli_extension.py
-..........................                                               [100%]
-26 passed in 0.14s
+.................................                                        [100%]
+33 passed in 0.19s
 
 python3 -m ruff check src tests integrations/gemini-cli/hermeneutic_after_agent.py integrations/qwen-code/hermeneutic_stop.py
 All checks passed!

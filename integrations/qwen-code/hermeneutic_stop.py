@@ -20,9 +20,11 @@ shared state directory keeps its unrelated files.
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 import os
+import stat
 import sys
 import tempfile
 import time
@@ -75,7 +77,21 @@ def _allow(*, system_message: str | None = None) -> dict[str, Any]:
 def _state_dir() -> Path:
     override = os.environ.get(_STATE_DIR_ENV)
     directory = Path(override) if override else Path(tempfile.gettempdir()) / _STATE_DIR_NAME
-    directory.mkdir(parents=True, exist_ok=True)
+    with contextlib.suppress(FileExistsError):
+        directory.mkdir(mode=0o700, parents=True)
+    # The default location sits in a shared temporary directory, so another
+    # local user could pre-create it or plant a marker symlink inside it. Only
+    # a real directory that this user owns and no one else can write is used.
+    info = directory.lstat()
+    if not stat.S_ISDIR(info.st_mode):
+        raise NotADirectoryError(f"unsafe state directory: {directory}")
+    if hasattr(os, "geteuid"):
+        if info.st_uid != os.geteuid():
+            raise PermissionError(f"state directory is not owned by this user: {directory}")
+        if not override and stat.S_IMODE(info.st_mode) != 0o700:
+            os.chmod(directory, 0o700)
+        elif info.st_mode & (stat.S_IWGRP | stat.S_IWOTH):
+            raise PermissionError(f"state directory is writable by other users: {directory}")
     return directory
 
 
@@ -116,9 +132,20 @@ def _take_repair_marker(marker: Path) -> bool | None:
 
 def _write_repair_marker(marker: Path, blocked_at: object) -> bool:
     body = {"schema": _STATE_SCHEMA, "blocked_at": blocked_at if isinstance(blocked_at, str) else None}
+    # Create exclusively and never through a symlink: anything already at the
+    # marker path was not written by this block and must not be followed.
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
     try:
-        marker.write_text(json.dumps(body), encoding="utf-8")
+        fd = os.open(marker, flags, 0o600)
     except OSError:
+        return False
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(json.dumps(body))
+    except OSError:
+        # A partial marker would still spend the next response's repair request.
+        with contextlib.suppress(OSError):
+            os.unlink(marker)
         return False
     return True
 

@@ -211,6 +211,75 @@ def test_unwritable_state_directory_warns_instead_of_blocking(tmp_path, monkeypa
     assert "could not record a bounded repair attempt" in result["systemMessage"]
 
 
+@pytest.mark.skipif(not hasattr(os, "symlink"), reason="needs symlinks")
+def test_hostile_marker_symlink_is_rejected_without_touching_its_target(
+    adapter, tmp_path
+) -> None:
+    state_dir = adapter._state_dir()
+    target = tmp_path / "victim.txt"
+    target.write_text("original", encoding="utf-8")
+    marker = adapter._marker_path(state_dir, "session-a")
+    marker.symlink_to(target)
+
+    assert adapter._write_repair_marker(marker, "2026-09-10T00:00:00.000Z") is False
+    assert marker.is_symlink()
+    assert target.read_text(encoding="utf-8") == "original"
+    # Through the hook, the planted link is dropped rather than written through.
+    assert "decision" not in adapter.evaluate(_stop(RISKY))
+    assert target.read_text(encoding="utf-8") == "original"
+
+
+def test_failed_marker_write_removes_the_partial_marker_and_warns(
+    adapter, tmp_path, monkeypatch
+) -> None:
+    def fail_after_create(fd, *_args, **_kwargs):
+        os.close(fd)
+        raise OSError("marker body could not be written")
+
+    monkeypatch.setattr(adapter.os, "fdopen", fail_after_create)
+    result = adapter.evaluate(_stop(RISKY))
+    assert "decision" not in result
+    assert "could not record a bounded repair attempt" in result["systemMessage"]
+    assert not list((tmp_path / "state").glob("*.json"))
+
+
+@pytest.mark.skipif(not hasattr(os, "geteuid"), reason="POSIX ownership and modes")
+def test_default_state_directory_and_marker_are_private(tmp_path, monkeypatch) -> None:
+    monkeypatch.delenv("HERMENEUTIC_QWEN_STATE_DIR", raising=False)
+    adapter = _load_adapter()
+    monkeypatch.setattr(adapter.tempfile, "tempdir", str(tmp_path))
+    state_dir = tmp_path / adapter._STATE_DIR_NAME
+    state_dir.mkdir(mode=0o755)
+    state_dir.chmod(0o755)
+
+    assert adapter.evaluate(_stop(RISKY))["decision"] == "block"
+    (marker,) = state_dir.glob(adapter._MARKER_GLOB)
+    assert state_dir.stat().st_mode & 0o777 == 0o700
+    assert marker.stat().st_mode & 0o777 == 0o600
+
+
+@pytest.mark.skipif(not hasattr(os, "geteuid"), reason="POSIX ownership and modes")
+@pytest.mark.parametrize("unsafe", ["world-writable", "symlink"])
+def test_unsafe_override_state_directory_warns_instead_of_blocking(
+    unsafe, tmp_path, monkeypatch
+) -> None:
+    real = tmp_path / "real"
+    real.mkdir()
+    if unsafe == "world-writable":
+        real.chmod(0o777)
+        override = real
+    else:
+        override = tmp_path / "link"
+        override.symlink_to(real, target_is_directory=True)
+    monkeypatch.setenv("HERMENEUTIC_QWEN_STATE_DIR", str(override))
+    adapter = _load_adapter()
+
+    result = adapter.evaluate(_stop(RISKY))
+    assert "decision" not in result
+    assert "could not record a bounded repair attempt" in result["systemMessage"]
+    assert not list(real.iterdir())
+
+
 def test_malformed_payload_fails_open(adapter) -> None:
     assert "decision" not in adapter.evaluate(["not", "a", "payload"])
     assert "decision" not in adapter.evaluate(_stop(RISKY, last_assistant_message=None))

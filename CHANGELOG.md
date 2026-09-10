@@ -16,6 +16,8 @@ Qwen Code 0.23.2 sends `stop_hook_active: true` on the first `Stop` of a turn,
 so the adapter ignores that flag and bounds itself with a per-session marker
 file that carries no response text. The next Stop for that session always
 consumes the marker; old markers for other sessions are pruned after 30 minutes.
+The marker lives in a private directory owned by the current user. It is created
+exclusively with mode `0600` and never written through a symlink.
 When the adapter cannot key or write its marker it warns instead of blocking,
 because an unbounded blocking hook loops. Both response adapters now share one decision-text module,
 so no adapter restates a gate rule. Clean, risky-repair, and still-risky bounded
