@@ -226,6 +226,7 @@ def test_hostile_marker_symlink_is_rejected_without_touching_its_target(
     assert target.read_text(encoding="utf-8") == "original"
     # Through the hook, the planted link is dropped rather than written through.
     assert "decision" not in adapter.evaluate(_stop(RISKY))
+    assert not os.path.lexists(marker)
     assert target.read_text(encoding="utf-8") == "original"
 
 
