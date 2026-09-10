@@ -2,8 +2,11 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
-WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "ci.yml"
+WORKFLOWS = Path(__file__).parents[1] / ".github" / "workflows"
+WORKFLOW = WORKFLOWS / "ci.yml"
+SCORECARD_WORKFLOW = WORKFLOWS / "scorecard.yml"
 
 
 def _checkout_steps(workflow: str) -> list[str]:
@@ -63,3 +66,46 @@ def test_each_checkout_step_is_checked_independently() -> None:
         re.search(r"^\s+persist-credentials:\s*false\s*$", block, re.MULTILINE)
         for block in checkout_blocks
     )
+
+
+def _mutable_action_refs(workflow: dict) -> list[str]:
+    """Return every step `uses:` reference not pinned to a full commit SHA.
+
+    Operates on the parsed workflow document, so a trailing `# vX.Y.Z` comment
+    or surrounding text cannot satisfy the check -- only the ref itself.
+    """
+    mutable: list[str] = []
+    for job in workflow["jobs"].values():
+        for step in job.get("steps", []):
+            uses = step.get("uses")
+            if uses is None or uses.startswith(("./", "docker://")):
+                continue
+            _, _, ref = uses.rpartition("@")
+            if re.fullmatch(r"[0-9a-f]{40}", ref) is None:
+                mutable.append(uses)
+    return mutable
+
+
+def test_scorecard_workflow_pins_every_action_to_a_commit_sha() -> None:
+    if not SCORECARD_WORKFLOW.exists():
+        pytest.skip("repository workflow contract is not part of the source distribution")
+
+    workflow = yaml.safe_load(SCORECARD_WORKFLOW.read_text(encoding="utf-8"))
+
+    assert _mutable_action_refs(workflow) == [], (
+        "every Scorecard action must use an immutable 40-character commit SHA"
+    )
+
+
+def test_mutable_action_ref_is_detected_after_parsing() -> None:
+    workflow = yaml.safe_load(
+        """jobs:
+  analysis:
+    steps:
+      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
+      - run: echo no action here
+"""
+    )
+
+    assert _mutable_action_refs(workflow) == ["github/codeql-action/upload-sarif@v3"]
