@@ -2,17 +2,9 @@ name: LintLang
 
 on:
   pull_request:
-    paths:
-      - AGENTS.md
-      - CLAUDE.md
-      - .github/workflows/lintlang.yml
   push:
     branches:
       - main
-    paths:
-      - AGENTS.md
-      - CLAUDE.md
-      - .github/workflows/lintlang.yml
 
 permissions:
   contents: read
