@@ -1,4 +1,4 @@
-# hermeneutic v0.1.9
+# hermeneutic repository (latest tagged release v0.1.12)
 
 Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
@@ -13,15 +13,21 @@ Mining personalizes the corpus and optional retrieval. It does not generate or m
 Install the current release from PyPI:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.9'
+python3 -m pip install 'hermeneutic==0.1.12'
 ```
 
 For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
 ```bash
-git clone --branch v0.1.9 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+git clone --branch v0.1.12 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
 cd hermeneutic
 python3 -m pip install .
+```
+
+The `v0.1.12` tag does not contain the unreleased native Qwen extension. From an exact checkout or ref that contains `qwen-extension.json`, install it with:
+
+```bash
+qwen extensions install . --consent
 ```
 
 The core has zero required Python runtime dependencies. Source builds use `hatchling>=1.24`. Optional compile/retrieval needs local Ollama plus `nomic-embed-text`; optional Router stages need external caller-selected tools or functions.
@@ -51,7 +57,7 @@ Expected first line: `RISK — highest severity: high`.
 
 ## Scope and maturity
 
-The fixed gate is English-only and advisory unless a caller blocks before sending. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
+The fixed gate is English-only and advisory unless a caller blocks before sending. The current repository includes a live-verified Qwen Code 0.23.2 native Stop extension; its exact host and provider boundary is recorded in `evals/qwen-code/RESULTS.md`. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
 
 ## Privacy
 

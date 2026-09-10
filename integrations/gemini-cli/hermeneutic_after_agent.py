@@ -14,6 +14,7 @@ _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 
 from hermeneutic import risk_score  # noqa: E402
+from hermeneutic.response_gate import repair_reason, retry_warning, summarize_hits  # noqa: E402
 
 
 def _allow(*, system_message: str | None = None) -> dict[str, Any]:
@@ -36,27 +37,15 @@ def evaluate(payload: object) -> dict[str, Any]:
     if not hits:
         return _allow()
 
-    summary = "; ".join(
-        f"{hit.rule_id} ({hit.severity}): {hit.description}" for hit in hits[:3]
-    )
-    if len(hits) > 3:
-        summary += f"; plus {len(hits) - 3} more"
+    summary = summarize_hits(hits)
 
+    # Gemini CLI reports a genuine retry here, so the flag alone bounds the loop.
     if payload.get("stop_hook_active") is True:
-        return _allow(
-            system_message=(
-                "Hermeneutic still found evidence-obligation wording after the "
-                f"bounded retry: {summary}"
-            )
-        )
+        return _allow(system_message=retry_warning(summary))
 
     return {
         "decision": "deny",
-        "reason": (
-            "Hermeneutic found wording that creates evidence obligations: "
-            f"{summary}. Revise once: add direct evidence, narrow or hedge the claim, "
-            "or remove unsupported completion language. Preserve the user's requested scope."
-        ),
+        "reason": repair_reason(summary),
         "systemMessage": "Hermeneutic requested one evidence-focused revision.",
     }
 

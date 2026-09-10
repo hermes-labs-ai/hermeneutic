@@ -2,6 +2,26 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Add a native Qwen Code extension. A root `qwen-extension.json` points at a
+  Qwen-only `Stop` hook config, because Qwen's Gemini converter copies
+  `hooks/hooks.json` without translating event names and therefore drops
+  `AfterAgent`. The gate requests one evidence-focused revision on the first
+  risky response and then allows with a visible warning.
+
+Qwen Code 0.23.2 sends `stop_hook_active: true` on the first `Stop` of a turn,
+so the adapter ignores that flag and bounds itself with a per-session marker
+file that carries no response text. The next Stop for that session always
+consumes the marker; old markers for other sessions are pruned after 30 minutes.
+When the adapter cannot key or write its marker it warns instead of blocking,
+because an unbounded blocking hook loops. Both response adapters now share one decision-text module,
+so no adapter restates a gate rule. Clean, risky-repair, and still-risky bounded
+turns were exercised through Qwen Code 0.23.2; the exact boundary is recorded in
+`evals/qwen-code/RESULTS.md`.
+
 ## [0.1.12] — 2026-09-02
 
 ### Added

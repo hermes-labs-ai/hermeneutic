@@ -98,6 +98,7 @@ include = [
     "CHANGELOG.md",
     "demo.tape",
     "gemini-extension.json",
+    "qwen-extension.json",
     "llms.txt",
     "pyproject.toml",
     "sbom.cdx.json",

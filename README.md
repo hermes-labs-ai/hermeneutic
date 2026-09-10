@@ -164,6 +164,18 @@ hermes plugins enable hermeneutic
 See the [Hermes Agent integration](integrations/hermes-agent.md) for the exact
 advisory and evidence boundary.
 
+From a checkout that contains `qwen-extension.json`, Qwen Code can install the
+repository-native final-response gate directly:
+
+```bash
+qwen extensions install . --consent
+```
+
+The Qwen adapter requests one evidence-focused revision, then permits a still-
+risky retry with a visible warning. See the
+[Qwen Code integration](integrations/qwen-code/README.md) for its bounded-state,
+privacy, version, and uninstall boundaries.
+
 Its exit codes are designed for scripts and hooks:
 
 - `0`: no match, or only a low-severity advisory;

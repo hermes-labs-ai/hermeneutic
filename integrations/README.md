@@ -1,9 +1,9 @@
 # Integrations
 
-Hermeneutic v0.1.7 has one live-verified ingestion path, several adapters whose
-local mechanics are tested, and several ideas that are intentionally not
-presented as runnable integrations. No response-hook host was exercised live in
-the v0.1.7 release gate.
+The current repository has live-verified ingestion and Qwen response-hook paths,
+several adapters whose local mechanics are tested, and several ideas that are
+intentionally not presented as runnable integrations. Release-specific claims
+remain bound to their cited release or receipt.
 
 ## Maturity vocabulary
 
@@ -11,19 +11,19 @@ the v0.1.7 release gate.
   a committed public receipt.
 - `MECHANICALLY_TESTED_INTEGRATION`: adapter behavior or packaging is covered by
   local tests and checked against current vendor documentation, but the live
-  host was not exercised for this release.
+  host was not exercised for the cited release or repository state.
 - `SELF_CONTAINED_RECIPE`: every required project-owned asset and command is
   present, but the host path has no release-gate execution evidence.
 - `EXPERIMENTAL_RECIPE`: runnable only with explicit experimental caveats.
 - `DESIGN_SKETCH`: a direction, not an installable integration; required assets
   or host behavior are still missing.
-- `PLANNED`: no v0.1.7 implementation or runnable recipe ships.
-- `REMOVE`: not a ready v0.1.7 surface because its documented runtime contract
+- `PLANNED`: no implementation or runnable recipe ships in the current repository.
+- `REMOVE`: not a ready surface because its documented runtime contract
   is known to be wrong. Compatibility code may remain, but it is unsupported.
 
 ## Outgoing-text and prompt-context surfaces
 
-| Surface | Maturity | What v0.1.7 actually supports |
+| Surface | Maturity | What the current repository supports |
 |---|---|---|
 | Hermes Agent final-output plugin | `MECHANICALLY_TESTED_INTEGRATION` | The pip entry point registers Hermeneutic's deterministic gate on Hermes Agent's native `transform_llm_output` hook. Medium/high findings append an advisory before delivery; clean and low-severity outputs are unchanged. See [Hermes Agent](hermes-agent.md). |
 | Claude Code compile hook | `MECHANICALLY_TESTED_INTEGRATION` | The corrected `UserPromptSubmit` wrapper emits `hookSpecificOutput.additionalContext`; installer, output shape, fail-soft behavior, and uninstall mechanics are tested. Live Claude Code was not exercised. See [Claude Code](claude-code.md). |
@@ -33,6 +33,7 @@ the v0.1.7 release gate.
 | Codex plugin bundle | `MECHANICALLY_TESTED_INTEGRATION` | Script and manifest shape are tested. The repository does not ship a Codex marketplace catalog, and plugin installation was not exercised live. |
 | Codex notify sentinel | `MECHANICALLY_TESTED_INTEGRATION` | Install/refusal/uninstall and decision mechanics are tested. Live notifications and Windows were not exercised. |
 | Gemini CLI `AfterAgent` gate | `MECHANICALLY_TESTED_INTEGRATION` | The native response-bearing hook requests one evidence-focused retry and then fails open with a warning. Manifest, hook output, bounded retry, and local host loading are tested. See [Gemini CLI](gemini-cli/README.md). |
+| Qwen Code native `Stop` gate (unreleased) | `LIVE_VERIFIED_INTEGRATION` | A native `qwen-extension.json` points at a Qwen-only `Stop` hook config, because Qwen's Gemini converter copies hooks without translating event names and drops `AfterAgent`. The gate requests one evidence-focused revision, then allows with a visible warning. Qwen 0.23.2 hardcodes `stop_hook_active: true` on the first `Stop`, so bounding uses a per-session marker file instead of that flag. Clean, risky-repair, and still-risky bounded turns ran through the published 0.23.2 CLI; see the [receipt](../evals/qwen-code/RESULTS.md) and [Qwen Code guide](qwen-code/README.md). |
 | Cursor via imported Claude hooks | `REMOVE` | Cursor's compatibility mechanism exists, but importing the unsupported Hermeneutic Claude Stop adapter does not make that adapter ready. See [Cursor](cursor.md). |
 | Cursor native two-hook concept | `DESIGN_SKETCH` | The former recipe referenced two absent helpers and returned the wrong `stop` result shape. No executable recipe ships. |
 | Windsurf / Cascade response hook | `REMOVE` | The former recipe referenced an absent helper and relied on `show_output` where current Windsurf docs say it does not apply. See [Windsurf](windsurf.md). |
@@ -74,12 +75,11 @@ Log readers are a separate axis from outgoing-response hooks.
 
 ## Planned, not shipped
 
-| Surface | Maturity | v0.1.7 state |
+| Surface | Maturity | Current repository state |
 |---|---|---|
 | MCP server, including Goose/Zed/Warp/Kiro/Copilot/Antigravity hosts | `PLANNED` | No `hermeneutic mcp-serve` command, server implementation, or manifest ships. |
 | GitHub Copilot CLI plugin | `PLANNED` | No plugin assets ship. |
 | Antigravity plugin | `PLANNED` | No plugin assets ship. |
-| Qwen Code recipe | `PLANNED` | No recipe or helper ships. |
 | OpenCode npm shim | `PLANNED` | No npm package or shim ships. |
 
 ## Distribution boundary
@@ -91,5 +91,6 @@ builds an installed wheel; it does not turn those repository assets into
 site-packages resources. Clone the exact release tag or unpack the exact sdist
 when a repository-only surface is required.
 
-Host contracts were checked against vendor documentation on 2026-07-15. That
-documentation check is not a live-host certification.
+The earlier integration host contracts were checked against vendor documentation
+on 2026-07-15. Qwen Code was checked independently against its published 0.23.2
+bundle and live host on 2026-09-10; see its receipt for the exact boundary.
