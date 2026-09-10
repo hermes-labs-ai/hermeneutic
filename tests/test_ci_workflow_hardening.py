@@ -69,15 +69,15 @@ def test_each_checkout_step_is_checked_independently() -> None:
 
 
 def _mutable_action_refs(workflow: dict) -> list[str]:
-    """Return every step `uses:` reference not pinned to a full commit SHA.
+    """Return every job- or step-level `uses:` reference not pinned to a full commit SHA.
 
     Operates on the parsed workflow document, so a trailing `# vX.Y.Z` comment
     or surrounding text cannot satisfy the check -- only the ref itself.
     """
     mutable: list[str] = []
     for job in workflow["jobs"].values():
-        for step in job.get("steps", []):
-            uses = step.get("uses")
+        references = [job.get("uses"), *(step.get("uses") for step in job.get("steps", []))]
+        for uses in references:
             if uses is None or uses.startswith(("./", "docker://")):
                 continue
             _, _, ref = uses.rpartition("@")
@@ -105,7 +105,14 @@ def test_mutable_action_ref_is_detected_after_parsing() -> None:
       - uses: github/codeql-action/upload-sarif@v3
       - uses: github/codeql-action/upload-sarif@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
       - run: echo no action here
+  lint:
+    uses: hermes-labs-ai/.github/.github/workflows/reusable-lintlang.yml@main
+  local:
+    uses: ./.github/workflows/ci.yml
 """
     )
 
-    assert _mutable_action_refs(workflow) == ["github/codeql-action/upload-sarif@v3"]
+    assert _mutable_action_refs(workflow) == [
+        "github/codeql-action/upload-sarif@v3",
+        "hermes-labs-ai/.github/.github/workflows/reusable-lintlang.yml@main",
+    ]
