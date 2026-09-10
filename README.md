@@ -153,6 +153,8 @@ generate-response | hermeneutic gate
 
 The standalone gate works offline, requires no model or private logs, and has zero required Python runtime dependencies.
 
+For deployment and evaluation engineering around a Hermeneutic workflow, contact [Hermes Labs](mailto:roli@hermes-labs.ai).
+
 Hermes Agent can run the same gate on its native final-output hook. Install
 Hermeneutic into the Hermes Agent environment and opt in explicitly:
 
