@@ -145,8 +145,10 @@ That command exits `0`. A draft file that cannot be read stays a separate
 failure — `hermeneutic gate --draft missing.txt` exits `2`, so a hook can tell
 "the gate fired" apart from "the gate never ran". Never mask either with
 `|| true`: silently swallowing a nonzero exit turns the gate into a no-op that
-still looks green. This is the "fail loud" invariant — zero-parse exits `2`
-with an explanation and never emits silent zero output — described in
+still looks green. The gate's other exit `2` is input it cannot read as text:
+point `--draft` at a non-UTF-8 file and it prints `ERROR: input is not valid
+UTF-8 text — the gate reads text drafts only.` on stderr and exits `2`, rather
+than scoring an empty draft. Both are instances of the "fail loud" invariant in
 [Forward-deployed verification tooling](FORWARD-DEPLOYED-HARNESS.md#invariants--never-break-these-whatever-you-change).
 
 Both commands above run with no API key, no configuration file, no network
