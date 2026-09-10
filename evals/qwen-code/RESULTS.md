@@ -106,6 +106,27 @@ The run then exited successfully with the second risky draft; there was no
 third model request. No per-session marker remained after either two-response
 smoke.
 
+## Source-branch publication revalidation
+
+Immediately before opening the public integration pull request on 2026-09-10,
+the published Qwen Code 0.23.2 CLI installed the pushed source branch directly:
+
+```bash
+qwen extensions install https://github.com/hermes-labs-ai/hermeneutic \
+  --ref codex/qwen-compat-20260910 --consent
+```
+
+Qwen identified the installation as `Origin: QwenCode`. Authenticated session
+`3369294c-3e75-4fc6-9169-124967d4ed06` then repeated the risky-first,
+clean-repair smoke above. The final result was the clean repair, the main model
+made exactly two API requests, and model tools made zero calls.
+
+After the final import-failure and state-file ownership hardening, authenticated
+session `37717c72-d80a-4219-a542-eb8ce2fb1270` exercised the repaired local
+checkout in Qwen's normal headless mode. The deliberately still-risky repair was
+allowed after exactly two main-model requests with zero tool calls, confirming
+that the hardened adapter still blocks once and does not loop.
+
 ## Mechanical edge coverage
 
 `tests/test_qwen_code_extension.py` covers clean, risky-first, still-risky

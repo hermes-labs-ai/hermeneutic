@@ -118,6 +118,57 @@ def test_old_current_session_marker_still_bounds_the_retry(adapter, tmp_path) ->
     assert not list((tmp_path / "state").glob("*.json"))
 
 
+def test_sweep_preserves_unrelated_stale_json_in_a_shared_state_directory(
+    adapter, tmp_path
+) -> None:
+    """HERMENEUTIC_QWEN_STATE_DIR may be shared; sweep only owned markers."""
+    state_dir = tmp_path / "state"
+    state_dir.mkdir(parents=True, exist_ok=True)
+    bystander = state_dir / "some-other-tool.json"
+    bystander.write_text('{"not": "ours"}', encoding="utf-8")
+    stale = time.time() - adapter._STATE_TTL_SECONDS - 60
+    os.utime(bystander, (stale, stale))
+
+    # Write and then sweep past an owned marker for an unrelated session.
+    assert adapter.evaluate(_stop(RISKY, session_id="old-session"))["decision"] == "block"
+    (owned,) = state_dir.glob(adapter._MARKER_GLOB)
+    os.utime(owned, (stale, stale))
+    assert adapter.evaluate(_stop(CLEAN, session_id="current-session")) == {"continue": True}
+
+    assert not list(state_dir.glob(adapter._MARKER_GLOB))
+    assert bystander.is_file()
+    assert bystander.read_text(encoding="utf-8") == '{"not": "ours"}'
+
+
+def test_bundled_core_import_failure_fails_open_on_exit_zero(tmp_path) -> None:
+    """A broken bundle must skip with valid JSON, not crash the Stop hook."""
+    # The adapter puts <its parents[2]>/src first on sys.path, so a stub there
+    # shadows any installed package and reproduces a real import failure.
+    bundle = tmp_path / "bundle"
+    (bundle / "integrations" / "qwen-code").mkdir(parents=True)
+    (bundle / "src" / "hermeneutic").mkdir(parents=True)
+    (bundle / "src" / "hermeneutic" / "__init__.py").write_text(
+        'raise RuntimeError("bundled core is broken")\n', encoding="utf-8"
+    )
+    script = bundle / "integrations" / "qwen-code" / "hermeneutic_stop.py"
+    script.write_text(SCRIPT.read_text(encoding="utf-8"), encoding="utf-8")
+
+    completed = subprocess.run(
+        [sys.executable, str(script)],
+        input=json.dumps(_stop(RISKY)),
+        text=True,
+        capture_output=True,
+        check=False,
+        env={**os.environ, "HERMENEUTIC_QWEN_STATE_DIR": str(tmp_path / "state")},
+    )
+
+    assert completed.returncode == 0
+    output = json.loads(completed.stdout)
+    assert output["continue"] is True
+    assert "decision" not in output
+    assert "RuntimeError" in output["systemMessage"]
+
+
 def test_old_markers_for_other_sessions_are_swept(adapter, tmp_path) -> None:
     assert adapter.evaluate(_stop(RISKY, session_id="old-session"))["decision"] == "block"
     (old_marker,) = (tmp_path / "state").glob("*.json")

@@ -55,8 +55,8 @@ Bounding instead uses one small marker file per session:
 
 - Location: `$HERMENEUTIC_QWEN_STATE_DIR`, else `hermeneutic-qwen-stop/` under
   the OS temporary directory.
-- Name: the first 32 hex characters of `sha256(session_id)`. The session id
-  itself never appears in a path.
+- Name: `hermeneutic-qwen-stop-<first 32 hex characters of sha256(session_id)>.marker.json`.
+  The session id itself never appears in a path.
 - Body: `{"schema": 1, "blocked_at": "<the host's event timestamp>"}`. No
   response text, no prompt, no session id, no working directory.
 - Lifecycle: written when the adapter blocks; always consumed and deleted by the
@@ -64,7 +64,10 @@ Bounding instead uses one small marker file per session:
   regardless of marker age. So one response gets at most one repair request and
   even a long repair cannot trigger a second block.
 - Cleanup TTL: each run removes markers older than 30 minutes for other
-  sessions. The current session's marker is never expired before consumption,
+  sessions. Only files matching the owned name above are eligible, so pointing
+  `$HERMENEUTIC_QWEN_STATE_DIR` at a directory shared with other tools never
+  deletes JSON this hook did not write. The current session's marker is never
+  expired before consumption,
   because that would reintroduce a loop. If a blocked turn is cancelled or
   abandoned, the next response in that same session is therefore allowed once;
   this is the deliberate fail-open edge. The following response starts a fresh

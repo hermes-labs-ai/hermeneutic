@@ -9,11 +9,13 @@ ignores the flag and bounds itself with a small per-session marker file
 instead: one response gets at most one repair request.
 
 The marker records no response text, no prompt, and no session identifier — the
-file name is a SHA-256 digest of the session id and the body is a schema tag
-plus the host-supplied event timestamp. A marker is always consumed by the next
-``Stop`` of the same session, regardless of age, so a long repair cannot cause
-a second block. Old markers belonging to other sessions are swept on later
-runs, so abandoned state does not accumulate or carry between sessions.
+file name is a Hermeneutic-owned prefix plus a SHA-256 digest of the session id,
+and the body is a schema tag plus the host-supplied event timestamp. A marker is
+always consumed by the next ``Stop`` of the same session, regardless of age, so
+a long repair cannot cause a second block. Old markers belonging to other
+sessions are swept on later runs, so abandoned state does not accumulate or
+carry between sessions. Sweeping only ever matches that owned name shape, so a
+shared state directory keeps its unrelated files.
 """
 
 from __future__ import annotations
@@ -32,16 +34,30 @@ from typing import Any
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 
-from hermeneutic import risk_score  # noqa: E402
-from hermeneutic.response_gate import (  # noqa: E402
-    repair_reason,
-    retry_warning,
-    summarize_hits,
-    unbounded_warning,
-)
+try:
+    # Nested in ``try`` these are no longer top-level statements, so E402 does
+    # not apply and no suppression comment is needed.
+    from hermeneutic import risk_score
+    from hermeneutic.response_gate import (
+        repair_reason,
+        retry_warning,
+        summarize_hits,
+        unbounded_warning,
+    )
+except Exception as exc:  # Fail open: a broken bundle must not break Qwen Code.
+    # An import runs before ``main`` can guard it, so a failure here would exit
+    # nonzero and surface as a hook crash instead of an advisory that skipped.
+    _CORE_IMPORT_ERROR: Exception | None = exc
+else:
+    _CORE_IMPORT_ERROR = None
 
 _STATE_DIR_ENV = "HERMENEUTIC_QWEN_STATE_DIR"
 _STATE_DIR_NAME = "hermeneutic-qwen-stop"
+# Markers carry an owned name shape so a shared state directory can be swept
+# without touching JSON that Hermeneutic did not write.
+_MARKER_PREFIX = "hermeneutic-qwen-stop-"
+_MARKER_SUFFIX = ".marker.json"
+_MARKER_GLOB = f"{_MARKER_PREFIX}*{_MARKER_SUFFIX}"
 _STATE_SCHEMA = 1
 # A marker only has to survive the model's immediate repair turn. Anything older
 # belongs to an abandoned or cancelled turn and must not spend that turn's one
@@ -67,11 +83,14 @@ def _marker_path(directory: Path, session_id: str) -> Path:
     # Hashing keeps a host-supplied session id out of the file name and out of
     # any path it could otherwise traverse into.
     digest = hashlib.sha256(session_id.encode("utf-8")).hexdigest()[:32]
-    return directory / f"{digest}.json"
+    return directory / f"{_MARKER_PREFIX}{digest}{_MARKER_SUFFIX}"
 
 
 def _sweep(directory: Path, now: float, current_marker: Path) -> None:
-    for marker in directory.glob("*.json"):
+    # Only Hermeneutic-owned markers are eligible. A caller may point
+    # HERMENEUTIC_QWEN_STATE_DIR at a directory it shares with other tools, and
+    # sweeping every stale *.json there would delete files this hook never wrote.
+    for marker in directory.glob(_MARKER_GLOB):
         # The current session's marker is the bounding contract. Expiring it
         # before consumption could turn a long-running repair into a second
         # block and therefore a loop.
@@ -118,6 +137,13 @@ def _resolve_marker(session_id: object, now: float) -> Path | None:
 
 def evaluate(payload: object) -> dict[str, Any]:
     """Return a Qwen Code Stop decision for one parsed hook payload."""
+    if _CORE_IMPORT_ERROR is not None:
+        # The bundled core never loaded, so there is no gate to run and nothing
+        # this adapter could bound. Skip rather than block.
+        return _allow(
+            system_message=f"Hermeneutic skipped: {type(_CORE_IMPORT_ERROR).__name__}."
+        )
+
     if not isinstance(payload, dict):
         return _allow(system_message="Hermeneutic skipped: invalid Stop payload.")
 
