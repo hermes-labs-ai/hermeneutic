@@ -128,16 +128,46 @@ RISK — highest severity: high
     why: Completion claim with universal quantifier — confirm scope coverage.
 ```
 
-The gate is not declaring the sentence false. It is identifying wording that creates an evidence obligation.
+The command exits `1`. The gate is not declaring the sentence false. It is
+identifying wording that creates an evidence obligation.
+
+A draft that makes no such commitment is the control case:
+
+```bash
+printf '%s\n' 'Draft ready for review.' | hermeneutic gate
+```
+
+```text
+PASS — no risk patterns matched.
+```
+
+That command exits `0`. A draft file that cannot be read stays a separate
+failure — `hermeneutic gate --draft missing.txt` exits `2`, so a hook can tell
+"the gate fired" apart from "the gate never ran". Never mask either with
+`|| true`: silently swallowing a nonzero exit turns the gate into a no-op that
+still looks green. The gate's other exit `2` is input it cannot read as text:
+point `--draft` at a non-UTF-8 file and it prints `ERROR: input is not valid
+UTF-8 text — the gate reads text drafts only.` on stderr and exits `2`, rather
+than scoring an empty draft. Both are instances of the "fail loud" invariant in
+[Forward-deployed verification tooling](FORWARD-DEPLOYED-HARNESS.md#invariants--never-break-these-whatever-you-change).
+
+Both commands above run with no API key, no configuration file, no network
+access and no access to your logs; the gate reads only the draft on stdin or
+at `--draft`. This checks fixed English surface patterns. It does not decide
+whether the sentence is true, retrieve a past correction, or improve the
+draft.
 
 ## Quick start
 
 Hermeneutic requires Python 3.10 or newer.
 
 ```bash
-pip install hermeneutic
+pip install hermeneutic==0.1.12
 hermeneutic --version
 ```
+
+The pin is the release the examples on this page were verified against; drop
+it to take the latest. `hermeneutic --version` prints `hermeneutic 0.1.12`.
 
 Check a saved draft:
 
@@ -159,7 +189,7 @@ Hermes Agent can run the same gate on its native final-output hook. Install
 Hermeneutic into the Hermes Agent environment and opt in explicitly:
 
 ```bash
-pip install hermeneutic
+pip install hermeneutic==0.1.12
 hermes plugins enable hermeneutic
 ```
 
@@ -175,7 +205,7 @@ Its exit codes are designed for scripts and hooks:
 Using multiple Python installations? Install with:
 
 ```bash
-python3 -m pip install hermeneutic
+python3 -m pip install hermeneutic==0.1.12
 ```
 
 ## Hermeneutic memory
