@@ -258,6 +258,48 @@ def test_cli_harvest_out_creates_missing_parent_dirs(tmp_path):
     assert out.is_file()
 
 
+def test_cli_mine_out_is_directory_errors_cleanly(tmp_path, capsys):
+    # Same shape as the gate's --draft-is-a-directory case: an existing
+    # directory passed to --out must not surface a raw IsADirectoryError
+    # traceback.
+    _write_log(tmp_path / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "did it"),
+        ("user", "no, that's not what i meant"),
+        ("assistant", "ok let me retry"),
+    ])
+    out_dir = tmp_path / "existing_dir"
+    out_dir.mkdir()
+    rc = main(["mine", str(tmp_path), "--out", str(out_dir)])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "ERROR" in err and "directory" in err
+
+
+def test_cli_harvest_out_is_directory_errors_cleanly(tmp_path, capsys):
+    _write_log(tmp_path / "s1.jsonl", [
+        ("user", "go"),
+        ("assistant", "Done — shipped 14 files, all tests pass."),
+        ("user", "wait, are you sure?"),
+        ("assistant", "let me check"),
+    ])
+    out_dir = tmp_path / "existing_dir"
+    out_dir.mkdir()
+    rc = main(["harvest", str(tmp_path), "--out", str(out_dir)])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "ERROR" in err and "directory" in err
+
+
+def test_cli_promote_out_is_directory_errors_cleanly(tmp_path, capsys):
+    out_dir = tmp_path / "existing_dir"
+    out_dir.mkdir()
+    rc = main(["promote", str(tmp_path / "queue.jsonl"), "--out", str(out_dir)])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "ERROR" in err and "directory" in err
+
+
 def test_cli_mine_rejects_missing_directory_loudly(tmp_path, capsys):
     # A typo'd directory must fail loud even when other directories mine fine.
     good = tmp_path / "good"

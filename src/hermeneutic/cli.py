@@ -18,13 +18,23 @@ from hermeneutic.triples import READERS, mine_dir
 
 
 def _open_out(path: str, mode: str = "w"):
-    """Open an --out target, creating missing parent directories."""
+    """Open an --out target, creating missing parent directories.
+
+    Returns ``None`` after printing a clean ``ERROR:`` line (matching the
+    gate command's --draft handling) if --out names an existing directory
+    instead of a file, rather than letting a raw IsADirectoryError traceback
+    escape to the user.
+    """
     if path == "-":
         return sys.stdout
     parent = Path(path).parent
     if parent and not parent.exists():
         parent.mkdir(parents=True, exist_ok=True)
-    return open(path, mode, encoding="utf-8")
+    try:
+        return open(path, mode, encoding="utf-8")
+    except IsADirectoryError:
+        print(f"ERROR: --out is a directory, not a file: {path}", file=sys.stderr)
+        return None
 
 
 def _cmd_mine(args: argparse.Namespace) -> int:
@@ -38,6 +48,8 @@ def _cmd_mine(args: argparse.Namespace) -> int:
         )
         return 2
     out = _open_out(args.out)
+    if out is None:
+        return 2
     n = 0
     mined_by_directory: list[tuple[str, int]] = []
     try:
@@ -274,6 +286,8 @@ def _cmd_harvest(args: argparse.Namespace) -> int:
     counts: Counter = Counter()
     live_fires = 0
     out = _open_out(args.out)
+    if out is None:
+        return 2
     try:
         sanitized = getattr(args, "sanitized", False)
         for rec in harvest.harvest_dir(
@@ -309,6 +323,8 @@ def _cmd_promote(args: argparse.Namespace) -> int:
     from hermeneutic import harvest
 
     out = _open_out(args.out, "a")
+    if out is None:
+        return 2
     n = 0
     try:
         for trip in harvest.promote(args.queue):
