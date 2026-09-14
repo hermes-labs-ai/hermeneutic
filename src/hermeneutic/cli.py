@@ -153,6 +153,9 @@ def _cmd_gate(args: argparse.Namespace) -> int:
     except FileNotFoundError:
         print(f"ERROR: draft file not found: {args.draft}", file=sys.stderr)
         return 2
+    except IsADirectoryError:
+        print(f"ERROR: --draft is a directory, not a file: {args.draft}", file=sys.stderr)
+        return 2
     except UnicodeDecodeError:
         print(
             "ERROR: input is not valid UTF-8 text — the gate reads text drafts only.",

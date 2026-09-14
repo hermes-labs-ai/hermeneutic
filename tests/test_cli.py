@@ -118,6 +118,13 @@ def test_cli_gate_missing_draft_file_errors_cleanly(capsys):
     assert "ERROR" in err and "not found" in err
 
 
+def test_cli_gate_draft_is_directory_errors_cleanly(capsys, tmp_path):
+    rc = main(["gate", "--draft", str(tmp_path)])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "ERROR" in err and "directory" in err
+
+
 def test_cli_gate_non_utf8_input_errors_cleanly(capsys, tmp_path):
     blob = tmp_path / "binary.bin"
     blob.write_bytes(b"\xff\xfe\xca\x00\xdd binary noise \x80\x81")
