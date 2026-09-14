@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/codemeta/3.1",
+  "@type": "SoftwareSourceCode",
+  "name": "hermeneutic",
+  "description": "Mines reusable correction evidence from supported AI chat logs, retrieves similar past corrections for a new task, and runs a fixed deterministic English surface check on outgoing drafts to flag claims that need verification.",
+  "codeRepository": "https://github.com/hermes-labs-ai/hermeneutic",
+  "version": "0.1.12",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python >=3.10",
+  "identifier": [
+    "https://pypi.org/project/hermeneutic/0.1.12/"
+  ],
+  "author": [{"@type": "Person", "givenName": "Rolando", "familyName": "Bosch Rodriguez", "identifier": "https://orcid.org/0009-0005-4896-1112"}],
+  "url": "https://hermes-labs.ai/hermeneutic",
+  "keywords": ["AI reliability", "LLM reliability", "correction mining", "pre-flight gate", "evidence-first", "silent failure modes"]
+}
