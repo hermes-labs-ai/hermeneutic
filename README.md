@@ -9,6 +9,19 @@
 
 **Product page:** [hermes-labs.ai/hermeneutic](https://hermes-labs.ai/hermeneutic)
 
+## Install
+
+```bash
+pip install hermeneutic==0.1.12
+```
+
+```bash
+printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
+```
+
+The command above exits `1` and flags the completion claim and the universal
+quantifier; see [Quick start](#quick-start) below for the full walkthrough.
+
 Many AI workflow failures are not failures of model capability. They are failures of interpretation:
 
 - what “done” meant;
