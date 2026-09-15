@@ -1,0 +1,6 @@
+{
+  "name": "hermeneutic",
+  "version": "0.1.12",
+  "description": "Deterministic epistemic checks for Qwen Code final responses, with one bounded automatic repair attempt.",
+  "hooks": "integrations/qwen-code/hooks.json"
+}

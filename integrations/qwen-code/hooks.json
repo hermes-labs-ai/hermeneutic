@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "name": "hermeneutic-epistemic-gate",
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/integrations/qwen-code/hermeneutic_stop.py\"",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}
