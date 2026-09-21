@@ -1,19 +1,27 @@
 <div align="center">
 
-<img src="assets/hermeneutic-banner.jpg" alt="Hermeneutic — understanding in between" width="900">
+<h1>Hermeneutic</h1>
+
+<img src="assets/hermeneutic-banner.jpg" alt="Hermeneutic — understanding in between" width="900" />
+
+<p><strong>Catch recurring AI drift using corrections already present in your chat logs.</strong></p>
+
+<p>
+<a href="https://pypi.org/project/hermeneutic/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/hermeneutic.svg"></a>
+<a href="https://pypi.org/project/hermeneutic/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/hermeneutic.svg"></a>
+<a href="https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg?branch=main"></a>
+<a href="LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-2ea44f"></a>
+</p>
+
+<p>
+<a href="https://hermes-labs.ai/hermeneutic">Product page</a> ·
+<a href="#quick-start">Quickstart</a> ·
+<a href="#documentation">Documentation</a>
+</p>
+
+<p><sub><strong>Hermeneutic by <a href="https://hermes-labs.ai">Hermes Labs</a></strong> — agent infrastructure that carries corrections forward and checks claims before they ship.</sub></p>
 
 </div>
-
-# hermeneutic
-
-**Catch recurring AI drift using corrections already present in your chat logs.**
-
-[![PyPI](https://img.shields.io/pypi/v/hermeneutic.svg)](https://pypi.org/project/hermeneutic/)
-[![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/)
-[![CI](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml)
-[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-2ea44f)](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
-
-**Product page:** [hermes-labs.ai/hermeneutic](https://hermes-labs.ai/hermeneutic)
 
 ## Install
 
