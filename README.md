@@ -6,6 +6,10 @@
 
 <p><strong>Catch recurring AI drift using corrections already present in your chat logs.</strong></p>
 
+<p>Hermeneutic is developed by <a href="https://hermes-labs.ai">Hermes Labs</a>.</p>
+
+<p>Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production.</p>
+
 <p>
 <a href="https://pypi.org/project/hermeneutic/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/hermeneutic.svg"></a>
 <a href="https://pypi.org/project/hermeneutic/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/hermeneutic.svg"></a>
@@ -18,8 +22,6 @@
 <a href="#quick-start">Quickstart</a> ·
 <a href="#documentation">Documentation</a>
 </p>
-
-<p><sub><strong>Hermeneutic by <a href="https://hermes-labs.ai">Hermes Labs</a></strong> — agent infrastructure that carries corrections forward and checks claims before they ship.</sub></p>
 
 </div>
 
@@ -485,5 +487,3 @@ For CLI reference:
 hermeneutic --help
 hermeneutic <command> --help
 ```
-
-Hermeneutic is maintained by [Hermes Labs](https://hermes-labs.ai).
