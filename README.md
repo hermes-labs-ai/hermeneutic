@@ -1,3 +1,9 @@
+<div align="center">
+
+<img src="assets/hermeneutic-banner.jpg" alt="Hermeneutic — understanding in between" width="900">
+
+</div>
+
 # hermeneutic
 
 **Catch recurring AI drift using corrections already present in your chat logs.**
