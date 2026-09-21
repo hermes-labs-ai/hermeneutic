@@ -23,6 +23,10 @@
 
 </div>
 
+Hermeneutic is developed by [Hermes Labs](https://hermes-labs.ai).
+
+Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production.
+
 ## Install
 
 ```bash
@@ -485,5 +489,3 @@ For CLI reference:
 hermeneutic --help
 hermeneutic <command> --help
 ```
-
-Hermeneutic is maintained by [Hermes Labs](https://hermes-labs.ai).
