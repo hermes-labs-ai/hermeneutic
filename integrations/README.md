@@ -34,6 +34,7 @@ remain bound to their cited release or receipt.
 | Codex notify sentinel | `MECHANICALLY_TESTED_INTEGRATION` | Install/refusal/uninstall and decision mechanics are tested. Live notifications and Windows were not exercised. |
 | Gemini CLI `AfterAgent` gate | `MECHANICALLY_TESTED_INTEGRATION` | The native response-bearing hook requests one evidence-focused retry and then fails open with a warning. Manifest, hook output, bounded retry, and local host loading are tested. See [Gemini CLI](gemini-cli/README.md). |
 | Qwen Code native `Stop` gate (unreleased) | `LIVE_VERIFIED_INTEGRATION` | A native `qwen-extension.json` points at a Qwen-only `Stop` hook config, because Qwen's Gemini converter copies hooks without translating event names and drops `AfterAgent`. The gate requests one evidence-focused revision, then allows with a visible warning. Qwen 0.23.2 hardcodes `stop_hook_active: true` on the first `Stop`, so bounding uses a per-session marker file instead of that flag. Clean, risky-repair, and still-risky bounded turns ran through the published 0.23.2 CLI; see the [receipt](../evals/qwen-code/RESULTS.md) and [Qwen Code guide](qwen-code/README.md). |
+| OpenClaw reply-payload plugin | `MECHANICALLY_TESTED_INTEGRATION` | A native `reply_payload_sending` hook runs the deterministic local gate and appends an advisory for medium/high findings. Adapter/privacy behavior is tested, and isolated OpenClaw v2026.9.5 runtime inspection confirmed registration; Gateway/channel reply delivery was not exercised. See [OpenClaw](openclaw/README.md). |
 | Cursor via imported Claude hooks | `REMOVE` | Cursor's compatibility mechanism exists, but importing the unsupported Hermeneutic Claude Stop adapter does not make that adapter ready. See [Cursor](cursor.md). |
 | Cursor native two-hook concept | `DESIGN_SKETCH` | The former recipe referenced two absent helpers and returned the wrong `stop` result shape. No executable recipe ships. |
 | Windsurf / Cascade response hook | `REMOVE` | The former recipe referenced an absent helper and relied on `show_output` where current Windsurf docs say it does not apply. See [Windsurf](windsurf.md). |
@@ -94,3 +95,6 @@ when a repository-only surface is required.
 The earlier integration host contracts were checked against vendor documentation
 on 2026-07-15. Qwen Code was checked independently against its published 0.23.2
 bundle and live host on 2026-09-10; see its receipt for the exact boundary.
+OpenClaw's `reply_payload_sending` contract was checked against the official
+v2026.9.5 documentation on 2026-09-23; an isolated host load confirmed
+registration, but Gateway/channel reply delivery remains untested.
