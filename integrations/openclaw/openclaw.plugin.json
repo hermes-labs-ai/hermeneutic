@@ -1,0 +1,12 @@
+{
+  "id": "hermeneutic",
+  "name": "Hermeneutic",
+  "description": "Append local evidence-check advisories to medium- and high-risk OpenClaw replies.",
+  "activation": {
+    "onCapabilities": ["hook"]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false
+  }
+}

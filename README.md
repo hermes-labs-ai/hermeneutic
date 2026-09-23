@@ -237,6 +237,12 @@ risky retry with a visible warning. See the
 [Qwen Code integration](integrations/qwen-code/README.md) for its bounded-state,
 privacy, version, and uninstall boundaries.
 
+OpenClaw can run the deterministic gate on normalized replies before channel
+delivery. Install the native plugin from this repository checkout and enable
+the host's conversation-hook permission. The plugin appends a local advisory
+for medium/high findings; see the [OpenClaw integration guide](integrations/openclaw/README.md)
+for setup and its tested API boundary.
+
 Its exit codes are designed for scripts and hooks:
 
 - `0`: no match, or only a low-severity advisory;

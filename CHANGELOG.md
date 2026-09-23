@@ -6,6 +6,12 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ### Added
 
+- Add an OpenClaw native `reply_payload_sending` plugin that checks visible
+  reply text with the local deterministic gate and appends an advisory on
+  medium/high findings. It strips telemetry settings from the child process,
+  discards stderr, bounds runtime and input size, and fails open on errors.
+  Adapter mechanics and isolated OpenClaw v2026.9.5 hook registration are
+  tested; Gateway/channel reply delivery is not claimed.
 - Add a native Qwen Code extension. A root `qwen-extension.json` points at a
   Qwen-only `Stop` hook config, because Qwen's Gemini converter copies
   `hooks/hooks.json` without translating event names and therefore drops
