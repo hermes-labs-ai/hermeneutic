@@ -1,495 +1,62 @@
 <div align="center">
 
-<h1>Hermeneutic</h1>
+# Hermeneutic
 
 <img src="assets/hermeneutic-banner.jpg" alt="Hermeneutic — understanding in between" width="900" />
 
-<p><strong>Catch recurring AI drift using corrections already present in your chat logs.</strong></p>
+**Stop correcting the same agent mistake twice.**
 
-<p>Hermeneutic is developed by <a href="https://hermes-labs.ai">Hermes Labs</a>.</p>
+Mine corrections from your AI work logs, bring relevant lessons into the next task, and check outgoing claims before they ship.
 
-<p>Hermes Labs is an agentic infrastructure company building the reliability layer for autonomous systems.</p>
+by [Hermes Labs](https://hermes-labs.ai)
 
-<p>
-<a href="https://pypi.org/project/hermeneutic/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/hermeneutic.svg"></a>
-<a href="https://pypi.org/project/hermeneutic/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/hermeneutic.svg"></a>
-<a href="https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/hermes-labs-ai/hermeneutic/actions/workflows/ci.yml/badge.svg?branch=main"></a>
-<a href="LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-2ea44f"></a>
-</p>
-
-<p>
-<a href="https://hermes-labs.ai/hermeneutic">Product page</a> ·
-<a href="#quick-start">Quickstart</a> ·
-<a href="#documentation">Documentation</a>
-</p>
+[PyPI](https://pypi.org/project/hermeneutic/) · [Try the gate](#try-the-gate) · [Use your corrections](#use-your-corrections) · [Integrations](integrations/README.md)
 
 </div>
 
-## Install
+Your agent says a feature is done before it has checked the work. You correct it. A week later, another session makes the same claim. Hermeneutic gives you two ways to close that loop: a **fixed, fast draft gate** for risky wording, and **personal correction memory** that retrieves past guidance when a similar task comes up. Either part can be used on its own.
 
-```bash
-pip install hermeneutic==0.1.12
-```
+## Try the gate
 
-```bash
-printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
-```
-
-The command above exits `1` and flags the completion claim and the universal
-quantifier; see [Quick start](#quick-start) below for the full walkthrough.
-
-Many AI workflow failures are not failures of model capability. They are failures of interpretation:
-
-- what “done” meant;
-- what evidence counted;
-- which constraint still applied;
-- when confidence was unjustified;
-- which earlier correction should govern the next task.
-
-Hermeneutic recovers what prior corrections reveal about the user’s meaning, then examines what the system’s next answer commits it to.
-
-Your work logs already contain a trace of those failures:
-
-```text
-assistant output → user correction → repaired output
-```
-
-Hermeneutic makes that trace reusable.
-
-It works on both sides of an AI interaction:
-
-- **Hermeneutic memory** carries prior corrections forward into similar tasks.
-- **The epistemic gate** checks what an outgoing answer claims before you trust it.
-
-```text
-past corrections
-      ↓
-hermeneutic memory
-      ↓
-relevant context for a similar task
-      ↓
-generated draft
-      ↓
-epistemic gate
-      ↓
-PASS or RISK
-```
-
-The memory layer adapts to your history. The gate remains fixed and transparent.
-
-## Related research
-
-[*Precise Records, Unstable Meanings*](https://doi.org/10.5281/zenodo.21652316)
-examined a two-day stream of Hermeneutic v0.1.7 verdicts as unvalidated
-instrument outputs. The study did not evaluate Hermeneutic's correction mining,
-retrieval, integrations, or downstream effectiveness.
-
-## See the full loop
-
-### 1. Carry prior meaning forward
-
-Hermeneutic can recover a correction from an earlier Claude Code session and surface it when a similar task appears later.
-
-The trace below is real, taken from the author’s own Claude Code logs and abridged only for length. The assistant had classified parts of a retrieval system as “fully generic” without running anything:
-
-```text
-Earlier Claude Code session
-
-Assistant (abridged):
-Honest breakdown:
-
-**What's fully generic (works for any harness out of the box):**
-- `/store`, `/recall`, `/recall_b` endpoints — zero corpus assumptions
-- RRF decomposition — pure tokenization + vector math, no domain knowledge
-[…]
-The pipeline itself is generic.
-
-User correction (verbatim, typos preserved):
-wait... recall,_b at 60%+ is gerneric? are you sure/ please verify
-
-Repaired response:
-Let me actually verify rather than assert. Let me look at *why* recall_b
-is hitting on the cases it hits:
-```
-
-The durable lesson is interpretive: for this user, a capability or completion claim is not acceptable until it cites direct evidence.
-
-When a later prompt resembles that situation:
-
-```text
-Would this retrieval strategy work for other harnesses too, or is it customized to ours? Can we say it is generic?
-```
-
-Hermeneutic memory retrieves the relevant prior lesson as advisory context. This is the unedited `hermeneutic compile` output for that prompt against the author’s [346-correction corpus](evals/compile-walkthrough.md), captured with v0.1.8 (current output additionally appends per-bullet `[evidence: triple-id-N]` markers) — the correction above is the highest-similarity match behind the first line:
-
-```text
-[hermeneutic compile-preamble — derived from 5 past corrections on similar prompts]
-- 2 prior steer(s) in bucket `over_completion`: default to citing evidence (file:line, command output) when claiming completion
-- 2 prior steer(s) in bucket `over_confirmation`: execute when the user's intent is unambiguous; don't ask clarifying questions on imperative requests
-- 1 prior steer(s) in bucket `wrong_target`: if the user quoted a literal spec, use it verbatim; don't expand or substitute
-[end preamble]
-```
-
-This is the adaptive side of Hermeneutic: it recovers what prior corrections reveal about the user’s standards, constraints, and intended meaning, then brings that evidence forward into similar work.
-
-It does not rewrite the model or silently convert personal corrections into global rules.
-
-### 2. Check claims on the way out
-
-After the system produces a draft, the fixed epistemic gate examines what the wording commits the system to.
-
-The following reproducible example deliberately contains two claims that deserve verification:
-
-```bash
-printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
-```
-
-Hermeneutic flags:
-
-- **“Done — shipped 14”** because it combines a completion claim with a precise count. That count should come from tool output or another verifiable source.
-- **“all tests pass”** because “all” claims complete coverage. The caller should confirm that the full relevant test set actually ran.
-
-```text
-RISK — highest severity: high
-  [high] completion_with_number: 'Done — shipped 14'
-    why: Completion verb co-occurs with a numeric claim — verify the number is tool-derived.
-  [high] completion_with_all_quantifier: 'Done — shipped 14 files, all'
-    why: Completion claim with universal quantifier — confirm scope coverage.
-```
-
-The command exits `1`. The gate is not declaring the sentence false. It is
-identifying wording that creates an evidence obligation.
-
-A draft that makes no such commitment is the control case:
-
-```bash
-printf '%s\n' 'Draft ready for review.' | hermeneutic gate
-```
-
-```text
-PASS — no risk patterns matched.
-```
-
-That command exits `0`. A draft file that cannot be read stays a separate
-failure — `hermeneutic gate --draft missing.txt` exits `2`, so a hook can tell
-"the gate fired" apart from "the gate never ran". Never mask either with
-`|| true`: silently swallowing a nonzero exit turns the gate into a no-op that
-still looks green. The gate's other exit `2` is input it cannot read as text:
-point `--draft` at a non-UTF-8 file and it prints `ERROR: input is not valid
-UTF-8 text — the gate reads text drafts only.` on stderr and exits `2`, rather
-than scoring an empty draft. Both are instances of the "fail loud" invariant in
-[Forward-deployed verification tooling](FORWARD-DEPLOYED-HARNESS.md#invariants--never-break-these-whatever-you-change).
-
-Both commands above run with no API key, no configuration file, no network
-access and no access to your logs; the gate reads only the draft on stdin or
-at `--draft`. This checks fixed English surface patterns. It does not decide
-whether the sentence is true, retrieve a past correction, or improve the
-draft.
-
-## Quick start
-
-Hermeneutic requires Python 3.10 or newer.
-
-```bash
-pip install hermeneutic==0.1.12
-hermeneutic --version
-```
-
-The pin is the release the examples on this page were verified against; drop
-it to take the latest. `hermeneutic --version` prints `hermeneutic 0.1.12`.
-
-Check a saved draft:
-
-```bash
-hermeneutic gate --draft response.txt
-```
-
-Or pipe generated output into the gate:
-
-```bash
-generate-response | hermeneutic gate
-```
-
-The standalone gate works offline, requires no model or private logs, and has zero required Python runtime dependencies.
-
-For deployment and evaluation engineering around a Hermeneutic workflow, contact [Hermes Labs](mailto:roli@hermes-labs.ai).
-
-Hermes Agent can run the same gate on its native final-output hook. Install
-Hermeneutic into the Hermes Agent environment and opt in explicitly:
-
-```bash
-pip install hermeneutic==0.1.12
-hermes plugins enable hermeneutic
-```
-
-See the [Hermes Agent integration](integrations/hermes-agent.md) for the exact
-advisory and evidence boundary.
-
-From a checkout that contains `qwen-extension.json`, Qwen Code can install the
-repository-native final-response gate directly:
-
-```bash
-qwen extensions install . --consent
-```
-
-The Qwen adapter requests one evidence-focused revision, then permits a still-
-risky retry with a visible warning. See the
-[Qwen Code integration](integrations/qwen-code/README.md) for its bounded-state,
-privacy, version, and uninstall boundaries.
-
-OpenClaw can run the deterministic gate on normalized replies before channel
-delivery. Install the native plugin from this repository checkout and enable
-the host's conversation-hook permission. The plugin appends a local advisory
-for medium/high findings; see the [OpenClaw integration guide](integrations/openclaw/README.md)
-for setup and its tested API boundary.
-
-Its exit codes are designed for scripts and hooks:
-
-- `0`: no match, or only a low-severity advisory;
-- `1`: at least one medium- or high-severity match;
-- `2`: invalid input, such as a missing file or non-UTF-8 text.
-
-Using multiple Python installations? Install with:
+Requires Python 3.10+. This first check needs no account, model, logs, or configuration:
 
 ```bash
 python3 -m pip install hermeneutic==0.1.12
+printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
-## Hermeneutic memory
+The gate reports `RISK` for the precise completion and “all tests” claims and exits `1`. Try `printf '%s\n' 'Draft ready for review.' | hermeneutic gate` to see a `PASS` (exit `0`). For a real draft, use `hermeneutic gate --draft response.txt`. Unreadable or non-text input exits `2`.
 
-Hermeneutic memory recovers correction evidence from supported AI work logs and surfaces relevant prior guidance when a similar task appears.
+The check highlights English wording that needs a closer look. It cannot tell whether a claim is true. You decide whether to revise, verify, or send the draft.
 
-```text
-logs → correction episodes → local corpus → relevant prior guidance
-```
+## Use your corrections
 
-### Mine correction episodes
-
-Hermeneutic recognizes correction-shaped user turns and records the surrounding exchange when available:
-
-```text
-prompt → assistant reply → user correction → repaired reply
-```
-
-Mine Claude Code logs:
+If you have Claude Code session logs, mine correction episodes, group the recurring types, and build a local retrieval index:
 
 ```bash
-hermeneutic mine ~/.claude/projects \
-  --format claude-code \
-  --glob '**/*.jsonl' \
-  --out ~/.hermeneutic/triples.jsonl
-```
-
-Inspect recurring categories:
-
-```bash
+hermeneutic mine ~/.claude/projects --format claude-code \
+  --glob '**/*.jsonl' --out ~/.hermeneutic/triples.jsonl
 hermeneutic bucket ~/.hermeneutic/triples.jsonl
-```
-
-Supported readers:
-
-| Format | Expected input |
-|---|---|
-| `claude-code` | Claude Code session JSONL |
-| `codex` | Codex rollout JSONL |
-| `openai` | JSON containing a `messages` list, or a top-level message list |
-
-Mining writes local JSONL records. It does not change the epistemic gate or send the corpus anywhere.
-
-Missing directories, unmatched globs, and wholly unreadable input fail loudly rather than being reported as zero corrections.
-
-### Retrieve relevant prior corrections
-
-Personalized retrieval is optional. It uses the local correction corpus and an Ollama embedding service with `nomic-embed-text`.
-
-Build the index:
-
-```bash
 ollama pull nomic-embed-text
 hermeneutic compile-index --triples ~/.hermeneutic/triples.jsonl
-```
-
-Retrieve prior guidance for a new prompt:
-
-```bash
 hermeneutic compile 'Finish the release and report what passed.'
 ```
 
-When relevant matches clear the configured threshold, Hermeneutic emits deterministic advisory context such as:
+The last two commands need [Ollama](https://ollama.com/) running locally. If your logs contain a relevant correction, `compile` can return a short advisory preamble grounded in those past episodes. An empty result is possible when no match clears the threshold. The [worked example](evals/compile-walkthrough.md) shows the full path from a real correction to retrieved guidance. Codex and OpenAI message logs are also supported; see `hermeneutic mine --help` for the input formats.
 
-```text
-[hermeneutic compile-preamble — derived from 2 past corrections on similar prompts]
-- 2 prior steer(s) in bucket `over_completion`: default to citing evidence (file:line, command output) when claiming completion [evidence: triple-id-3] [evidence: triple-id-7]
-[end preamble]
-```
+Mining reads the paths you supply and stores local JSONL records. It does not silently teach new rules to the fixed gate. Retrieval uses local embeddings; it does not use Ollama to generate the guidance text.
 
-Each `[evidence: triple-id-N]` marker cites the one-based nonblank row in the triples JSONL file that supports its bullet, in ascending order without duplicates, so every advice claim traces back to a stored correction. Citation granularity is the advice bullet; markers never cite rows absent from the current corpus file.
+## Where it fits
 
-Ollama produces embeddings. It does not generate the guidance text.
+| Part | Put it here | Output |
+| --- | --- | --- |
+| Correction memory | Before or during a similar future task | Advisory context from prior corrections |
+| Draft gate | Before an agent sends its response | `PASS` or `RISK` with matched patterns |
 
-No corpus, index, relevant match, or available embedding service means no preamble.
+Use the standalone CLI in any workflow you control. The [integration guides](integrations/README.md) cover optional Claude Code, Codex, Gemini CLI, Qwen Code, OpenClaw, Hermes Agent, and other host paths. Integration capabilities vary by host; check the individual guide before expecting automatic gating or blocking. The [Python Router](docs/THEORY.md) is available if you want to compose your own review stages.
 
-After changing the corpus, rebuild the index.
+Hermeneutic's gate matches fixed English surface patterns and can miss a mistake or flag an innocent phrase. Correction retrieval depends on the history you supply and has not been shown to improve downstream outcomes across users. It is a way to surface previous guidance and scrutinize a draft, not a security boundary or a factuality guarantee.
 
-Diagnose an empty result with:
+[Worked example](examples/before_after.md) · [Integration guides](integrations/README.md) · [Evaluation results](evals/) · [Privacy and security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
-```bash
-hermeneutic compile --verbose 'Finish the release and report what passed.'
-```
-
-See the [compile walkthrough](https://github.com/hermes-labs-ai/hermeneutic/blob/main/evals/compile-walkthrough.md) for a complete example.
-
-## Epistemic gate
-
-The epistemic gate examines what an outgoing draft commits the system to.
-
-It runs eight fixed English surface-pattern checks covering patterns such as:
-
-- completion claims combined with precise counts;
-- universal coverage claims such as “all” or “every”;
-- subagent or authority output relayed as verified;
-- unhedged certainty;
-- volunteered expansion beyond the requested scope;
-- quality claims without a measurable referent.
-
-It returns `PASS` or `RISK` together with any matched rules.
-
-The gate identifies claims that deserve verification. It does not determine whether a statement is true, understand its full semantic meaning, or prove that a response is safe to send.
-
-Mining and retrieval never rewrite gate rules. New gate behavior requires a deliberate code change and a later release.
-
-Use the Python API directly:
-
-```python
-from hermeneutic import risk_score
-
-for hit in risk_score("Done — shipped 14 files, all tests pass."):
-    print(hit.rule_id, hit.severity, hit.description)
-```
-
-The caller decides whether to warn, hold, revise, or send the draft.
-
-## How the layers differ
-
-| Layer | Uses your history? | Output |
-|---|---:|---|
-| Hermeneutic memory: mining | Yes | Local correction records |
-| Hermeneutic memory: retrieval | Yes | Advisory context for a new prompt |
-| Epistemic gate | No | `PASS` or `RISK` for a draft |
-| Python Router | Caller-controlled | Composed review behavior |
-
-The distinction is intentional:
-
-- memory adapts to your correction history;
-- the gate remains fixed across users;
-- retrieval acts before or during a task;
-- the gate acts on the outgoing draft;
-- the Router is an advanced composition API, not the default workflow.
-
-## Optional integrations
-
-The standalone CLI and Python API are the portable core paths.
-
-The package also includes an installer for an optional Claude Code `UserPromptSubmit` hook:
-
-```bash
-hermeneutic install-compile-hook
-hermeneutic uninstall-compile-hook
-```
-
-On a relevant match, the hook returns structured prompt context. Empty results and compiler errors fail open with no hook output.
-
-The Claude hook is mechanically tested. A live authenticated Claude turn was not part of the v0.1.7 release gate.
-
-Codex plugin and sentinel assets are also included with narrower mechanically tested boundaries.
-
-See the [integration guides](https://github.com/hermes-labs-ai/hermeneutic/tree/main/integrations) for configuration, maturity, dependencies, and uninstall instructions.
-
-## Advanced Python Router
-
-The optional [Python Router](https://github.com/hermes-labs-ai/hermeneutic/blob/main/docs/THEORY.md) can compose the fixed gate with caller-supplied stages such as:
-
-- rubric-based review;
-- model criticism;
-- probing;
-- repair.
-
-It is not part of the default CLI workflow.
-
-External stages inherit the caller’s credentials, cost, network behavior, privacy boundaries, and failure modes.
-
-## Evidence
-
-Hermeneutic was derived from a single author’s working corpus rather than a synthetic benchmark alone.
-
-| Measurement | Result | Boundary |
-|---|---:|---|
-| Historical mining derivation | 326 corrections from 1,423 Claude Code sessions; 143/326 were post-completion overclaim corrections | Private triples are not distributed |
-| Fixed-gate coverage | 115/346 direct hits | Retrospective correction-corpus coverage, not held-out accuracy |
-| Retrieval profile | 88/104 same-category hits at CLI/hook defaults; 94/104 at Python defaults | One frozen single-user corpus using cached vectors |
-
-The mining derivation was a 2026-04 run that produced 326 corrections. The gate-coverage and retrieval measurements use a separate, later frozen 346-correction corpus; the receipts do not attribute the 20-row difference to one cause.
-
-The gate result is not a precision, false-positive-rate, held-out-recall, or live-fire claim.
-
-The retrieval result measures whether guidance from the same correction category was surfaced. It does not measure advice quality, cross-user generalization, model compliance, or downstream improvement.
-
-Downstream effectiveness remains unmeasured.
-
-Reproduction details:
-
-- [Mining derivation receipt](https://github.com/hermes-labs-ai/hermeneutic/blob/main/evals/triple-mining-receipts.md)
-- [Gate coverage](https://github.com/hermes-labs-ai/hermeneutic/blob/main/evals/gate-coverage/RESULTS.md)
-- [Retrieval evaluation](https://github.com/hermes-labs-ai/hermeneutic/blob/main/evals/leave-one-out/RESULTS.md)
-
-## Privacy
-
-Mining reads only the paths supplied by the caller.
-
-Triples and embedding indexes default to `~/.hermeneutic/`.
-
-Core mining, bucketing, gating, and local review commands make no network calls.
-
-The optional retrieval compiler sends prompt text to its configured Ollama endpoint, which defaults to localhost.
-
-Telemetry is disabled unless `HERMENEUTIC_TELEMETRY` is configured.
-
-No private corpus, embedding index, or session content is distributed.
-
-Triples, telemetry, embeddings, and injected context may contain sensitive text. Review local artifacts before sharing them and apply the retention policy of any configured host.
-
-See the [security and data-handling policy](https://github.com/hermes-labs-ai/hermeneutic/blob/main/SECURITY.md).
-
-## Limitations
-
-- The epistemic gate checks English surface patterns, not full semantic meaning.
-- `PASS` means only that no shipped pattern matched.
-- Rules can produce false positives and miss real failures.
-- Gate rules do not learn automatically.
-- Mining uses deliberately narrow correction markers and log readers.
-- Retrieval quality is not downstream effectiveness.
-- Current evidence comes from one heavy user’s private corpus and deterministic fixtures.
-- Windows, live host interfaces, external Router backends, and downstream effectiveness were not release-gate verified.
-- Human review remains necessary.
-
-Do not use Hermeneutic as a security boundary, factuality guarantee, moderation system, policy engine, or substitute for domain review.
-
-## Documentation
-
-- [Worked before/after example](https://github.com/hermes-labs-ai/hermeneutic/blob/main/examples/before_after.md)
-- [Theory and advanced Router](https://github.com/hermes-labs-ai/hermeneutic/blob/main/docs/THEORY.md)
-- [Integration guides](https://github.com/hermes-labs-ai/hermeneutic/tree/main/integrations)
-- [Evaluation receipts](https://github.com/hermes-labs-ai/hermeneutic/tree/main/evals)
-- [Forward-deployed verification tooling](https://github.com/hermes-labs-ai/hermeneutic/blob/main/FORWARD-DEPLOYED-HARNESS.md)
-- [Changelog](https://github.com/hermes-labs-ai/hermeneutic/blob/main/CHANGELOG.md)
-- [Security](https://github.com/hermes-labs-ai/hermeneutic/blob/main/SECURITY.md)
-- [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/main/CONTRIBUTING.md)
-- [Citation metadata](https://github.com/hermes-labs-ai/hermeneutic/blob/main/CITATION.cff)
-- [Apache License 2.0](https://github.com/hermes-labs-ai/hermeneutic/blob/main/LICENSE)
-
-For CLI reference:
-
-```bash
-hermeneutic --help
-hermeneutic <command> --help
-```
+Apache-2.0. [Hermes Labs](https://hermes-labs.ai) builds agentic infrastructure for autonomous systems.
