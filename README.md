@@ -44,7 +44,7 @@ hermeneutic compile-index --triples ~/.hermeneutic/triples.jsonl
 hermeneutic compile 'Finish the release and report what passed.'
 ```
 
-The last two commands need [Ollama](https://ollama.com/) running locally. If your logs contain a relevant correction, `compile` can return a short advisory preamble grounded in those past episodes. An empty result is possible when no match clears the threshold. The [worked example](evals/compile-walkthrough.md) shows the full path from a real correction to retrieved guidance. Codex and OpenAI message logs are also supported; see `hermeneutic mine --help` for the input formats.
+The last three commands need [Ollama](https://ollama.com/) running locally. If your logs contain a relevant correction, `compile` can return a short advisory preamble grounded in those past episodes. An empty result is possible when no match clears the threshold. The [worked example](evals/compile-walkthrough.md) shows the full path from a real correction to retrieved guidance. Codex and OpenAI message logs are also supported; see `hermeneutic mine --help` for the input formats.
 
 Mining reads the paths you supply and stores local JSONL records. It does not silently teach new rules to the fixed gate. Retrieval uses local embeddings; it does not use Ollama to generate the guidance text.
 
