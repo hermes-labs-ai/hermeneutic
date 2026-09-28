@@ -1,4 +1,4 @@
-"""Test the standalone gate recipe and its runtime behavior."""
+"""Exercise the first-success gate recipe and its offline behavior."""
 
 from __future__ import annotations
 
@@ -17,7 +17,6 @@ RISKY_RULE_IDS = ("completion_with_number", "completion_with_all_quantifier")
 
 MISSING_DRAFT_NAME = "missing.txt"
 
-# Quoted verbatim from `_cmd_gate` so the runtime diagnostic stays stable.
 NON_UTF8_DIAGNOSTIC = (
     "ERROR: input is not valid UTF-8 text — the gate reads text drafts only."
 )
@@ -27,7 +26,7 @@ NON_UTF8_DIAGNOSTIC = (
 _GATE_ENTRY = "from hermeneutic.cli import main; raise SystemExit(main(['gate']))"
 
 
-def test_risky_draft_fires_both_rules(capsys, tmp_path):
+def test_published_risky_draft_fires_both_rules(capsys, tmp_path):
     draft = tmp_path / "risky.txt"
     draft.write_text(RISKY_DRAFT, encoding="utf-8")
 
@@ -40,7 +39,7 @@ def test_risky_draft_fires_both_rules(capsys, tmp_path):
         assert rule_id in out
 
 
-def test_neutral_draft_passes(capsys, tmp_path):
+def test_published_neutral_draft_passes(capsys, tmp_path):
     draft = tmp_path / "neutral.txt"
     draft.write_text(NEUTRAL_DRAFT, encoding="utf-8")
 
@@ -59,7 +58,7 @@ def test_missing_draft_stays_a_distinct_error(capsys, tmp_path):
 
 
 def test_non_utf8_draft_exits_2_with_the_published_diagnostic(capsys, tmp_path):
-    """Non-UTF-8 input must fail distinctly rather than score an empty draft."""
+    """Unreadable text must return a distinct error with its CLI diagnostic."""
     draft = tmp_path / "not-utf8.txt"
     # 0xFF is not a legal UTF-8 start byte, so decoding fails outright.
     draft.write_bytes(b"Done \xff shipped 14 files, all tests pass.")

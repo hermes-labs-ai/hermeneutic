@@ -1,4 +1,4 @@
-"""Check any test-count claim in the latest CHANGELOG against pytest collection."""
+"""Check latest CHANGELOG test-count claims against pytest collection."""
 
 from __future__ import annotations
 
