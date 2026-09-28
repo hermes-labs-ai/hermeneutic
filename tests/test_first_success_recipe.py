@@ -169,3 +169,30 @@ def test_default_gate_runs_with_outbound_network_denied(tmp_path):
     neutral = _gate(NEUTRAL_DRAFT)
     assert neutral.returncode == 0
     assert "PASS — no risk patterns matched." in neutral.stdout
+
+
+def test_readme_publishes_the_first_success_recipe():
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    start = readme.index("## Try the gate")
+    recipe = readme[start:readme.index("\n## ", start + 1)]
+    assert RISKY_DRAFT in recipe
+    assert NEUTRAL_DRAFT in recipe
+    assert "| hermeneutic gate" in recipe
+    assert "`RISK`" in recipe and "exits `1`" in recipe
+    assert "`PASS` (exit `0`)" in recipe
+    assert "hermeneutic gate --draft response.txt" in recipe
+    assert "Unreadable or non-text input exits `2`" in recipe
+
+
+def test_readme_first_success_install_pins_the_packaged_release():
+    import re
+
+    from hermeneutic import __version__
+
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    start = readme.index("## Try the gate")
+    recipe = readme[start:readme.index("\n## ", start + 1)]
+    installs = re.findall(r"^.*pip install hermeneutic.*$", recipe, re.MULTILINE)
+    assert installs, "First-success recipe must publish an install command"
+    for line in installs:
+        assert f"hermeneutic=={__version__}" in line, line
