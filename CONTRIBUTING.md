@@ -30,7 +30,7 @@ python3 -m pip install -e ".[dev]"
 ## Running the checks
 
 ```bash
-python3 -m ruff check .
+python3 -m ruff check src tests
 python3 -m pytest -ra
 python3 -m build
 python3 -m pip install --force-reinstall dist/*.whl
@@ -59,7 +59,7 @@ Severity guide: `high` = strong drift signal that almost always warrants a downs
 
 ## Pull request checklist
 
-- [ ] `ruff check .` passes
+- [ ] `ruff check src tests` passes
 - [ ] `pytest -ra` passes
 - [ ] No new mandatory runtime dependency added
 - [ ] `CHANGELOG.md` updated under `[Unreleased]`
