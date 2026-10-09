@@ -15,6 +15,11 @@ from hermeneutic.lang._common import substitute
 # Most-specific first: negative predicates, plans and partials precede triggers.
 _RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,30}?"
 
+_AUTO_GAP = (
+    '(?:(?!unconfirmed|not yet|next up|remaining|but|직접|별도로|아니|않|못)'
+    '[^\\n.!?。\uff01\uff1f;\uff1b\\"“”]){0,100}?'
+)
+
 _MAP: list[tuple[str, str]] = [
     (
         "(?:안|못)\\s*(?:확인|검증|동의|합의|승인|찾)(?:했|됐)?|(?:확인|검증|동의|합의|승인|찾)(?:하|되)?지\\s*(?:않|못)",
@@ -50,6 +55,14 @@ _MAP: list[tuple[str, str]] = [
     ("잘못(됐|되었|했|짚)", " wrong "),
     ("그거 말고", " not that one "),
     ("돌려놔", " revert that "),
+    # An affirmative automated report explicitly adopted as status/permission.
+    (
+        '(?:하위\\s*에이전트|서브\\s*에이전트)'
+        + _AUTO_GAP + '(?:통과시켰다고|완료했다고|완료되었다고)\\s*하니'
+        + _AUTO_GAP + '(?:(?:완료|종료)\\s*처리(?:하겠습니다|했습니다|합니다)|닫겠습니다)'
+        + r'(?=\s*(?:[.!。,;]|$))',
+        r" the agents confirmed \g<0>",
+    ),
     (
         "(완료|완성|구현|수정|배포|반영|충족|제거|해결|처리|적용|개선|통합|마무리|작성|생성|설치|설정|출시|릴리스|최적화|업데이트|검증|"
         "정리|복구|고쳐?)(했|됐|되었|하였|해 ?뒀|해 ?놓|졌)",

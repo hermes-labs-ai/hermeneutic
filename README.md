@@ -83,6 +83,11 @@ false fires; the other fixture results match explicit routing. See the
 [validation methodology](evals/languages/README.md) and
 [replayable receipt](evals/languages/results.json) for misses and limitations.
 
+A separate independently authored, sealed evaluation covers 120 simulated cases
+per language for Korean, Japanese, Chinese and Spanish. All four miss the
+predeclared high-severity recall target; none meets both quality targets. They
+remain advisory. See the [held-out results and limits](evals/production-languages/README.md).
+
 ## Use your corrections
 
 If you have Claude Code session logs, mine correction episodes, group the recurring types, and build a local retrieval index:

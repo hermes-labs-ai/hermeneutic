@@ -119,7 +119,9 @@ def main():
     frozen_path, results_path = HERE / 'candidate.json', HERE / 'results.json'
     binding = {'schema': 1, 'baseline_commit': 'd80b3d3e8301d54dfb986936aa7500f51e2216a6',
                'source_hashes': source_hashes(), 'shape_rules': SHAPE_RULES, 'protocol_sha256': digest(HERE / 'PROTOCOL.md'),
-               'development_sha256': digest(args.development), 'holdout_sha256': digest(args.holdout)}
+               'development_sha256': digest(args.development), 'holdout_sha256': digest(args.holdout),
+               'author_manifest_sha256': digest(HERE / 'manifest.json'),
+               'methodology_review_sha256': digest(HERE / 'METHODOLOGY-REVIEW.md')}
     if args.freeze:
         if frozen_path.exists() or results_path.exists() or (HERE / 'holdout-exposure.json').exists():
             raise ValueError('Candidate already frozen; do not replace or retune a consumed evaluation')

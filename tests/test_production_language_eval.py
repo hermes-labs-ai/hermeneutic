@@ -51,7 +51,7 @@ def test_missing_provenance_is_rejected(tmp_path):
 def test_failed_exposure_cannot_be_retried(tmp_path, monkeypatch):
     monkeypatch.setattr(EVAL, 'HERE', tmp_path)
     monkeypatch.setattr(EVAL, 'source_hashes', lambda: {})
-    for name in ('PROTOCOL.md', 'development.json', 'holdout.json'):
+    for name in ('PROTOCOL.md', 'development.json', 'holdout.json', 'manifest.json', 'METHODOLOGY-REVIEW.md'):
         (tmp_path / name).write_text('[]')
     base_args = ['run.py', '--holdout', str(tmp_path / 'holdout.json')]
     monkeypatch.setattr(EVAL.sys, 'argv', [*base_args, '--freeze'])
