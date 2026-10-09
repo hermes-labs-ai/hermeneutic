@@ -29,3 +29,11 @@ grep -Fq 'PASS — no risk patterns matched.' <<<"$neutral_output"
 missing_status=0
 hermeneutic gate --draft "$(mktemp -u)/absent.txt" >/dev/null 2>&1 || missing_status=$?
 test "$missing_status" -eq 2
+
+# Language adapters must survive packaging, including automatic routing.
+language_status=0
+language_output="$(
+  printf '%s\n' '5개 파일을 수정했습니다.' | hermeneutic gate --lang auto
+)" || language_status=$?
+test "$language_status" -eq 1
+grep -Fq 'number_then_completion' <<<"$language_output"

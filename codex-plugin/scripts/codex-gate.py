@@ -39,7 +39,7 @@ def main() -> int:
 
     try:
         proc = subprocess.run(
-            [sys.executable, "-m", "hermeneutic.cli", "gate"],
+            [sys.executable, "-m", "hermeneutic.cli", "gate", "--lang", "auto"],
             input=last_text, capture_output=True, text=True, timeout=5,
             env=_gate_env(),
         )

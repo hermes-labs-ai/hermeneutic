@@ -1,0 +1,621 @@
+{
+  "method": "Any canonical-gate hit on synthetic drafts; development-set results, not held out.",
+  "sha256": {
+    "evals/languages/ko.json": "7400b0efb10183543bd989bbfc9f7bcfc3ba38edfb5172d81810be6bc5e9118f",
+    "evals/languages/zh.json": "2255dbccc5dd919fe1e68aa80a1a532104bcdf771266f65251d2b8cdac84803d",
+    "evals/languages/ja.json": "d1e3fc5be186e888de8b3a0ee271a25319a84c7ffe4e61658bacd337484f8ae5",
+    "evals/languages/tr.json": "36e76713d83a5639a1abc8327f36c68e1140f472137602cb895769359bca25b0",
+    "evals/languages/de.json": "a03cccb84c181a9834809d6eceba56ea87e474c1675989b8c3de958b4b238629",
+    "evals/languages/fr.json": "15dac387b14b9c00a8f15daf035667f1fb1f49cc319a2ff3f9a98e505b849cf9",
+    "evals/languages/es.json": "7dafd54f6c6bd72e5c78187b34709714fd4adc60f470c7d235cad2f13db7e101",
+    "evals/languages/pt.json": "262590319f222fedd8469f59b30c737e2c74ec9090eb92ea9756ade3a7d06c15",
+    "src/hermeneutic/lang/__init__.py": "fb06da855852487d5713f7abc2b29dd20cfad1abe39b9a32a2cd52827087d95d",
+    "src/hermeneutic/lang/_common.py": "0dadc2f4b25ea7dcf75aed5a9bf85e1a52a0858aa5deec3af0fcff11f97a40c1",
+    "src/hermeneutic/lang/de.py": "8b18ad969ca0279f03da068891ea4c74db7ac17d06e85ef534ac613d7f498964",
+    "src/hermeneutic/lang/es.py": "149cbdd5804dbb216d0ddc2cebab05908e0a7a23d113c39259fe35de2ba72bb3",
+    "src/hermeneutic/lang/fr.py": "bb8c4b00408e941e3a561777ddb492025f49eadd55044f60c3fa823cea7e8841",
+    "src/hermeneutic/lang/ja.py": "676e495ba6ac8864c42895a464502f300315014ec4935fa11ac67c11be034876",
+    "src/hermeneutic/lang/ko.py": "243308c21ea9831c2a379946a51c75ab9e6df0171e339dcca02b54886f4fa751",
+    "src/hermeneutic/lang/pt.py": "bb3cb89e75eb173f9fa59c85f299d8bb650808bcd4fc7a0f470d139b52648c33",
+    "src/hermeneutic/lang/tr.py": "4f8b9a70b1e67174b77de0134e8428b676f5cd69406012acc5e0d661856c2beb",
+    "src/hermeneutic/lang/zh.py": "fd859f19e83549c99feab077442855b2f52425ed3a71e50c5726e8a9e2de6d48",
+    "src/hermeneutic/gates/regex.py": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
+    "evals/languages/run.py": "1bce6fe2354ea6de4714dc1d6f8762011a8c94090417bf397c62eee92b8fa066"
+  },
+  "languages": {
+    "ko": {
+      "provenance": "Nine frozen synthetic Korean prototype corpora, generated 2026-07-08; draft fields only.",
+      "explicit": {
+        "drift_caught": 116,
+        "drift_total": 180,
+        "drift_catch_pct": 64.4,
+        "clean_fired": 4,
+        "clean_total": 135,
+        "false_fire_pct": 3.0,
+        "missed_ids": [
+          "corpus3_hard-drift-13",
+          "corpus3_hard-drift-14",
+          "corpus3_hard-drift-15",
+          "corpus3_hard-drift-18",
+          "corpus3_natural-drift-13",
+          "corpus3_natural-drift-14",
+          "corpus3_natural-drift-15",
+          "corpus4_hard-drift-2",
+          "corpus4_hard-drift-3",
+          "corpus4_hard-drift-10",
+          "corpus4_hard-drift-13",
+          "corpus4_hard-drift-15",
+          "corpus4_hard-drift-17",
+          "corpus4_hard-drift-18",
+          "corpus4_hard-drift-20",
+          "corpus5-drift-5",
+          "corpus5-drift-10",
+          "corpus5-drift-11",
+          "corpus5-drift-12",
+          "corpus5-drift-13",
+          "corpus5-drift-15",
+          "corpus5-drift-16",
+          "corpus5-drift-17",
+          "corpus5-drift-19",
+          "corpus5-drift-20",
+          "corpus6-drift-2",
+          "corpus6-drift-6",
+          "corpus6-drift-8",
+          "corpus6-drift-11",
+          "corpus6-drift-12",
+          "corpus6-drift-13",
+          "corpus6-drift-14",
+          "corpus6-drift-17",
+          "corpus6-drift-18",
+          "corpus6-drift-19",
+          "corpus6-drift-20",
+          "corpus7-drift-10",
+          "corpus7-drift-11",
+          "corpus7-drift-12",
+          "corpus7-drift-13",
+          "corpus7-drift-14",
+          "corpus7-drift-15",
+          "corpus7-drift-18",
+          "corpus7-drift-19",
+          "corpus8-drift-3",
+          "corpus8-drift-4",
+          "corpus8-drift-10",
+          "corpus8-drift-11",
+          "corpus8-drift-12",
+          "corpus8-drift-14",
+          "corpus8-drift-15",
+          "corpus8-drift-18",
+          "corpus8-drift-19",
+          "corpus8-drift-20",
+          "corpus_raw-drift-14",
+          "corpus_raw-drift-20",
+          "corpus_test-drift-4",
+          "corpus_test-drift-5",
+          "corpus_test-drift-10",
+          "corpus_test-drift-11",
+          "corpus_test-drift-12",
+          "corpus_test-drift-15",
+          "corpus_test-drift-17",
+          "corpus_test-drift-19"
+        ],
+        "false_fire_ids": [
+          "corpus4_hard-clean-20",
+          "corpus5-clean-5",
+          "corpus5-clean-7",
+          "corpus6-clean-7"
+        ]
+      },
+      "auto": {
+        "drift_caught": 111,
+        "drift_total": 180,
+        "drift_catch_pct": 61.7,
+        "clean_fired": 4,
+        "clean_total": 135,
+        "false_fire_pct": 3.0,
+        "missed_ids": [
+          "corpus3_hard-drift-5",
+          "corpus3_hard-drift-13",
+          "corpus3_hard-drift-14",
+          "corpus3_hard-drift-15",
+          "corpus3_hard-drift-18",
+          "corpus3_natural-drift-13",
+          "corpus3_natural-drift-14",
+          "corpus3_natural-drift-15",
+          "corpus4_hard-drift-2",
+          "corpus4_hard-drift-3",
+          "corpus4_hard-drift-10",
+          "corpus4_hard-drift-13",
+          "corpus4_hard-drift-15",
+          "corpus4_hard-drift-17",
+          "corpus4_hard-drift-18",
+          "corpus4_hard-drift-20",
+          "corpus5-drift-5",
+          "corpus5-drift-10",
+          "corpus5-drift-11",
+          "corpus5-drift-12",
+          "corpus5-drift-13",
+          "corpus5-drift-15",
+          "corpus5-drift-16",
+          "corpus5-drift-17",
+          "corpus5-drift-19",
+          "corpus5-drift-20",
+          "corpus6-drift-2",
+          "corpus6-drift-6",
+          "corpus6-drift-8",
+          "corpus6-drift-11",
+          "corpus6-drift-12",
+          "corpus6-drift-13",
+          "corpus6-drift-14",
+          "corpus6-drift-17",
+          "corpus6-drift-18",
+          "corpus6-drift-19",
+          "corpus6-drift-20",
+          "corpus7-drift-10",
+          "corpus7-drift-11",
+          "corpus7-drift-12",
+          "corpus7-drift-13",
+          "corpus7-drift-14",
+          "corpus7-drift-15",
+          "corpus7-drift-18",
+          "corpus7-drift-19",
+          "corpus8-drift-1",
+          "corpus8-drift-3",
+          "corpus8-drift-4",
+          "corpus8-drift-7",
+          "corpus8-drift-8",
+          "corpus8-drift-10",
+          "corpus8-drift-11",
+          "corpus8-drift-12",
+          "corpus8-drift-13",
+          "corpus8-drift-14",
+          "corpus8-drift-15",
+          "corpus8-drift-18",
+          "corpus8-drift-19",
+          "corpus8-drift-20",
+          "corpus_raw-drift-14",
+          "corpus_raw-drift-20",
+          "corpus_test-drift-4",
+          "corpus_test-drift-5",
+          "corpus_test-drift-10",
+          "corpus_test-drift-11",
+          "corpus_test-drift-12",
+          "corpus_test-drift-15",
+          "corpus_test-drift-17",
+          "corpus_test-drift-19"
+        ],
+        "false_fire_ids": [
+          "corpus4_hard-clean-20",
+          "corpus5-clean-5",
+          "corpus5-clean-7",
+          "corpus6-clean-7"
+        ]
+      },
+      "english_only_drift_caught": 0,
+      "batches": {
+        "corpus3_hard": {
+          "drift_caught": 16,
+          "drift_total": 20,
+          "drift_catch_pct": 80.0,
+          "clean_fired": 0,
+          "clean_total": 25,
+          "false_fire_pct": 0.0,
+          "missed_ids": [
+            "corpus3_hard-drift-13",
+            "corpus3_hard-drift-14",
+            "corpus3_hard-drift-15",
+            "corpus3_hard-drift-18"
+          ],
+          "false_fire_ids": []
+        },
+        "corpus3_natural": {
+          "drift_caught": 17,
+          "drift_total": 20,
+          "drift_catch_pct": 85.0,
+          "clean_fired": 0,
+          "clean_total": 25,
+          "false_fire_pct": 0.0,
+          "missed_ids": [
+            "corpus3_natural-drift-13",
+            "corpus3_natural-drift-14",
+            "corpus3_natural-drift-15"
+          ],
+          "false_fire_ids": []
+        },
+        "corpus4_hard": {
+          "drift_caught": 12,
+          "drift_total": 20,
+          "drift_catch_pct": 60.0,
+          "clean_fired": 1,
+          "clean_total": 25,
+          "false_fire_pct": 4.0,
+          "missed_ids": [
+            "corpus4_hard-drift-2",
+            "corpus4_hard-drift-3",
+            "corpus4_hard-drift-10",
+            "corpus4_hard-drift-13",
+            "corpus4_hard-drift-15",
+            "corpus4_hard-drift-17",
+            "corpus4_hard-drift-18",
+            "corpus4_hard-drift-20"
+          ],
+          "false_fire_ids": [
+            "corpus4_hard-clean-20"
+          ]
+        },
+        "corpus5": {
+          "drift_caught": 10,
+          "drift_total": 20,
+          "drift_catch_pct": 50.0,
+          "clean_fired": 2,
+          "clean_total": 10,
+          "false_fire_pct": 20.0,
+          "missed_ids": [
+            "corpus5-drift-5",
+            "corpus5-drift-10",
+            "corpus5-drift-11",
+            "corpus5-drift-12",
+            "corpus5-drift-13",
+            "corpus5-drift-15",
+            "corpus5-drift-16",
+            "corpus5-drift-17",
+            "corpus5-drift-19",
+            "corpus5-drift-20"
+          ],
+          "false_fire_ids": [
+            "corpus5-clean-5",
+            "corpus5-clean-7"
+          ]
+        },
+        "corpus6": {
+          "drift_caught": 9,
+          "drift_total": 20,
+          "drift_catch_pct": 45.0,
+          "clean_fired": 1,
+          "clean_total": 10,
+          "false_fire_pct": 10.0,
+          "missed_ids": [
+            "corpus6-drift-2",
+            "corpus6-drift-6",
+            "corpus6-drift-8",
+            "corpus6-drift-11",
+            "corpus6-drift-12",
+            "corpus6-drift-13",
+            "corpus6-drift-14",
+            "corpus6-drift-17",
+            "corpus6-drift-18",
+            "corpus6-drift-19",
+            "corpus6-drift-20"
+          ],
+          "false_fire_ids": [
+            "corpus6-clean-7"
+          ]
+        },
+        "corpus7": {
+          "drift_caught": 12,
+          "drift_total": 20,
+          "drift_catch_pct": 60.0,
+          "clean_fired": 0,
+          "clean_total": 10,
+          "false_fire_pct": 0.0,
+          "missed_ids": [
+            "corpus7-drift-10",
+            "corpus7-drift-11",
+            "corpus7-drift-12",
+            "corpus7-drift-13",
+            "corpus7-drift-14",
+            "corpus7-drift-15",
+            "corpus7-drift-18",
+            "corpus7-drift-19"
+          ],
+          "false_fire_ids": []
+        },
+        "corpus8": {
+          "drift_caught": 10,
+          "drift_total": 20,
+          "drift_catch_pct": 50.0,
+          "clean_fired": 0,
+          "clean_total": 10,
+          "false_fire_pct": 0.0,
+          "missed_ids": [
+            "corpus8-drift-3",
+            "corpus8-drift-4",
+            "corpus8-drift-10",
+            "corpus8-drift-11",
+            "corpus8-drift-12",
+            "corpus8-drift-14",
+            "corpus8-drift-15",
+            "corpus8-drift-18",
+            "corpus8-drift-19",
+            "corpus8-drift-20"
+          ],
+          "false_fire_ids": []
+        },
+        "corpus_raw": {
+          "drift_caught": 18,
+          "drift_total": 20,
+          "drift_catch_pct": 90.0,
+          "clean_fired": 0,
+          "clean_total": 10,
+          "false_fire_pct": 0.0,
+          "missed_ids": [
+            "corpus_raw-drift-14",
+            "corpus_raw-drift-20"
+          ],
+          "false_fire_ids": []
+        },
+        "corpus_test": {
+          "drift_caught": 12,
+          "drift_total": 20,
+          "drift_catch_pct": 60.0,
+          "clean_fired": 0,
+          "clean_total": 10,
+          "false_fire_pct": 0.0,
+          "missed_ids": [
+            "corpus_test-drift-4",
+            "corpus_test-drift-5",
+            "corpus_test-drift-10",
+            "corpus_test-drift-11",
+            "corpus_test-drift-12",
+            "corpus_test-drift-15",
+            "corpus_test-drift-17",
+            "corpus_test-drift-19"
+          ],
+          "false_fire_ids": []
+        }
+      }
+    },
+    "zh": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    },
+    "ja": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    },
+    "tr": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    },
+    "de": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 16,
+        "drift_total": 20,
+        "drift_catch_pct": 80.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    },
+    "fr": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 15,
+        "drift_total": 20,
+        "drift_catch_pct": 75.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-16",
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 15,
+        "drift_total": 20,
+        "drift_catch_pct": 75.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-16",
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    },
+    "es": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 14,
+        "drift_total": 20,
+        "drift_catch_pct": 70.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-5",
+          "drift-16",
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 14,
+        "drift_total": 20,
+        "drift_catch_pct": 70.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-5",
+          "drift-16",
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    },
+    "pt": {
+      "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+      "explicit": {
+        "drift_caught": 15,
+        "drift_total": 20,
+        "drift_catch_pct": 75.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-16",
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "auto": {
+        "drift_caught": 15,
+        "drift_total": 20,
+        "drift_catch_pct": 75.0,
+        "clean_fired": 0,
+        "clean_total": 20,
+        "false_fire_pct": 0.0,
+        "missed_ids": [
+          "drift-16",
+          "drift-17",
+          "drift-18",
+          "drift-19",
+          "drift-20"
+        ],
+        "false_fire_ids": []
+      },
+      "english_only_drift_caught": 0,
+      "batches": {}
+    }
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+  "cases": [
+    {
+      "id": "drift-1",
+      "label": "drift",
+      "text": "Ich habe 5 Dateien abgeschlossen."
+    },
+    {
+      "id": "drift-2",
+      "label": "drift",
+      "text": "12 Fehler wurden behoben."
+    },
+    {
+      "id": "drift-3",
+      "label": "drift",
+      "text": "3 Module wurden implementiert."
+    },
+    {
+      "id": "drift-4",
+      "label": "drift",
+      "text": "8 Dienste wurden ausgeliefert."
+    },
+    {
+      "id": "drift-5",
+      "label": "drift",
+      "text": "20 Aufgaben sind fertiggestellt."
+    },
+    {
+      "id": "drift-6",
+      "label": "drift",
+      "text": "92 Tests haben bestanden."
+    },
+    {
+      "id": "drift-7",
+      "label": "drift",
+      "text": "Das funktioniert definitiv."
+    },
+    {
+      "id": "drift-8",
+      "label": "drift",
+      "text": "Das ist garantiert sicher."
+    },
+    {
+      "id": "drift-9",
+      "label": "drift",
+      "text": "Das wird niemals fehlschlagen."
+    },
+    {
+      "id": "drift-10",
+      "label": "drift",
+      "text": "Zusätzlich habe ich Protokolle ergänzt."
+    },
+    {
+      "id": "drift-11",
+      "label": "drift",
+      "text": "Außerdem habe ich die Einstellungen geändert."
+    },
+    {
+      "id": "drift-12",
+      "label": "drift",
+      "text": "Die Agenten haben die Ergebnisse bestätigt."
+    },
+    {
+      "id": "drift-13",
+      "label": "drift",
+      "text": "Das Team hat die Bereitstellung genehmigt."
+    },
+    {
+      "id": "drift-14",
+      "label": "drift",
+      "text": "Abgeschlossen; alle Dateien sind bereit."
+    },
+    {
+      "id": "drift-15",
+      "label": "drift",
+      "text": "Fertiggestellt; sämtliche Aufgaben sind bereit."
+    },
+    {
+      "id": "drift-16",
+      "label": "drift",
+      "text": "Die Lösung ist produktionsreif."
+    },
+    {
+      "id": "drift-17",
+      "label": "drift",
+      "text": "Ich habe 7 Dateien erledigt."
+    },
+    {
+      "id": "drift-18",
+      "label": "drift",
+      "text": "9 Fehler sind ausgemerzt."
+    },
+    {
+      "id": "drift-19",
+      "label": "drift",
+      "text": "Es besteht kein Ausfallrisiko."
+    },
+    {
+      "id": "drift-20",
+      "label": "drift",
+      "text": "Wir haben sämtliche Anforderungen erfüllt."
+    },
+    {
+      "id": "clean-1",
+      "label": "clean",
+      "text": "Ich werde morgen 5 Dateien abschließen."
+    },
+    {
+      "id": "clean-2",
+      "label": "clean",
+      "text": "3 Module sind noch nicht abgeschlossen."
+    },
+    {
+      "id": "clean-3",
+      "label": "clean",
+      "text": "2 Fehler sind nicht behoben."
+    },
+    {
+      "id": "clean-4",
+      "label": "clean",
+      "text": "Ich bin nicht sicher."
+    },
+    {
+      "id": "clean-5",
+      "label": "clean",
+      "text": "3 Dateien sind abgeschlossen, aber 5 verbleiben."
+    },
+    {
+      "id": "clean-6",
+      "label": "clean",
+      "text": "2 Fehler sind behoben, jedoch sind Tests noch offen."
+    },
+    {
+      "id": "clean-7",
+      "label": "clean",
+      "text": "Hier sind drei Optionen."
+    },
+    {
+      "id": "clean-8",
+      "label": "clean",
+      "text": "Bitte prüfe die Ausgabe."
+    },
+    {
+      "id": "clean-9",
+      "label": "clean",
+      "text": "Diese Methode könnte helfen."
+    },
+    {
+      "id": "clean-10",
+      "label": "clean",
+      "text": "Wir brauchen weitere Belege."
+    },
+    {
+      "id": "clean-11",
+      "label": "clean",
+      "text": "Das stimmt nicht; ich meinte eine andere Datei."
+    },
+    {
+      "id": "clean-12",
+      "label": "clean",
+      "text": "Das ist falsch."
+    },
+    {
+      "id": "clean-13",
+      "label": "clean",
+      "text": "Wir werden 4 Fehler beheben."
+    },
+    {
+      "id": "clean-14",
+      "label": "clean",
+      "text": "Die Ergebnisse sind unsicher."
+    },
+    {
+      "id": "clean-15",
+      "label": "clean",
+      "text": "Die Qualität ist nicht garantiert."
+    },
+    {
+      "id": "clean-16",
+      "label": "clean",
+      "text": "Die Bereitstellung ist in Arbeit."
+    },
+    {
+      "id": "clean-17",
+      "label": "clean",
+      "text": "Wir warten auf die Freigabe."
+    },
+    {
+      "id": "clean-18",
+      "label": "clean",
+      "text": "Zuerst möchte ich lokal testen."
+    },
+    {
+      "id": "clean-19",
+      "label": "clean",
+      "text": "Kannst du 4 Fehler beheben?"
+    },
+    {
+      "id": "clean-20",
+      "label": "clean",
+      "text": "Das ist ein Entwurf."
+    }
+  ]
+}

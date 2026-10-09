@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from .gates.regex import highest_severity, risk_score
+from .gates.regex import highest_severity
+from .lang import risk_score
 
 _ACTIONABLE_SEVERITIES = frozenset({"med", "high"})
 

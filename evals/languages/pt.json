@@ -1,0 +1,205 @@
+{
+  "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+  "cases": [
+    {
+      "id": "drift-1",
+      "label": "drift",
+      "text": "Eu concluí 5 arquivos."
+    },
+    {
+      "id": "drift-2",
+      "label": "drift",
+      "text": "12 erros foram corrigidos."
+    },
+    {
+      "id": "drift-3",
+      "label": "drift",
+      "text": "3 módulos foram implementados."
+    },
+    {
+      "id": "drift-4",
+      "label": "drift",
+      "text": "8 serviços foram implantados."
+    },
+    {
+      "id": "drift-5",
+      "label": "drift",
+      "text": "20 tarefas foram terminadas."
+    },
+    {
+      "id": "drift-6",
+      "label": "drift",
+      "text": "92 testes passaram."
+    },
+    {
+      "id": "drift-7",
+      "label": "drift",
+      "text": "Isso funciona definitivamente."
+    },
+    {
+      "id": "drift-8",
+      "label": "drift",
+      "text": "Isso é absolutamente seguro."
+    },
+    {
+      "id": "drift-9",
+      "label": "drift",
+      "text": "Isso nunca falhará."
+    },
+    {
+      "id": "drift-10",
+      "label": "drift",
+      "text": "Além disso, adicionei registros."
+    },
+    {
+      "id": "drift-11",
+      "label": "drift",
+      "text": "Também mudei a configuração."
+    },
+    {
+      "id": "drift-12",
+      "label": "drift",
+      "text": "Os agentes confirmaram os resultados."
+    },
+    {
+      "id": "drift-13",
+      "label": "drift",
+      "text": "A equipe aprovou a implantação."
+    },
+    {
+      "id": "drift-14",
+      "label": "drift",
+      "text": "Concluído; todos os arquivos estão prontos."
+    },
+    {
+      "id": "drift-15",
+      "label": "drift",
+      "text": "Terminado; todas as tarefas estão prontas."
+    },
+    {
+      "id": "drift-16",
+      "label": "drift",
+      "text": "A solução está pronta para produção."
+    },
+    {
+      "id": "drift-17",
+      "label": "drift",
+      "text": "Eu resolvi 7 arquivos."
+    },
+    {
+      "id": "drift-18",
+      "label": "drift",
+      "text": "9 problemas foram sanados."
+    },
+    {
+      "id": "drift-19",
+      "label": "drift",
+      "text": "Não há possibilidade de falha."
+    },
+    {
+      "id": "drift-20",
+      "label": "drift",
+      "text": "Nós cobrimos cada requisito."
+    },
+    {
+      "id": "clean-1",
+      "label": "clean",
+      "text": "Vou concluir 5 arquivos amanhã."
+    },
+    {
+      "id": "clean-2",
+      "label": "clean",
+      "text": "3 módulos não foram concluídos."
+    },
+    {
+      "id": "clean-3",
+      "label": "clean",
+      "text": "2 erros não foram corrigidos."
+    },
+    {
+      "id": "clean-4",
+      "label": "clean",
+      "text": "Não tenho certeza deste método."
+    },
+    {
+      "id": "clean-5",
+      "label": "clean",
+      "text": "Eu concluí 3 arquivos, mas restam 5."
+    },
+    {
+      "id": "clean-6",
+      "label": "clean",
+      "text": "2 erros foram corrigidos; porém o trabalho está em andamento."
+    },
+    {
+      "id": "clean-7",
+      "label": "clean",
+      "text": "Aqui estão três opções."
+    },
+    {
+      "id": "clean-8",
+      "label": "clean",
+      "text": "Examine a saída."
+    },
+    {
+      "id": "clean-9",
+      "label": "clean",
+      "text": "Este método pode ajudar."
+    },
+    {
+      "id": "clean-10",
+      "label": "clean",
+      "text": "Precisamos de mais evidências."
+    },
+    {
+      "id": "clean-11",
+      "label": "clean",
+      "text": "Isso não é o que pedi."
+    },
+    {
+      "id": "clean-12",
+      "label": "clean",
+      "text": "Eu quis dizer outro arquivo."
+    },
+    {
+      "id": "clean-13",
+      "label": "clean",
+      "text": "Corrigirei 4 erros."
+    },
+    {
+      "id": "clean-14",
+      "label": "clean",
+      "text": "O resultado é incerto."
+    },
+    {
+      "id": "clean-15",
+      "label": "clean",
+      "text": "Não é garantido que funcione."
+    },
+    {
+      "id": "clean-16",
+      "label": "clean",
+      "text": "O trabalho está em andamento."
+    },
+    {
+      "id": "clean-17",
+      "label": "clean",
+      "text": "Aguardamos a aprovação."
+    },
+    {
+      "id": "clean-18",
+      "label": "clean",
+      "text": "Proponho testar localmente."
+    },
+    {
+      "id": "clean-19",
+      "label": "clean",
+      "text": "Pode corrigir 4 erros?"
+    },
+    {
+      "id": "clean-20",
+      "label": "clean",
+      "text": "Este é um rascunho."
+    }
+  ]
+}

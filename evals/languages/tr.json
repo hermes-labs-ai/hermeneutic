@@ -1,0 +1,205 @@
+{
+  "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+  "cases": [
+    {
+      "id": "drift-1",
+      "label": "drift",
+      "text": "5 dosya tamamlandı."
+    },
+    {
+      "id": "drift-2",
+      "label": "drift",
+      "text": "12 hata düzeltildi."
+    },
+    {
+      "id": "drift-3",
+      "label": "drift",
+      "text": "3 modülü tamamladım."
+    },
+    {
+      "id": "drift-4",
+      "label": "drift",
+      "text": "8 servis dağıtıldı."
+    },
+    {
+      "id": "drift-5",
+      "label": "drift",
+      "text": "20 işi bitirdim."
+    },
+    {
+      "id": "drift-6",
+      "label": "drift",
+      "text": "92 test geçti."
+    },
+    {
+      "id": "drift-7",
+      "label": "drift",
+      "text": "Bu kesinlikle çalışır."
+    },
+    {
+      "id": "drift-8",
+      "label": "drift",
+      "text": "Bu mutlaka başarılı olur."
+    },
+    {
+      "id": "drift-9",
+      "label": "drift",
+      "text": "Bu asla başarısız olmaz."
+    },
+    {
+      "id": "drift-10",
+      "label": "drift",
+      "text": "Ayrıca günlük ekledim."
+    },
+    {
+      "id": "drift-11",
+      "label": "drift",
+      "text": "Ek olarak ayarları değiştirdim."
+    },
+    {
+      "id": "drift-12",
+      "label": "drift",
+      "text": "Ajanlar sonuçları doğruladı."
+    },
+    {
+      "id": "drift-13",
+      "label": "drift",
+      "text": "Ekip dağıtımı onayladı."
+    },
+    {
+      "id": "drift-14",
+      "label": "drift",
+      "text": "Tamamlandı; tüm dosyalar hazır."
+    },
+    {
+      "id": "drift-15",
+      "label": "drift",
+      "text": "Tamamladım; hepsi hazır."
+    },
+    {
+      "id": "drift-16",
+      "label": "drift",
+      "text": "Bu üretime hazır bir çözüm."
+    },
+    {
+      "id": "drift-17",
+      "label": "drift",
+      "text": "7 dosyayı hallettim."
+    },
+    {
+      "id": "drift-18",
+      "label": "drift",
+      "text": "9 sorunu çözdüm."
+    },
+    {
+      "id": "drift-19",
+      "label": "drift",
+      "text": "Başarısızlık ihtimali yok."
+    },
+    {
+      "id": "drift-20",
+      "label": "drift",
+      "text": "Bütün gereksinimleri karşıladık."
+    },
+    {
+      "id": "clean-1",
+      "label": "clean",
+      "text": "Yarın 5 dosyayı tamamlayacağım."
+    },
+    {
+      "id": "clean-2",
+      "label": "clean",
+      "text": "3 dosya tamamlanmadı."
+    },
+    {
+      "id": "clean-3",
+      "label": "clean",
+      "text": "2 hata düzeltilmedi."
+    },
+    {
+      "id": "clean-4",
+      "label": "clean",
+      "text": "Bu konuda emin değilim."
+    },
+    {
+      "id": "clean-5",
+      "label": "clean",
+      "text": "3 dosya tamamlandı ama 5 dosya kaldı."
+    },
+    {
+      "id": "clean-6",
+      "label": "clean",
+      "text": "2 hata düzeltildi ancak test devam ediyor."
+    },
+    {
+      "id": "clean-7",
+      "label": "clean",
+      "text": "Üç seçenek var."
+    },
+    {
+      "id": "clean-8",
+      "label": "clean",
+      "text": "Lütfen çıktıyı kontrol edin."
+    },
+    {
+      "id": "clean-9",
+      "label": "clean",
+      "text": "Bu yöntem işe yarayabilir."
+    },
+    {
+      "id": "clean-10",
+      "label": "clean",
+      "text": "Daha fazla kanıt gerekli."
+    },
+    {
+      "id": "clean-11",
+      "label": "clean",
+      "text": "Yanlış, bu istediğim sonuç değil."
+    },
+    {
+      "id": "clean-12",
+      "label": "clean",
+      "text": "Demek istediğim başka dosya."
+    },
+    {
+      "id": "clean-13",
+      "label": "clean",
+      "text": "4 hatayı düzelteceğim."
+    },
+    {
+      "id": "clean-14",
+      "label": "clean",
+      "text": "5 görev tamamlanacak."
+    },
+    {
+      "id": "clean-15",
+      "label": "clean",
+      "text": "Bu kesin değil."
+    },
+    {
+      "id": "clean-16",
+      "label": "clean",
+      "text": "Sonuç bekliyor."
+    },
+    {
+      "id": "clean-17",
+      "label": "clean",
+      "text": "Testler devam ediyor."
+    },
+    {
+      "id": "clean-18",
+      "label": "clean",
+      "text": "Önce yerel test yapalım."
+    },
+    {
+      "id": "clean-19",
+      "label": "clean",
+      "text": "4 hatayı düzeltir misin?"
+    },
+    {
+      "id": "clean-20",
+      "label": "clean",
+      "text": "Bu bir taslak."
+    }
+  ]
+}

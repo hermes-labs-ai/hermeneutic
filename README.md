@@ -31,6 +31,55 @@ The gate reports `RISK` for the precise completion and “all tests” claims an
 
 The check highlights English wording that needs a closer look. It cannot tell whether a claim is true. You decide whether to revise, verify, or send the draft.
 
+## Experimental language support
+
+From this source branch, the draft gate supports Korean (`ko`), Chinese (`zh`),
+Japanese (`ja`), Turkish (`tr`), German (`de`), French (`fr`), Spanish (`es`), and
+Portuguese (`pt`) through **trigger mapping**. Local phrases map to the triggers
+the same English gate already checks. This is not translation or a separate
+set of risk rules, and it adds no model calls or runtime dependencies.
+The pinned PyPI release above does not include these adapters yet.
+
+```bash
+python -m pip install -e .
+printf '%s\n' '5개 파일을 수정했습니다.' | hermeneutic gate --lang auto
+hermeneutic gate --draft response.txt --lang zh
+```
+
+The CLI keeps its English default. `--lang auto` uses script and vocabulary
+hints; select a code explicitly for ambiguous or short text. Japanese kana is
+checked before Chinese Han characters; kanji-only Japanese needs `--lang ja`.
+Shared Spanish/Portuguese vocabulary may fall back to English. One adapter is
+selected per draft, so multilingual mixtures may need explicit selection.
+Shipped response hooks enable automatic mapping before the gate. Their existing
+advisory/retry behavior remains host-specific.
+
+For Python callers, `hermeneutic.lang.risk_score(text, lang="auto")` returns hits
+with spans and matched snippets in the original draft.
+`Router(lang="auto")` enables mapping at stage 1 while downstream reviewers and
+repairers receive the original text. `hermeneutic.risk_score` and the default
+Router remain English-only.
+
+Synthetic development-set results, replayed with explicit language selection:
+
+| Language | Drafts caught | Clean drafts flagged |
+| --- | --- | --- |
+| Korean | 116/180 (64.4%) | 4/135 (3.0%) |
+| Chinese | 16/20 (80.0%) | 0/20 (0.0%) |
+| Japanese | 16/20 (80.0%) | 0/20 (0.0%) |
+| Turkish | 16/20 (80.0%) | 0/20 (0.0%) |
+| German | 16/20 (80.0%) | 0/20 (0.0%) |
+| French | 15/20 (75.0%) | 0/20 (0.0%) |
+| Spanish | 14/20 (70.0%) | 0/20 (0.0%) |
+| Portuguese | 15/20 (75.0%) | 0/20 (0.0%) |
+
+A catch means any gate hit, including a low-severity advisory. These are small
+synthetic development sets, not held-out measurements or real-use coverage
+estimates. Automatic Korean routing catches 111/180 (61.7%) with 4/135 (3.0%)
+false fires; the other fixture results match explicit routing. See the
+[validation methodology](evals/languages/README.md) and
+[replayable receipt](evals/languages/results.json) for misses and limitations.
+
 ## Use your corrections
 
 If you have Claude Code session logs, mine correction episodes, group the recurring types, and build a local retrieval index:

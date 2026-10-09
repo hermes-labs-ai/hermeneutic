@@ -80,7 +80,9 @@ release. The personal corpus can affect optional compile retrieval after
 - Not a model evaluator. Scores individual drafts, not aggregate quality.
 - Not foresight. Catches drift modes seen before; novel drifts pass through.
 - Not a replacement for human review. It's a floor-raiser.
-- Not multilingual. The fixed rules check English surface patterns.
+- Multilingual support is experimental trigger mapping into the fixed English
+  rules. Use `hermeneutic gate --lang auto` or an explicit language code;
+  synthetic fixture results do not establish real-language coverage.
 - Not proof that a caller's external Router backends or repair behavior are safe.
 
 ## Working on this repository

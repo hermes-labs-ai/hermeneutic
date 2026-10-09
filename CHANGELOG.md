@@ -6,6 +6,11 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ### Added
 
+- Add experimental Korean, Chinese, Japanese, Turkish, German, French, Spanish,
+  and Portuguese trigger adapters around the unchanged English gate. CLI
+  `--lang auto` or an explicit code and `Router(lang=...)` opt in; response hooks
+  normalize automatically. Gate hits retain original-draft spans. Synthetic
+  fixtures, per-language results, and replay methodology live in `evals/languages/`.
 - Add an OpenClaw native `reply_payload_sending` plugin that checks visible
   reply text with the local deterministic gate and appends an advisory on
   medium/high findings. It strips telemetry settings from the child process,

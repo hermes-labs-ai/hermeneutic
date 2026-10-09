@@ -39,7 +39,7 @@ sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 try:
     # Nested in ``try`` these are no longer top-level statements, so E402 does
     # not apply and no suppression comment is needed.
-    from hermeneutic import risk_score
+    from hermeneutic.lang import risk_score
     from hermeneutic.response_gate import (
         repair_reason,
         retry_warning,

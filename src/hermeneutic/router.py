@@ -21,8 +21,9 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 
 from hermeneutic.gates import rubric as _rubric
-from hermeneutic.gates.regex import RiskHit, highest_severity, risk_score
+from hermeneutic.gates.regex import RiskHit, highest_severity
 from hermeneutic.gates.twin import PressureProbe, TwinVerdict
+from hermeneutic.lang import risk_score
 
 # A repairer takes (request, draft, reason) and returns a revised draft.
 Repairer = Callable[[str, str, str], str]
@@ -63,6 +64,7 @@ class Router:
         rubric_threshold: float = 0.7,
         use_rubric: bool = True,
         regex_severity_threshold: str = "med",
+        lang: str = "en",
     ):
         """
         probe: optional PressureProbe for stage 3. If None, stage 3 is skipped.
@@ -72,6 +74,8 @@ class Router:
         use_rubric: skip stage 2 entirely if False or hermes-rubric is unavailable.
         regex_severity_threshold: minimum severity to trigger downstream stages.
             "low" gates everything, "high" gates only the loudest patterns.
+        lang: stage-1 trigger adapter; "en" preserves the English default.
+            "auto" or an explicit language code enables experimental mapping.
         """
         self.probe = probe
         self.repairer = repairer
@@ -79,12 +83,13 @@ class Router:
         self.rubric_threshold = rubric_threshold
         self.use_rubric = use_rubric and _rubric.available()
         self.regex_severity_threshold = regex_severity_threshold
+        self.lang = lang
 
     def gate(self, request: str, draft: str, context: str = "") -> GateResult:
         result = GateResult(final_output=draft, shipped_at_stage="regex", original_draft=draft)
 
         # Stage 1: regex
-        hits = risk_score(draft)
+        hits = risk_score(draft, lang=self.lang)
         result.risk_hits = hits
         if not self._severity_triggers(highest_severity(hits)):
             return result  # ship — no risk
