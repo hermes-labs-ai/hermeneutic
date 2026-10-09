@@ -106,7 +106,10 @@ def test_validation_receipt_matches_current_source_and_fixtures():
 def test_python_response_hooks_gate_original_language(code, text, tmp_path, monkeypatch):
     from hermeneutic.hermes_agent_plugin import check_outgoing_claims
 
-    assert check_outgoing_claims(text).startswith(text)
+    advisory = check_outgoing_claims(text)
+    assert advisory.startswith(text + "\n\n[Hermeneutic evidence check: high —")
+    assert "number_then_completion" in advisory or "completion_with_number" in advisory
+    assert "before relying on these claims.]" in advisory
     monkeypatch.setenv("HERMENEUTIC_QWEN_STATE_DIR", str(tmp_path / "qwen-state"))
     for relative, payload, decision in (
         ("integrations/gemini-cli/hermeneutic_after_agent.py", {"prompt_response": text}, "deny"),

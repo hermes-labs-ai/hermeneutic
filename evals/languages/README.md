@@ -10,8 +10,8 @@ python evals/languages/run.py --write
 The first command reports counts. The second regenerates `results.json` from
 the current implementation and fixtures. The test suite checks exact equality
 with a fresh replay, including SHA-256 hashes of every adapter, the unchanged
-English gate, the runner, and each corpus. Results become stale after an input
-or implementation changes; regenerate them deliberately after validation.
+English gate, the runner, each corpus, and `review-cases.json`. Results become
+stale after an input or implementation changes; regenerate them deliberately after validation.
 
 ## Method and provenance
 
@@ -54,6 +54,54 @@ denominators, percentages, and Korean batch counts are retained in `results.json
 | Spanish | 14/20 (70.0%) | 0/20 (0.0%) | 14/20 (70.0%) | 0/20 (0.0%) |
 | Portuguese | 15/20 (75.0%) | 0/20 (0.0%) | 15/20 (75.0%) | 0/20 (0.0%) |
 
+## Review regressions
+
+`review-cases.json` retains 48 author-written cases frozen before remediation:
+32 negative/request/inability statements and 16 affirmative relay controls,
+including a negative statement followed by an independent positive one. These
+examples exposed negative false fires at the pre-repair head
+`a9738c9`; they are review-driven regressions, not held-out evaluation or
+native-speaker labels.
+The replay reports them separately from the original development corpora;
+unit tests additionally require the adjacent positive relay to produce exactly
+one hit located in the affirmative sentence.
+
+| Language | Explicit relay controls caught | Explicit negative false fires | Auto relay controls caught | Auto negative false fires |
+| --- | --- | --- | --- | --- |
+| Korean | 2/2 | 0/5 | 2/2 | 0/5 |
+| Chinese | 2/2 | 0/5 | 2/2 | 0/5 |
+| Japanese | 2/2 | 0/5 | 2/2 | 0/5 |
+| Turkish | 2/2 | 0/3 | 2/2 | 0/3 |
+| German | 2/2 | 0/3 | 2/2 | 0/3 |
+| French | 2/2 | 0/4 | 2/2 | 0/4 |
+| Spanish | 2/2 | 0/3 | 2/2 | 0/3 |
+| Portuguese | 2/2 | 0/4 | 2/2 | 0/4 |
+
+Chinese completion before an object now requires assertion wording such as
+`已完成` or `完成了`; Japanese requires asserted tense/aspect or a status-word
+position. Standalone status words can still map, but ambiguous bare Chinese
+`完成所有任务` is left unmapped. This choice avoids treating that unmarked request
+as an assertion and can miss unmarked headline-style claims. It does not
+establish general grammatical understanding. Explicit requests and inability
+map to neutral vocabulary so they do not suppress adjacent asserted completion.
+
+Negated relay and certainty mappings deliberately distinguish wording that the
+English gate itself can flag, including Korean negative certainty/stability/
+accuracy, French `pas garanti`, Spanish/Portuguese negative guarantees, and
+Turkish `kesinlikle emin değilim`. German `nicht bestanden` and Portuguese
+negative completion/pass forms also have adapter guards. These are stricter
+vocabulary guards than the English equivalents, not changes to its rules.
+Negated completion, planned work and partial progress retain the English gate's
+existing contrast-window semantics, including its possible suppression of
+nearby completion claims. Unrestricted negation and inflection remain outside
+these starter tables.
+
+Source-coordinate mapping uses compressed segments and skips untouched maps.
+Tests compare it with the prior character-based definition over composed,
+length-changing substitutions and scan a 300,000-character unmapped prefix
+without dropping its final claim. The installed-artifact smoke exercises all
+eight languages through the CLI, with affirmative and negative controls.
+
 ## Limits and integration contract
 
 - These are small, authored development sets. A zero false-fire count is an
@@ -66,9 +114,9 @@ denominators, percentages, and Korean batch counts are retained in `results.json
   routing uses small vocabulary lists, with English fallback on ties. Sparse
   or heavily code-switched text can be missed; one adapter runs per draft.
 - Completion tense, negation and contrast handling are vocabulary-dependent.
-  Chinese/Japanese bare completion words can be status claims or requests;
-  the starter guards do not understand unrestricted grammar. French, Spanish,
-  Portuguese and Turkish inflections outside the maps are missed.
+  Chinese/Japanese assertion and request forms are intentionally limited as
+  described above; the tables do not understand unrestricted grammar. French,
+  Spanish, Portuguese and Turkish inflections outside the maps are missed.
 - Korean still has clean false fires on a question about additional scope,
   an unrecognized contrast, a qualified stability statement, and a progress
   report. The receipt lists their IDs. Keep those visible when extending maps.

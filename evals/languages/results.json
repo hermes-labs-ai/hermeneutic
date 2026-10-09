@@ -9,18 +9,19 @@
     "evals/languages/fr.json": "15dac387b14b9c00a8f15daf035667f1fb1f49cc319a2ff3f9a98e505b849cf9",
     "evals/languages/es.json": "7dafd54f6c6bd72e5c78187b34709714fd4adc60f470c7d235cad2f13db7e101",
     "evals/languages/pt.json": "262590319f222fedd8469f59b30c737e2c74ec9090eb92ea9756ade3a7d06c15",
-    "src/hermeneutic/lang/__init__.py": "fb06da855852487d5713f7abc2b29dd20cfad1abe39b9a32a2cd52827087d95d",
-    "src/hermeneutic/lang/_common.py": "0dadc2f4b25ea7dcf75aed5a9bf85e1a52a0858aa5deec3af0fcff11f97a40c1",
-    "src/hermeneutic/lang/de.py": "8b18ad969ca0279f03da068891ea4c74db7ac17d06e85ef534ac613d7f498964",
-    "src/hermeneutic/lang/es.py": "149cbdd5804dbb216d0ddc2cebab05908e0a7a23d113c39259fe35de2ba72bb3",
-    "src/hermeneutic/lang/fr.py": "bb8c4b00408e941e3a561777ddb492025f49eadd55044f60c3fa823cea7e8841",
-    "src/hermeneutic/lang/ja.py": "676e495ba6ac8864c42895a464502f300315014ec4935fa11ac67c11be034876",
-    "src/hermeneutic/lang/ko.py": "243308c21ea9831c2a379946a51c75ab9e6df0171e339dcca02b54886f4fa751",
-    "src/hermeneutic/lang/pt.py": "bb3cb89e75eb173f9fa59c85f299d8bb650808bcd4fc7a0f470d139b52648c33",
-    "src/hermeneutic/lang/tr.py": "4f8b9a70b1e67174b77de0134e8428b676f5cd69406012acc5e0d661856c2beb",
-    "src/hermeneutic/lang/zh.py": "fd859f19e83549c99feab077442855b2f52425ed3a71e50c5726e8a9e2de6d48",
+    "evals/languages/review-cases.json": "c6d09627a2d802eecb3a5c396323e198d9d41d55fe38335fde593ea5f08daa35",
+    "src/hermeneutic/lang/__init__.py": "b1b0376920b74afe808e4374d3f4b1644306a6b525a8f25fcde333f89c60aaf2",
+    "src/hermeneutic/lang/_common.py": "44fece69f49401c22e8c88ed7cfca88412b4f04e11eefab77faee6815caee15b",
+    "src/hermeneutic/lang/de.py": "697f121cb5d4af2a6d184159daf49a5e2dfa2d362c3e4e7c3d23ae46990f9baf",
+    "src/hermeneutic/lang/es.py": "1483d63c5e9a9ad9af03ea431c9757e0ac9697d082c6bdc556d23c11932d5d8d",
+    "src/hermeneutic/lang/fr.py": "7cabbcf6a6eb50efdaf3f3a8721fde86fce65a904605191d2aa7f23fd389fe0d",
+    "src/hermeneutic/lang/ja.py": "c48a786539a5f0ca7e96ba83d6580e51bec195fa7cfa3d7af5d09e18e60e9583",
+    "src/hermeneutic/lang/ko.py": "cfba42a1b2503efff18eb45a8de71b6669d19e3d5630f89564d44d77cdcc3999",
+    "src/hermeneutic/lang/pt.py": "e5552898ce2fdc2ac4365f9d0f2d8b50ba8d051cb53de320f6400443af4fc1e3",
+    "src/hermeneutic/lang/tr.py": "22e0abd1ffed4f40befd3154f77f5c962a98aa687fb9885b7d3435eb1432fc5c",
+    "src/hermeneutic/lang/zh.py": "fd180c55b35e0328211e5e23691fc748305a4608cbb0dd36ac637229a9a6b6e7",
     "src/hermeneutic/gates/regex.py": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
-    "evals/languages/run.py": "1bce6fe2354ea6de4714dc1d6f8762011a8c94090417bf397c62eee92b8fa066"
+    "evals/languages/run.py": "530b8f57f61ea7c125ec587db2da0da5ab488ca2858da5b4daadfdd8245bd413"
   },
   "languages": {
     "ko": {
@@ -616,6 +617,187 @@
       },
       "english_only_drift_caught": 0,
       "batches": {}
+    }
+  },
+  "review_regressions": {
+    "provenance": "Author-written review regression cases frozen before repair, 2026-10-09; not held out or native-speaker adjudicated. Includes Sourcery examples and paired positive controls.",
+    "languages": {
+      "ko": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 5,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 5,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "zh": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 5,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 5,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "ja": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 5,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 5,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "tr": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 3,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 3,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "de": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 3,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 3,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "fr": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 4,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 4,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "es": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 3,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 3,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      },
+      "pt": {
+        "explicit": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 4,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        },
+        "auto": {
+          "drift_caught": 2,
+          "drift_total": 2,
+          "drift_catch_pct": 100.0,
+          "clean_fired": 0,
+          "clean_total": 4,
+          "false_fire_pct": 0.0,
+          "missed_ids": [],
+          "false_fire_ids": []
+        }
+      }
     }
   }
 }

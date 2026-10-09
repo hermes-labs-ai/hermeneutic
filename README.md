@@ -23,7 +23,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.12
+python -m pip install hermeneutic==0.1.13
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 

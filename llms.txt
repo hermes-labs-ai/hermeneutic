@@ -1,4 +1,4 @@
-# hermeneutic repository (latest tagged release v0.1.12)
+# hermeneutic repository (latest tagged release v0.1.13)
 
 Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
@@ -13,18 +13,18 @@ Mining personalizes the corpus and optional retrieval. It does not generate or m
 Install the current release from PyPI:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.12'
+python3 -m pip install 'hermeneutic==0.1.13'
 ```
 
 For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
 ```bash
-git clone --branch v0.1.12 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+git clone --branch v0.1.13 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
 cd hermeneutic
 python3 -m pip install .
 ```
 
-The `v0.1.12` tag does not contain the unreleased native Qwen extension. From an exact checkout or ref that contains `qwen-extension.json`, install it with:
+The source release includes the native Qwen extension. From the tagged checkout, install it with:
 
 ```bash
 qwen extensions install . --consent
@@ -57,7 +57,7 @@ Expected first line: `RISK — highest severity: high`.
 
 ## Scope and maturity
 
-The fixed gate is English-only and advisory unless a caller blocks before sending. The current repository includes a live-verified Qwen Code 0.23.2 native Stop extension; its exact host and provider boundary is recorded in `evals/qwen-code/RESULTS.md`. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
+The canonical gate remains English-only and advisory unless a caller blocks before sending. Experimental adapters map Korean, Chinese, Japanese, Turkish, German, French, Spanish, and Portuguese triggers into it. Use `hermeneutic gate --lang auto` or an explicit language code; English remains the CLI default. Synthetic development results and rerunnable receipts are in `evals/languages/`; real-language coverage and native-speaker validation are unmeasured. The current repository includes a live-verified Qwen Code 0.23.2 native Stop extension; its exact host and provider boundary is recorded in `evals/qwen-code/RESULTS.md`. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
 
 ## Privacy
 

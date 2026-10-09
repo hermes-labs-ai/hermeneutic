@@ -60,9 +60,7 @@ def risk_score(draft: str, lang: str = "auto") -> list[RiskHit]:
     normalized, spans = substitute(draft, module._COMPILED, track_spans=True)
     hits = _english_risk_score(normalized)
     for hit in hits:
-        origins = spans[hit.start : hit.end]
-        hit.start = min(s[0] for s in origins)
-        hit.end = max(s[1] for s in origins)
+        hit.start, hit.end = spans.origin(hit.start, hit.end)
         matched = draft[hit.start : hit.end]
         hit.matched_text = matched if len(matched) <= 200 else matched[:200] + "..."
     return hits

@@ -10,68 +10,40 @@ import re
 
 from hermeneutic.lang._common import lexical_fraction, substitute
 
-# Most-specific first: tense, negation and partial-progress guards precede triggers.
+# Most-specific first: negative predicates, plans and partials precede triggers.
+_RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,30}?"
+
 _MAP: list[tuple[str, str]] = [
     (
-        "\\b(?:no|no se ha|no he|no está|sin)\\s+(?:completado|terminado|corregido|reparado)\\b",
-        " not yet ",
+        "\\bno\\s+(?:(?:han|ha|habían|había)\\s+)?(?:confirmaron|verificaron|aprobaron|"
+        "aprobó|confirmó|verificó|confirmado|verificado|aprobado)\\b",
+        " unconfirmed ",
     ),
+    (
+        "\\bno\\s+(?:(?:está|están|es|son)\\s+)?(?:garantizado|garantizada|definitivamente|absolutamente)\\b",
+        " uncertain ",
+    ),
+    ("\\b(?:no|no se ha|no he|no está|sin)\\s+(?:completado|terminado|corregido|reparado)\\b", " not yet "),
     (
         "\\b(?:voy a|vamos a|se va a)\\s+(?:completar|terminar|corregir)\\b|\\b(?:completaré|terminaré|corregiré)\\b",
         " next up ",
     ),
-    (
-        "\\b(?:no es seguro|no estoy seguro|no es cierto|incierto|incierta)\\b",
-        " uncertain ",
-    ),
-    (
-        "\\b(?:pero|sin embargo|aunque)\\b",
-        " but ",
-    ),
-    (
-        "\\b(?:quedan|queda|pendiente|pendientes|en curso)\\b",
-        " remaining ",
-    ),
-    (
-        "\\b(?:eso no es|eso es incorrecto|no es eso)\\b",
-        " that's not ",
-    ),
-    (
-        "\\bquise decir\\b",
-        " i meant ",
-    ),
+    ("\\b(?:no es seguro|no estoy seguro|no es cierto|incierto|incierta)\\b", " uncertain "),
+    ("\\b(?:pero|sin embargo|aunque)\\b", " but "),
+    ("\\b(?:quedan|queda|pendiente|pendientes|en curso)\\b", " remaining "),
+    ("\\b(?:eso no es|eso es incorrecto|no es eso)\\b", " that's not "),
+    ("\\bquise decir\\b", " i meant "),
     (
         "\\b(?:completado|terminado|corregido|reparado|implementado|desplegado|completé|terminé|corregí)(?:s)?\\b",
         " completed ",
     ),
-    (
-        "\\b(?:aprobado|pasaron|superado)(?:s)?\\b",
-        " passed ",
-    ),
-    (
-        "\\b(?:todos|todas|cada)\\b",
-        " all ",
-    ),
-    (
-        "\\b(?:definitivamente|absolutamente|garantizado|siempre|nunca)\\b",
-        " definitely ",
-    ),
-    (
-        "\\b(?:además|también|de paso)\\b",
-        " additionally ",
-    ),
-    (
-        "\\bagentes?\\b.{0,30}?\\b(?:confirmaron|verificaron|aprobaron)\\b",
-        " the agents confirmed ",
-    ),
-    (
-        "\\bequipo\\b.{0,30}?\\b(?:aprobó|confirmó|verificó)\\b",
-        " the team approved ",
-    ),
-    (
-        "\\b(?:robusto|impecable|listo para producción)\\b",
-        " production-ready ",
-    ),
+    ("\\b(?:aprobado|pasaron|superado)(?:s)?\\b", " passed "),
+    ("\\b(?:todos|todas|cada)\\b", " all "),
+    ("\\b(?:definitivamente|absolutamente|garantizado|siempre|nunca)\\b", " definitely "),
+    ("\\b(?:además|también|de paso)\\b", " additionally "),
+    ("\\bagentes?\\b" + _RELAY_GAP + "\\b(?:confirmaron|verificaron|aprobaron)\\b", " the agents confirmed "),
+    ("\\bequipo\\b" + _RELAY_GAP + "\\b(?:aprobó|confirmó|verificó)\\b", " the team approved "),
+    ("\\b(?:robusto|impecable|listo para producción)\\b", " production-ready "),
 ]
 
 _COMPILED = [(re.compile(pattern, re.IGNORECASE), replacement) for pattern, replacement in _MAP]

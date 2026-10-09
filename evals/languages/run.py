@@ -13,7 +13,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -41,11 +43,12 @@ def measure(cases: list[dict], code: str) -> dict:
 
 def evaluate() -> dict:
     inputs = [HERE / f"{code}.json" for code in lang.LANGS if code != "en"]
+    review_path = HERE / "review-cases.json"
     implementation = sorted((ROOT / "src/hermeneutic/lang").glob("*.py"))
     implementation += [ROOT / "src/hermeneutic/gates/regex.py", Path(__file__).resolve()]
     hashes = {
         str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in inputs + implementation
+        for path in inputs + [review_path] + implementation
     }
     results = {}
     for path in inputs:
@@ -63,8 +66,34 @@ def evaluate() -> dict:
                 for batch in sorted({c["batch"] for c in cases if "batch" in c})
             },
         }
+    review = json.loads(review_path.read_text(encoding="utf-8"))
     return {"method": "Any canonical-gate hit on synthetic drafts; development-set results, not held out.",
-            "sha256": hashes, "languages": results}
+            "sha256": hashes, "languages": results,
+            "review_regressions": {
+                "provenance": review["provenance"],
+                "languages": {
+                    code: {"explicit": measure([c for c in review["cases"] if c["lang"] == code], code),
+                           "auto": measure([c for c in review["cases"] if c["lang"] == code], "auto")}
+                    for code in results
+                },
+            }}
+
+
+def write_receipt(path: Path, results: dict) -> None:
+    """Publish complete JSON atomically; a failed write preserves the old receipt."""
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         prefix=f".{path.name}.", delete=False) as handle:
+            temporary = Path(handle.name)
+            json.dump(results, handle, indent=2, ensure_ascii=False)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def main() -> None:
@@ -73,7 +102,7 @@ def main() -> None:
     args = parser.parse_args()
     results = evaluate()
     if args.write:
-        (HERE / "results.json").write_text(json.dumps(results, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        write_receipt(HERE / "results.json", results)
     for code, metrics in results["languages"].items():
         explicit, auto = metrics["explicit"], metrics["auto"]
         print(

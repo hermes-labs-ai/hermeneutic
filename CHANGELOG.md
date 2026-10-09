@@ -4,6 +4,8 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+## [0.1.13] — 2026-10-09
+
 ### Added
 
 - Add experimental Korean, Chinese, Japanese, Turkish, German, French, Spanish,
@@ -25,8 +27,8 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 Qwen Code 0.23.2 sends `stop_hook_active: true` on the first `Stop` of a turn,
 so the adapter ignores that flag and bounds itself with a per-session marker
-file that carries no response text. The next Stop for that session always
-consumes the marker; old markers for other sessions are pruned after 30 minutes.
+file that carries no response text. The next Stop for that session consumes the marker; concurrent first calls
+that already observed no marker share the atomic claim and both block; old markers for other sessions are pruned after 30 minutes.
 The marker lives in a private directory owned by the current user. It is created
 exclusively with mode `0600` and never written through a symlink.
 When the adapter cannot key or write its marker it warns instead of blocking,
@@ -34,6 +36,16 @@ because an unbounded blocking hook loops. Both response adapters now share one d
 so no adapter restates a gate rule. Clean, risky-repair, and still-risky bounded
 turns were exercised through Qwen Code 0.23.2; the exact boundary is recorded in
 `evals/qwen-code/RESULTS.md`.
+
+### Fixed
+
+- Guard negative relay, certainty, completion/pass, request and inability
+  vocabulary before affirmative substitutions. Chinese/Japanese completion
+  assertion forms and their limits are documented with review regressions.
+- Keep source coordinates in compressed segments, without rebuilding untouched
+  mappings. Preserve full-draft scans and original-text snippets.
+- Atomically publish eval receipts; interrupted writes preserve the prior JSON.
+- Require multilingual host tests to observe the actual evidence advisory.
 
 ## [0.1.12] — 2026-09-02
 

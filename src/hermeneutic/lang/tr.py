@@ -10,69 +10,32 @@ import re
 
 from hermeneutic.lang._common import lexical_fraction, substitute
 
-# Most-specific first: tense, negation and partial-progress guards precede triggers.
+# Most-specific first: negative predicates, plans and partials precede triggers.
+_RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,30}?"
+
 _MAP: list[tuple[str, str]] = [
+    ("\\bkesin(?:likle)?\\s+(?:emin\\s+)?değil(?:im|iz)?\\b", " uncertain "),
+    ("\\b(?:tamamlanmad\u0131|bitmedi|düzeltilmedi|tamamlamad\u0131m)\\b", " not yet "),
+    ("\\b(?:tamamlayacağ\u0131m|düzelteceğim|tamamlanacak|düzeltilecek)\\b", " next up "),
+    ("\\b(?:kesin değil|emin değilim|kesinlikle değil)\\b", " uncertain "),
+    ("\\b(?:ama|ancak|fakat)\\b", " but "),
+    ("\\b(?:kald\u0131|kalan|bekliyor|devam ediyor)\\b", " remaining "),
+    ("\\b(?:yanl\u0131ş|öyle değil|bu değil)\\b", " that's not "),
+    ("\\bdemek istediğim\\b", " i meant "),
     (
-        "\\b(?:tamamlanmad\u0131|bitmedi|düzeltilmedi|tamamlamad\u0131m)\\b",
-        " not yet ",
-    ),
-    (
-        "\\b(?:tamamlayacağ\u0131m|düzelteceğim|tamamlanacak|düzeltilecek)\\b",
-        " next up ",
-    ),
-    (
-        "\\b(?:kesin değil|emin değilim|kesinlikle değil)\\b",
-        " uncertain ",
-    ),
-    (
-        "\\b(?:ama|ancak|fakat)\\b",
-        " but ",
-    ),
-    (
-        "\\b(?:kald\u0131|kalan|bekliyor|devam ediyor)\\b",
-        " remaining ",
-    ),
-    (
-        "\\b(?:yanl\u0131ş|öyle değil|bu değil)\\b",
-        " that's not ",
-    ),
-    (
-        "\\bdemek istediğim\\b",
-        " i meant ",
-    ),
-    (
-        "\\b(?:tamamland\u0131|tamamlad\u0131m|tamamlad\u0131k|bitirdim|bitti|düzeltildi|düzeltti"
-        "m|uyguland\u0131|dağ\u0131t\u0131ld\u0131)\\b",
+        "\\b(?:tamamland\u0131|tamamlad\u0131m|tamamlad\u0131k|bitirdim|bitti|düzeltildi|düzelttim|uyguland\u0131|dağ\u0131t\u0131ld\u0131)\\b",
         " completed ",
     ),
+    ("\\b(?:geçti|geçildi)\\b", " passed "),
+    ("\\b(?:tüm|hepsi|bütün)\\b", " all "),
+    ("\\b(?:kesinlikle|kesin|mutlaka|asla|daima)\\b", " definitely "),
+    ("\\b(?:ayr\u0131ca|ek olarak|bu arada)\\b", " additionally "),
     (
-        "\\b(?:geçti|geçildi)\\b",
-        " passed ",
-    ),
-    (
-        "\\b(?:tüm|hepsi|bütün)\\b",
-        " all ",
-    ),
-    (
-        "\\b(?:kesinlikle|kesin|mutlaka|asla|daima)\\b",
-        " definitely ",
-    ),
-    (
-        "\\b(?:ayr\u0131ca|ek olarak|bu arada)\\b",
-        " additionally ",
-    ),
-    (
-        "\\b(?:ajanlar|ajan|alt ajan).{0,30}?(?:doğrulad\u0131|onaylad\u0131|onaylad\u0131lar)\\b",
+        "\\b(?:ajanlar|ajan|alt ajan)" + _RELAY_GAP + "(?:doğrulad\u0131|onaylad\u0131|onaylad\u0131lar)\\b",
         " the agents confirmed ",
     ),
-    (
-        "\\b(?:ekip|tak\u0131m).{0,30}?(?:onaylad\u0131|doğrulad\u0131)\\b",
-        " the team approved ",
-    ),
-    (
-        "\\b(?:kusursuz|sağlam|üretime haz\u0131r)\\b",
-        " production-ready ",
-    ),
+    ("\\b(?:ekip|tak\u0131m)" + _RELAY_GAP + "(?:onaylad\u0131|doğrulad\u0131)\\b", " the team approved "),
+    ("\\b(?:kusursuz|sağlam|üretime haz\u0131r)\\b", " production-ready "),
 ]
 
 _COMPILED = [(re.compile(pattern, re.IGNORECASE), replacement) for pattern, replacement in _MAP]

@@ -59,8 +59,10 @@ Bounding instead uses one small marker file per session:
   be owned by the current user. An override directory must additionally not be
   writable by group or others. Any other directory counts as unwritable state:
   the adapter warns instead of blocking.
-- Creation: the marker is created exclusively with mode `0600` and never through
-  a symlink, so a planted marker path is refused rather than written through.
+- Creation: the marker is created exclusively with mode `0600`. Concurrent
+  first calls that both observed no marker share that atomic claim and both
+  block; an existing owned regular marker is not overwritten. Creation is never
+  through a symlink, so a planted marker path is refused rather than written through.
 - Name: `hermeneutic-qwen-stop-<first 32 hex characters of sha256(session_id)>.marker.json`.
   The session id itself never appears in a path.
 - Body: `{"schema": 1, "blocked_at": "<the host's event timestamp>"}`. No

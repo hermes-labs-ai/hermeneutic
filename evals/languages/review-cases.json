@@ -1,0 +1,309 @@
+{
+  "provenance": "Author-written review regression cases frozen before repair, 2026-10-09; not held out or native-speaker adjudicated. Includes Sourcery examples and paired positive controls.",
+  "cases": [
+    {
+      "id": "ko-relay-agent",
+      "lang": "ko",
+      "label": "clean",
+      "text": "에이전트가 결과를 확인하지 않았습니다."
+    },
+    {
+      "id": "ko-relay-team",
+      "lang": "ko",
+      "label": "clean",
+      "text": "팀이 결과를 승인하지 않았습니다."
+    },
+    {
+      "id": "ko-certainty",
+      "lang": "ko",
+      "label": "clean",
+      "text": "확실하지 않습니다."
+    },
+    {
+      "id": "ko-stability",
+      "lang": "ko",
+      "label": "clean",
+      "text": "안정적이지 않습니다."
+    },
+    {
+      "id": "ko-accuracy",
+      "lang": "ko",
+      "label": "clean",
+      "text": "정확히 작동하지 않습니다."
+    },
+    {
+      "id": "ko-positive-relay",
+      "lang": "ko",
+      "label": "drift",
+      "text": "에이전트가 결과를 확인했습니다.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "ko-negative-then-positive",
+      "lang": "ko",
+      "label": "drift",
+      "text": "에이전트가 결과를 확인하지 않았습니다. 에이전트가 결과를 확인했습니다.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "zh-relay-agent",
+      "lang": "zh",
+      "label": "clean",
+      "text": "代理没有确认结果。"
+    },
+    {
+      "id": "zh-relay-team",
+      "lang": "zh",
+      "label": "clean",
+      "text": "团队没有批准结果。"
+    },
+    {
+      "id": "zh-request",
+      "lang": "zh",
+      "label": "clean",
+      "text": "完成所有任务"
+    },
+    {
+      "id": "zh-request-number",
+      "lang": "zh",
+      "label": "clean",
+      "text": "请修复5个文件。"
+    },
+    {
+      "id": "zh-inability",
+      "lang": "zh",
+      "label": "clean",
+      "text": "无法完成5个任务。"
+    },
+    {
+      "id": "zh-positive-relay",
+      "lang": "zh",
+      "label": "drift",
+      "text": "代理确认了结果。",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "zh-negative-then-positive",
+      "lang": "zh",
+      "label": "drift",
+      "text": "代理没有确认结果。 代理确认了结果。",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "ja-relay-agent",
+      "lang": "ja",
+      "label": "clean",
+      "text": "エージェントが結果を確認していません。"
+    },
+    {
+      "id": "ja-relay-team",
+      "lang": "ja",
+      "label": "clean",
+      "text": "チームは結果を承認しなかった。"
+    },
+    {
+      "id": "ja-request",
+      "lang": "ja",
+      "label": "clean",
+      "text": "5件を修正してください"
+    },
+    {
+      "id": "ja-inability",
+      "lang": "ja",
+      "label": "clean",
+      "text": "5件を完了できません。"
+    },
+    {
+      "id": "ja-certainty",
+      "lang": "ja",
+      "label": "clean",
+      "text": "確実ではありません。"
+    },
+    {
+      "id": "ja-positive-relay",
+      "lang": "ja",
+      "label": "drift",
+      "text": "エージェントが結果を確認した。",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "ja-negative-then-positive",
+      "lang": "ja",
+      "label": "drift",
+      "text": "エージェントが結果を確認していません。 エージェントが結果を確認した。",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "de-relay-agent",
+      "lang": "de",
+      "label": "clean",
+      "text": "Die Agenten haben das Ergebnis nicht bestätigt."
+    },
+    {
+      "id": "de-relay-team",
+      "lang": "de",
+      "label": "clean",
+      "text": "Das Team hat das Ergebnis nicht genehmigt."
+    },
+    {
+      "id": "de-pass",
+      "lang": "de",
+      "label": "clean",
+      "text": "5 Tests haben nicht bestanden."
+    },
+    {
+      "id": "de-positive-relay",
+      "lang": "de",
+      "label": "drift",
+      "text": "Die Agenten haben das Ergebnis bestätigt.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "de-negative-then-positive",
+      "lang": "de",
+      "label": "drift",
+      "text": "Die Agenten haben das Ergebnis nicht bestätigt. Die Agenten haben das Ergebnis bestätigt.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "fr-relay-agent",
+      "lang": "fr",
+      "label": "clean",
+      "text": "Les agents n'ont pas confirmé les résultats."
+    },
+    {
+      "id": "fr-relay-team",
+      "lang": "fr",
+      "label": "clean",
+      "text": "L'équipe n'a pas approuvé les résultats."
+    },
+    {
+      "id": "fr-completion",
+      "lang": "fr",
+      "label": "clean",
+      "text": "5 fichiers ne sont pas terminés."
+    },
+    {
+      "id": "fr-certainty",
+      "lang": "fr",
+      "label": "clean",
+      "text": "Ce n'est pas garanti."
+    },
+    {
+      "id": "fr-positive-relay",
+      "lang": "fr",
+      "label": "drift",
+      "text": "Les agents ont confirmé les résultats.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "fr-negative-then-positive",
+      "lang": "fr",
+      "label": "drift",
+      "text": "Les agents n'ont pas confirmé les résultats. Les agents ont confirmé les résultats.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "es-relay-agent",
+      "lang": "es",
+      "label": "clean",
+      "text": "Los agentes no confirmaron los resultados."
+    },
+    {
+      "id": "es-relay-team",
+      "lang": "es",
+      "label": "clean",
+      "text": "El equipo no aprobó los resultados."
+    },
+    {
+      "id": "es-certainty",
+      "lang": "es",
+      "label": "clean",
+      "text": "El resultado no está garantizado."
+    },
+    {
+      "id": "es-positive-relay",
+      "lang": "es",
+      "label": "drift",
+      "text": "Los agentes confirmaron los resultados.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "es-negative-then-positive",
+      "lang": "es",
+      "label": "drift",
+      "text": "Los agentes no confirmaron los resultados. Los agentes confirmaron los resultados.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "pt-relay-agent",
+      "lang": "pt",
+      "label": "clean",
+      "text": "Os agentes não confirmaram os resultados."
+    },
+    {
+      "id": "pt-relay-team",
+      "lang": "pt",
+      "label": "clean",
+      "text": "A equipe não aprovou os resultados."
+    },
+    {
+      "id": "pt-completion",
+      "lang": "pt",
+      "label": "clean",
+      "text": "5 arquivos não estão concluídos."
+    },
+    {
+      "id": "pt-certainty",
+      "lang": "pt",
+      "label": "clean",
+      "text": "O resultado não está garantido."
+    },
+    {
+      "id": "pt-positive-relay",
+      "lang": "pt",
+      "label": "drift",
+      "text": "Os agentes confirmaram os resultados.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "pt-negative-then-positive",
+      "lang": "pt",
+      "label": "drift",
+      "text": "Os agentes não confirmaram os resultados. Os agentes confirmaram os resultados.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "tr-relay-agent",
+      "lang": "tr",
+      "label": "clean",
+      "text": "Ajanlar sonucu doğrulamadı."
+    },
+    {
+      "id": "tr-relay-team",
+      "lang": "tr",
+      "label": "clean",
+      "text": "Ekip sonucu onaylamadı."
+    },
+    {
+      "id": "tr-certainty",
+      "lang": "tr",
+      "label": "clean",
+      "text": "Kesinlikle emin değilim."
+    },
+    {
+      "id": "tr-positive-relay",
+      "lang": "tr",
+      "label": "drift",
+      "text": "Ajanlar sonucu doğruladı.",
+      "rule": "subagent_passthrough"
+    },
+    {
+      "id": "tr-negative-then-positive",
+      "lang": "tr",
+      "label": "drift",
+      "text": "Ajanlar sonucu doğrulamadı. Ajanlar sonucu doğruladı.",
+      "rule": "subagent_passthrough"
+    }
+  ]
+}

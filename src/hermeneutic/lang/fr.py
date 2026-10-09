@@ -10,68 +10,30 @@ import re
 
 from hermeneutic.lang._common import lexical_fraction, substitute
 
-# Most-specific first: tense, negation and partial-progress guards precede triggers.
+# Most-specific first: negative predicates, plans and partials precede triggers.
+_RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,30}?"
+
 _MAP: list[tuple[str, str]] = [
-    (
-        "\\b(?:pas encore|pas|non)\\s+(?:terminé(?:e|s|es)?|corrigé(?:e|s|es)?|achevé(?:e|s|es)?)\\b",
-        " not yet ",
-    ),
+    ("\\bpas\\s+(?:(?:encore|du tout|vraiment)\\s+)?(?:confirmé|vérifié|approuvé)(?:e|s|es)?\\b", " unconfirmed "),
+    ("\\b(?:pas|non)\\s+(?:garanti(?:e|s|es)?|certainement|absolument)\\b", " uncertain "),
+    ("\\b(?:pas encore|pas|non)\\s+(?:terminé(?:e|s|es)?|corrigé(?:e|s|es)?|achevé(?:e|s|es)?)\\b", " not yet "),
     (
         "\\b(?:vais|allons|va|vont)\\s+(?:terminer|corriger|achever)\\b|\\b(?:terminerai|corrigerai|terminerons)\\b",
         " next up ",
     ),
-    (
-        "\\b(?:pas certain|pas certaine|pas sûr|pas sûre|incertain|incertaine)\\b",
-        " uncertain ",
-    ),
-    (
-        "\\b(?:mais|cependant|pourtant)\\b",
-        " but ",
-    ),
-    (
-        "\\b(?:reste|restent|restant|en cours)\\b",
-        " remaining ",
-    ),
-    (
-        "\\b(?:ce n['\u2019]est pas|c['\u2019]est faux)\\b",
-        " that's not ",
-    ),
-    (
-        "\\bje voulais dire\\b",
-        " i meant ",
-    ),
-    (
-        "\\b(?:terminé|achevé|corrigé|réparé|déployé|implémenté|fini)(?:e|s|es)?\\b",
-        " completed ",
-    ),
-    (
-        "\\b(?:réussi|validé)(?:e|s|es)?\\b",
-        " passed ",
-    ),
-    (
-        "\\b(?:tous|toutes|chaque)\\b",
-        " all ",
-    ),
-    (
-        "\\b(?:certainement|absolument|garanti|garantie|toujours|jamais)\\b",
-        " definitely ",
-    ),
-    (
-        "\\b(?:également|en plus|de plus|aussi)\\b",
-        " additionally ",
-    ),
-    (
-        "\\bagents?\\b.{0,30}?\\b(?:confirmé|vérifié|approuvé)\\b",
-        " the agents confirmed ",
-    ),
-    (
-        "\\béquipe\\b.{0,30}?\\b(?:approuvé|confirmé|vérifié)\\b",
-        " the team approved ",
-    ),
-    (
-        "\\b(?:robuste|sans faille|prêt pour la production)\\b",
-        " production-ready ",
-    ),
+    ("\\b(?:pas certain|pas certaine|pas sûr|pas sûre|incertain|incertaine)\\b", " uncertain "),
+    ("\\b(?:mais|cependant|pourtant)\\b", " but "),
+    ("\\b(?:reste|restent|restant|en cours)\\b", " remaining "),
+    ("\\b(?:ce n['\u2019]est pas|c['\u2019]est faux)\\b", " that's not "),
+    ("\\bje voulais dire\\b", " i meant "),
+    ("\\b(?:terminé|achevé|corrigé|réparé|déployé|implémenté|fini)(?:e|s|es)?\\b", " completed "),
+    ("\\b(?:réussi|validé)(?:e|s|es)?\\b", " passed "),
+    ("\\b(?:tous|toutes|chaque)\\b", " all "),
+    ("\\b(?:certainement|absolument|garanti|garantie|toujours|jamais)\\b", " definitely "),
+    ("\\b(?:également|en plus|de plus|aussi)\\b", " additionally "),
+    ("\\bagents?\\b" + _RELAY_GAP + "\\b(?:confirmé|vérifié|approuvé)\\b", " the agents confirmed "),
+    ("\\béquipe\\b" + _RELAY_GAP + "\\b(?:approuvé|confirmé|vérifié)\\b", " the team approved "),
+    ("\\b(?:robuste|sans faille|prêt pour la production)\\b", " production-ready "),
 ]
 
 _COMPILED = [(re.compile(pattern, re.IGNORECASE), replacement) for pattern, replacement in _MAP]
