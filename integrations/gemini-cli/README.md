@@ -38,3 +38,6 @@ The extension uses the source bundled in its own checkout and does not read the
 optional personal correction corpus, call a model, or send response text over
 the network. Hermeneutic flags surface wording; it does not establish whether a
 claim is true.
+
+Experimental language mappings produce visible advisories and allow the response.
+Raw English findings retain the bounded repair policy, including in mixed-language drafts.

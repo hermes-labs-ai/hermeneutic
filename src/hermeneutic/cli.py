@@ -160,7 +160,7 @@ def _cmd_bucket(args: argparse.Namespace) -> int:
 
 def _cmd_gate(args: argparse.Namespace) -> int:
     from hermeneutic import telemetry
-    from hermeneutic.lang import risk_score as language_risk_score
+    from hermeneutic.lang import deployment_findings, detect
     try:
         draft = Path(args.draft).read_text(encoding="utf-8") if args.draft else sys.stdin.read()
     except FileNotFoundError:
@@ -175,7 +175,7 @@ def _cmd_gate(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
         return 2
-    hits = language_risk_score(draft, lang=args.lang)
+    hits, blocking = deployment_findings(draft, lang=args.lang)
     sev = highest_severity(hits)
     telemetry.record_gate(
         verdict="RISK" if hits else "PASS",
@@ -189,9 +189,12 @@ def _cmd_gate(args: argparse.Namespace) -> int:
         return 0
     print(f"RISK — highest severity: {sev}")
     for h in hits:
-        print(f"  {h}")
+        print(f"  {h}" + (" [language advisory]" if h not in blocking else ""))
         print(f"    why: {h.description}")
-    return 1 if sev in ("high", "med") else 0
+    if any(hit not in blocking for hit in hits):
+        code = detect(draft) if args.lang == "auto" else args.lang
+        print(f"ADVISORY — mapped language findings ({code}); independently validated enforcement is unavailable.")
+    return 1 if highest_severity(blocking) in ("high", "med") else 0
 
 
 def _cmd_compile_index(args: argparse.Namespace) -> int:

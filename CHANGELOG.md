@@ -4,6 +4,19 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+## [0.1.14] — 2026-10-09
+
+### Changed
+
+- Keep experimental language mappings advisory in CLI, Router, Gemini and Qwen.
+  Mapping findings remain visible; raw canonical English findings retain the
+  previous enforcement, including in mixed-language drafts. An advisory does
+  not create or consume a Qwen repair marker.
+- Add an independently authored simulated evaluation with a reviewed protocol,
+  sealed holdout split and reproducible source-hashed per-language receipts.
+  These receipts support advisory deployment decisions, not real-language
+  efficacy or native-speaker certification. See `evals/production-languages/`.
+
 ## [0.1.13] — 2026-10-09
 
 ### Added

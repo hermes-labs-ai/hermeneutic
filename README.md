@@ -23,7 +23,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.13
+python -m pip install hermeneutic==0.1.14
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
@@ -33,12 +33,14 @@ The check highlights English wording that needs a closer look. It cannot tell wh
 
 ## Experimental language support
 
-From this source branch, the draft gate supports Korean (`ko`), Chinese (`zh`),
+The draft gate supports Korean (`ko`), Chinese (`zh`),
 Japanese (`ja`), Turkish (`tr`), German (`de`), French (`fr`), Spanish (`es`), and
 Portuguese (`pt`) through **trigger mapping**. Local phrases map to the triggers
 the same English gate already checks. This is not translation or a separate
 set of risk rules, and it adds no model calls or runtime dependencies.
-The pinned PyPI release above does not include these adapters yet.
+Mapped-language findings are advisory: they remain visible but do not reject
+a draft or trigger automatic Router review/repair. Raw English findings retain
+their existing enforcement, including in mixed-language drafts.
 
 ```bash
 python -m pip install -e .
@@ -51,13 +53,14 @@ hints; select a code explicitly for ambiguous or short text. Japanese kana is
 checked before Chinese Han characters; kanji-only Japanese needs `--lang ja`.
 Shared Spanish/Portuguese vocabulary may fall back to English. One adapter is
 selected per draft, so multilingual mixtures may need explicit selection.
-Shipped response hooks enable automatic mapping before the gate. Their existing
-advisory/retry behavior remains host-specific.
+Shipped response hooks enable automatic mapping. Gemini and Qwen allow
+mapping-only findings with a visible advisory; English findings retain their
+existing bounded repair policy. Other response hooks remain advisory.
 
 For Python callers, `hermeneutic.lang.risk_score(text, lang="auto")` returns hits
 with spans and matched snippets in the original draft.
-`Router(lang="auto")` enables mapping at stage 1 while downstream reviewers and
-repairers receive the original text. `hermeneutic.risk_score` and the default
+`Router(lang="auto")` records mapped findings at stage 1. Only raw English
+findings can trigger downstream reviewers and repairers, which receive the original text. `hermeneutic.risk_score` and the default
 Router remain English-only.
 
 Synthetic development-set results, replayed with explicit language selection:
@@ -79,6 +82,11 @@ estimates. Automatic Korean routing catches 111/180 (61.7%) with 4/135 (3.0%)
 false fires; the other fixture results match explicit routing. See the
 [validation methodology](evals/languages/README.md) and
 [replayable receipt](evals/languages/results.json) for misses and limitations.
+
+A separate independently authored, sealed evaluation covers 120 simulated cases
+per language for Korean, Japanese, Chinese and Spanish. All four miss the
+predeclared high-severity recall target; none meets both quality targets. They
+remain advisory. See the [held-out results and limits](evals/production-languages/README.md).
 
 ## Use your corrections
 

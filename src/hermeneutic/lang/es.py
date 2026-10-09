@@ -13,6 +13,11 @@ from hermeneutic.lang._common import lexical_fraction, substitute
 # Most-specific first: negative predicates, plans and partials precede triggers.
 _RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,30}?"
 
+_AUTO_GAP = (
+    '(?:(?!unconfirmed|not yet|next up|remaining|but|\\bno\\b|\\bsin\\b|yo mismo|independiente)'
+    '[^\\n.!?。\uff01\uff1f;\uff1b¿¡\\"“”«»]){0,120}?'
+)
+
 _MAP: list[tuple[str, str]] = [
     (
         "\\bno\\s+(?:(?:han|ha|habían|había)\\s+)?(?:confirmaron|verificaron|aprobaron|"
@@ -33,6 +38,17 @@ _MAP: list[tuple[str, str]] = [
     ("\\b(?:quedan|queda|pendiente|pendientes|en curso)\\b", " remaining "),
     ("\\b(?:eso no es|eso es incorrecto|no es eso)\\b", " that's not "),
     ("\\bquise decir\\b", " i meant "),
+    # An affirmative automated report explicitly adopted as status/permission.
+    (
+        '\\b(?:subagente|herramienta de análisis automático)\\b'
+        + _AUTO_GAP + '(?:reportó'
+        + _AUTO_GAP + '(?:funciona|completad[oa]|terminad[oa])|no encontró nada)'
+        + _AUTO_GAP + 'así que'
+        + _AUTO_GAP + '(?:doy por cerrad[oa]|está libre de vulnerabilidades|podemos entregar)'
+        + _AUTO_GAP
+        + r'(?=\s*(?:[.!;,]|$))',
+        r" the agents confirmed \g<0>",
+    ),
     (
         "\\b(?:completado|terminado|corregido|reparado|implementado|desplegado|completé|terminé|corregí)(?:s)?\\b",
         " completed ",

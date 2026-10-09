@@ -90,7 +90,7 @@ def test_concurrent_first_stops_both_block_then_identical_retry_is_allowed(adapt
         return state
 
     monkeypatch.setattr(adapter, "_take_repair_marker", overlapping_take)
-    payload = _stop("5개 파일을 수정했습니다.")
+    payload = _stop(RISKY)
     with ThreadPoolExecutor(max_workers=2) as pool:
         results = list(pool.map(adapter.evaluate, [payload, payload]))
     assert [result.get("decision") for result in results] == ["block", "block"]
@@ -332,7 +332,7 @@ def test_internal_error_fails_open(adapter, monkeypatch, capsys) -> None:
     def explode(_text):
         raise RuntimeError("gate exploded")
 
-    monkeypatch.setattr(adapter, "risk_score", explode)
+    monkeypatch.setattr(adapter, "deployment_findings", explode)
     monkeypatch.setattr(adapter.sys, "stdin", io.StringIO(json.dumps(_stop(RISKY))))
     assert adapter.main() == 0
     output = json.loads(capsys.readouterr().out)

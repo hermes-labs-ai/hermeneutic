@@ -64,3 +64,19 @@ def risk_score(draft: str, lang: str = "auto") -> list[RiskHit]:
         matched = draft[hit.start : hit.end]
         hit.matched_text = matched if len(matched) <= 200 else matched[:200] + "..."
     return hits
+
+
+def deployment_findings(draft: str, lang: str = "auto") -> tuple[list[RiskHit], list[RiskHit]]:
+    """Return visible findings and the subset eligible for enforcement.
+
+    Language mappings remain advisory pending independent real-language
+    validation. Raw English findings retain their existing enforcement even
+    in mixed-language drafts; routing and substitution cannot hide them.
+    The public mapped scorer and canonical English rules are unchanged.
+    """
+    code = detect(draft) if lang == "auto" else lang
+    mapped = risk_score(draft, lang=code)
+    blocking = _english_risk_score(draft)
+    identities = {(hit.rule_id, hit.start, hit.end, hit.severity) for hit in mapped}
+    findings = mapped + [hit for hit in blocking if (hit.rule_id, hit.start, hit.end, hit.severity) not in identities]
+    return findings, blocking

@@ -48,8 +48,9 @@ for code, (positive, negative) in samples.items():
     for choice in (code, "auto"):
         result = subprocess.run(["hermeneutic", "gate", "--lang", choice],
                                 input=positive, text=True, capture_output=True)
-        assert result.returncode == 1, (code, choice, result.stdout, result.stderr)
+        assert result.returncode == 0, (code, choice, result.stdout, result.stderr)
         assert "completion" in result.stdout
+        assert "ADVISORY" in result.stdout and f"({code})" in result.stdout
     result = subprocess.run(["hermeneutic", "gate", "--lang", code],
                             input=negative, text=True, capture_output=True)
     assert result.returncode == 0, (code, result.stdout, result.stderr)
