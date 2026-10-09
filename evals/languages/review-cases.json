@@ -1,5 +1,5 @@
 {
-  "provenance": "Author-written review regression cases frozen before repair, 2026-10-09; not held out or native-speaker adjudicated. Includes Sourcery examples and paired positive controls.",
+  "provenance": "48 author-written review cases frozen before initial remediation, 2026-10-09, plus two independent-review counterexamples at aa6bd94 appended before the follow-up repair. Development regressions, not held out or native-speaker adjudicated.",
   "cases": [
     {
       "id": "ko-relay-agent",
@@ -304,6 +304,18 @@
       "label": "drift",
       "text": "Ajanlar sonucu doğrulamadı. Ajanlar sonucu doğruladı.",
       "rule": "subagent_passthrough"
+    },
+    {
+      "id": "ko-postverbal-cannot-confirm",
+      "lang": "ko",
+      "label": "clean",
+      "text": "에이전트가 결과를 확인 못 했습니다."
+    },
+    {
+      "id": "es-negative-plural-completion",
+      "lang": "es",
+      "label": "clean",
+      "text": "5 archivos no están completados."
     }
   ]
 }

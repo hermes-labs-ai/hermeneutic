@@ -56,8 +56,10 @@ denominators, percentages, and Korean batch counts are retained in `results.json
 
 ## Review regressions
 
-`review-cases.json` retains 48 author-written cases frozen before remediation:
-32 negative/request/inability statements and 16 affirmative relay controls,
+`review-cases.json` retains 48 author-written cases frozen before initial
+remediation and two counterexamples from independent review at `aa6bd94`, added
+before the follow-up repair. There are 34 negative/request/inability statements
+and 16 affirmative relay controls,
 including a negative statement followed by an independent positive one. These
 examples exposed negative false fires at the pre-repair head
 `a9738c9`; they are review-driven regressions, not held-out evaluation or
@@ -68,13 +70,13 @@ one hit located in the affirmative sentence.
 
 | Language | Explicit relay controls caught | Explicit negative false fires | Auto relay controls caught | Auto negative false fires |
 | --- | --- | --- | --- | --- |
-| Korean | 2/2 | 0/5 | 2/2 | 0/5 |
+| Korean | 2/2 | 0/6 | 2/2 | 0/6 |
 | Chinese | 2/2 | 0/5 | 2/2 | 0/5 |
 | Japanese | 2/2 | 0/5 | 2/2 | 0/5 |
 | Turkish | 2/2 | 0/3 | 2/2 | 0/3 |
 | German | 2/2 | 0/3 | 2/2 | 0/3 |
 | French | 2/2 | 0/4 | 2/2 | 0/4 |
-| Spanish | 2/2 | 0/3 | 2/2 | 0/3 |
+| Spanish | 2/2 | 0/4 | 2/2 | 0/4 |
 | Portuguese | 2/2 | 0/4 | 2/2 | 0/4 |
 
 Chinese completion before an object now requires assertion wording such as

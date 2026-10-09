@@ -23,7 +23,7 @@ _MAP: list[tuple[str, str]] = [
         "\\bno\\s+(?:(?:está|están|es|son)\\s+)?(?:garantizado|garantizada|definitivamente|absolutamente)\\b",
         " uncertain ",
     ),
-    ("\\b(?:no|no se ha|no he|no está|sin)\\s+(?:completado|terminado|corregido|reparado)\\b", " not yet "),
+    ("\\b(?:no|no se ha|no he|no está|no están|sin)\\s+(?:completado|terminado|corregido|reparado)s?\\b", " not yet "),
     (
         "\\b(?:voy a|vamos a|se va a)\\s+(?:completar|terminar|corregir)\\b|\\b(?:completaré|terminaré|corregiré)\\b",
         " next up ",
