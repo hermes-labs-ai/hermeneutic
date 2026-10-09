@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from hermeneutic import __version__
-from hermeneutic.gates.regex import highest_severity, risk_score
+from hermeneutic.gates.regex import highest_severity
 from hermeneutic.triples import READERS, mine_dir
 
 
@@ -160,6 +160,7 @@ def _cmd_bucket(args: argparse.Namespace) -> int:
 
 def _cmd_gate(args: argparse.Namespace) -> int:
     from hermeneutic import telemetry
+    from hermeneutic.lang import risk_score as language_risk_score
     try:
         draft = Path(args.draft).read_text(encoding="utf-8") if args.draft else sys.stdin.read()
     except FileNotFoundError:
@@ -174,7 +175,7 @@ def _cmd_gate(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
         return 2
-    hits = risk_score(draft)
+    hits = language_risk_score(draft, lang=args.lang)
     sev = highest_severity(hits)
     telemetry.record_gate(
         verdict="RISK" if hits else "PASS",
@@ -531,6 +532,11 @@ def main(argv: list[str] | None = None) -> int:
 
     p_gate = sub.add_parser("gate", help="Run the regex-only risk gate on a draft.")
     p_gate.add_argument("--draft", help="Path to draft file (default: read stdin).")
+    from hermeneutic.lang import LANGS
+    p_gate.add_argument(
+        "--lang", choices=("auto", *LANGS), default="en",
+        help="Experimental trigger mapping (default: en; auto uses conservative language hints).",
+    )
     p_gate.set_defaults(func=_cmd_gate)
 
     p_harvest = sub.add_parser(

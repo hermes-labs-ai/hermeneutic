@@ -56,7 +56,7 @@ export function runGate(command, draft, timeoutMs = DEFAULT_TIMEOUT_MS) {
     };
 
     try {
-      child = spawn(command, ["gate"], {
+      child = spawn(command, ["gate", "--lang", "auto"], {
         shell: false,
         stdio: ["pipe", "pipe", "ignore"],
         env: childEnvironment(),

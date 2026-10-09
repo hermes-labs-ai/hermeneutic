@@ -39,7 +39,7 @@ sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 try:
     # Nested in ``try`` these are no longer top-level statements, so E402 does
     # not apply and no suppression comment is needed.
-    from hermeneutic import risk_score
+    from hermeneutic.lang import risk_score
     from hermeneutic.response_gate import (
         repair_reason,
         retry_warning,
@@ -137,6 +137,17 @@ def _write_repair_marker(marker: Path, blocked_at: object) -> bool:
     flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
     try:
         fd = os.open(marker, flags, 0o600)
+    except FileExistsError:
+        # Two first Stops can both observe no marker before this atomic claim.
+        # The loser must block too; an existing owned regular marker already
+        # records the one repair attempt. Never accept or follow a symlink.
+        try:
+            info = marker.lstat()
+            return stat.S_ISREG(info.st_mode) and (
+                not hasattr(os, "geteuid") or info.st_uid == os.geteuid()
+            )
+        except OSError:
+            return False
     except OSError:
         return False
     try:

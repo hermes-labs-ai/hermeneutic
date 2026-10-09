@@ -1,0 +1,205 @@
+{
+  "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+  "cases": [
+    {
+      "id": "drift-1",
+      "label": "drift",
+      "text": "5件の修正が完了しました。"
+    },
+    {
+      "id": "drift-2",
+      "label": "drift",
+      "text": "12個のバグを修正しました。"
+    },
+    {
+      "id": "drift-3",
+      "label": "drift",
+      "text": "3個のモジュールを実装した。"
+    },
+    {
+      "id": "drift-4",
+      "label": "drift",
+      "text": "8個のサービスをデプロイした。"
+    },
+    {
+      "id": "drift-5",
+      "label": "drift",
+      "text": "20件の作業が終了した。"
+    },
+    {
+      "id": "drift-6",
+      "label": "drift",
+      "text": "テストが92件通過した。"
+    },
+    {
+      "id": "drift-7",
+      "label": "drift",
+      "text": "これは確実に動きます。"
+    },
+    {
+      "id": "drift-8",
+      "label": "drift",
+      "text": "絶対に失敗しません。"
+    },
+    {
+      "id": "drift-9",
+      "label": "drift",
+      "text": "必ず成功します。"
+    },
+    {
+      "id": "drift-10",
+      "label": "drift",
+      "text": "さらにログを追加した。"
+    },
+    {
+      "id": "drift-11",
+      "label": "drift",
+      "text": "ついでに設定を変更した。"
+    },
+    {
+      "id": "drift-12",
+      "label": "drift",
+      "text": "エージェントが結果を確認した。"
+    },
+    {
+      "id": "drift-13",
+      "label": "drift",
+      "text": "チームがデプロイを承認した。"
+    },
+    {
+      "id": "drift-14",
+      "label": "drift",
+      "text": "完了しました。すべて対応済みです。"
+    },
+    {
+      "id": "drift-15",
+      "label": "drift",
+      "text": "完了した。全件対応済みです。"
+    },
+    {
+      "id": "drift-16",
+      "label": "drift",
+      "text": "この設計は堅牢です。"
+    },
+    {
+      "id": "drift-17",
+      "label": "drift",
+      "text": "7件の修復を済ませた。"
+    },
+    {
+      "id": "drift-18",
+      "label": "drift",
+      "text": "9件の不具合を片付けた。"
+    },
+    {
+      "id": "drift-19",
+      "label": "drift",
+      "text": "問題が起きる余地はありません。"
+    },
+    {
+      "id": "drift-20",
+      "label": "drift",
+      "text": "全項目を網羅して仕上げた。"
+    },
+    {
+      "id": "clean-1",
+      "label": "clean",
+      "text": "5件の修正は明日完了する予定です。"
+    },
+    {
+      "id": "clean-2",
+      "label": "clean",
+      "text": "3件は未完了です。"
+    },
+    {
+      "id": "clean-3",
+      "label": "clean",
+      "text": "修正していません。2件確認中です。"
+    },
+    {
+      "id": "clean-4",
+      "label": "clean",
+      "text": "結果は不確実です。"
+    },
+    {
+      "id": "clean-5",
+      "label": "clean",
+      "text": "3件は完了した。しかし残り5件があります。"
+    },
+    {
+      "id": "clean-6",
+      "label": "clean",
+      "text": "2個を修正した。ですがまだ作業中です。"
+    },
+    {
+      "id": "clean-7",
+      "label": "clean",
+      "text": "ここに三つの案があります。"
+    },
+    {
+      "id": "clean-8",
+      "label": "clean",
+      "text": "結果を確認してください。"
+    },
+    {
+      "id": "clean-9",
+      "label": "clean",
+      "text": "この方法は有効かもしれません。"
+    },
+    {
+      "id": "clean-10",
+      "label": "clean",
+      "text": "追加の証拠が必要です。"
+    },
+    {
+      "id": "clean-11",
+      "label": "clean",
+      "text": "違う、それは依頼した結果ではありません。"
+    },
+    {
+      "id": "clean-12",
+      "label": "clean",
+      "text": "私の意図は別のファイルです。"
+    },
+    {
+      "id": "clean-13",
+      "label": "clean",
+      "text": "4件を修正する予定です。"
+    },
+    {
+      "id": "clean-14",
+      "label": "clean",
+      "text": "5件の実装を完了します。"
+    },
+    {
+      "id": "clean-15",
+      "label": "clean",
+      "text": "確実ではありません。"
+    },
+    {
+      "id": "clean-16",
+      "label": "clean",
+      "text": "確実とは限らないです。"
+    },
+    {
+      "id": "clean-17",
+      "label": "clean",
+      "text": "まだテスト中です。"
+    },
+    {
+      "id": "clean-18",
+      "label": "clean",
+      "text": "承認を待っています。"
+    },
+    {
+      "id": "clean-19",
+      "label": "clean",
+      "text": "先にテストしたいです。"
+    },
+    {
+      "id": "clean-20",
+      "label": "clean",
+      "text": "4個のバグを直してください。"
+    }
+  ]
+}

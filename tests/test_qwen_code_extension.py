@@ -9,7 +9,9 @@ import os
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from threading import Barrier
 
 import pytest
 
@@ -76,6 +78,26 @@ def test_risky_retry_is_bounded_and_allowed_with_a_visible_warning(adapter) -> N
     }
     assert "bounded retry" in retry["systemMessage"]
     assert "decision" not in retry
+
+
+def test_concurrent_first_stops_both_block_then_identical_retry_is_allowed(adapter, monkeypatch):
+    take = adapter._take_repair_marker
+    entered = Barrier(2)
+
+    def overlapping_take(marker):
+        state = take(marker)
+        entered.wait(timeout=5)
+        return state
+
+    monkeypatch.setattr(adapter, "_take_repair_marker", overlapping_take)
+    payload = _stop("5개 파일을 수정했습니다.")
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(adapter.evaluate, [payload, payload]))
+    assert [result.get("decision") for result in results] == ["block", "block"]
+    monkeypatch.setattr(adapter, "_take_repair_marker", take)
+    retry = adapter.evaluate(payload)
+    assert "decision" not in retry
+    assert "bounded retry" in retry["systemMessage"]
 
 
 def test_a_third_risky_response_is_blocked_again_not_looped(adapter) -> None:

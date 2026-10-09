@@ -3,6 +3,17 @@
 This file is for AI coding agents and host applications that want to call the
 standalone `hermeneutic` CLI or Python library.
 
+## Priority order
+
+Apply these priorities in order when using or extending the package:
+
+1. Honor the user's requested scope and protect private correction data.
+2. Preserve the deterministic, zero-LLM gate and its existing English behavior.
+   Language adapters map vocabulary into that gate; synthetic fixtures cannot
+   establish real-language coverage or authorize a change to canonical rules.
+3. Validate the requested behavior in the owning checkout before claiming it
+   works. Report tests, host-adapter mechanics, and live delivery separately.
+
 ## What this tool does
 
 A fixed deterministic English drift check for assistant-generated drafts. It
@@ -80,7 +91,9 @@ release. The personal corpus can affect optional compile retrieval after
 - Not a model evaluator. Scores individual drafts, not aggregate quality.
 - Not foresight. Catches drift modes seen before; novel drifts pass through.
 - Not a replacement for human review. It's a floor-raiser.
-- Not multilingual. The fixed rules check English surface patterns.
+- Multilingual support is experimental trigger mapping into the fixed English
+  rules. Use `hermeneutic gate --lang auto` or an explicit language code;
+  synthetic fixture results do not establish real-language coverage.
 - Not proof that a caller's external Router backends or repair behavior are safe.
 
 ## Working on this repository

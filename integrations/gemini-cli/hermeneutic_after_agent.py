@@ -13,7 +13,7 @@ from typing import Any
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 
-from hermeneutic import risk_score  # noqa: E402
+from hermeneutic.lang import risk_score  # noqa: E402
 from hermeneutic.response_gate import repair_reason, retry_warning, summarize_hits  # noqa: E402
 
 

@@ -117,7 +117,7 @@ if not last_text.strip():
 # Pipe through hermeneutic gate. Use python -m to avoid PATH issues at hook-fire time.
 try:
     proc = subprocess.run(
-        [sys.executable, "-m", "hermeneutic.cli", "gate"],
+        [sys.executable, "-m", "hermeneutic.cli", "gate", "--lang", "auto"],
         input=last_text, capture_output=True, text=True, timeout=5,
     )
 except (subprocess.TimeoutExpired, FileNotFoundError, OSError):

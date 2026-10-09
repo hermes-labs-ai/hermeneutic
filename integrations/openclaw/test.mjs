@@ -67,6 +67,7 @@ process.stdin.on("end", () => {
     process.exit(2);
   }
   if (input !== "private response text") process.exit(2);
+  if (JSON.stringify(process.argv.slice(2)) !== JSON.stringify(["gate", "--lang", "auto"])) process.exit(2);
   process.stdout.write("RISK — highest severity: high\\n  [high] completion_with_number: 'private response text'\\n");
 });
 `);

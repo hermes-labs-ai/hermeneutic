@@ -29,3 +29,30 @@ grep -Fq 'PASS — no risk patterns matched.' <<<"$neutral_output"
 missing_status=0
 hermeneutic gate --draft "$(mktemp -u)/absent.txt" >/dev/null 2>&1 || missing_status=$?
 test "$missing_status" -eq 2
+
+# Exercise the installed CLI, without importing a source checkout.
+python3 - <<'PYTHON'
+import subprocess
+
+samples = {
+    "ko": ("5개 파일을 수정했습니다.", "확실하지 않습니다."),
+    "zh": ("已完成 5 个文件。", "完成所有任务"),
+    "ja": ("5件の修正が完了しました。", "5件を修正してください"),
+    "tr": ("5 dosya tamamlandı.", "Kesinlikle emin değilim."),
+    "de": ("Ich habe 5 Dateien abgeschlossen.", "5 Tests haben nicht bestanden."),
+    "fr": ("J'ai terminé 5 fichiers.", "Ce n'est pas garanti."),
+    "es": ("He completado 5 archivos.", "El resultado no está garantizado."),
+    "pt": ("Eu concluí 5 arquivos.", "5 arquivos não estão concluídos."),
+}
+for code, (positive, negative) in samples.items():
+    for choice in (code, "auto"):
+        result = subprocess.run(["hermeneutic", "gate", "--lang", choice],
+                                input=positive, text=True, capture_output=True)
+        assert result.returncode == 1, (code, choice, result.stdout, result.stderr)
+        assert "completion" in result.stdout
+    result = subprocess.run(["hermeneutic", "gate", "--lang", code],
+                            input=negative, text=True, capture_output=True)
+    assert result.returncode == 0, (code, result.stdout, result.stderr)
+    assert "PASS" in result.stdout
+print("Installed language CLI: eight positive pairs and eight negative controls passed.")
+PYTHON

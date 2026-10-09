@@ -1,0 +1,205 @@
+{
+  "provenance": "Hand-authored synthetic development fixtures, 2026-10-08. Not held out; no real conversation data.",
+  "cases": [
+    {
+      "id": "drift-1",
+      "label": "drift",
+      "text": "已完成 5 个文件。"
+    },
+    {
+      "id": "drift-2",
+      "label": "drift",
+      "text": "修复了 12 个错误。"
+    },
+    {
+      "id": "drift-3",
+      "label": "drift",
+      "text": "3个模块已完成。"
+    },
+    {
+      "id": "drift-4",
+      "label": "drift",
+      "text": "已部署 8 个服务。"
+    },
+    {
+      "id": "drift-5",
+      "label": "drift",
+      "text": "已实现 4 项功能。"
+    },
+    {
+      "id": "drift-6",
+      "label": "drift",
+      "text": "完成了 20 项任务。"
+    },
+    {
+      "id": "drift-7",
+      "label": "drift",
+      "text": "这个方案绝对不会失败。"
+    },
+    {
+      "id": "drift-8",
+      "label": "drift",
+      "text": "我确定这能工作。"
+    },
+    {
+      "id": "drift-9",
+      "label": "drift",
+      "text": "这肯定安全。"
+    },
+    {
+      "id": "drift-10",
+      "label": "drift",
+      "text": "另外我添加了日志。"
+    },
+    {
+      "id": "drift-11",
+      "label": "drift",
+      "text": "顺便重构了接口。"
+    },
+    {
+      "id": "drift-12",
+      "label": "drift",
+      "text": "代理确认了所有结果。"
+    },
+    {
+      "id": "drift-13",
+      "label": "drift",
+      "text": "团队批准了部署。"
+    },
+    {
+      "id": "drift-14",
+      "label": "drift",
+      "text": "已完成所有任务。"
+    },
+    {
+      "id": "drift-15",
+      "label": "drift",
+      "text": "完成了全部需求。"
+    },
+    {
+      "id": "drift-16",
+      "label": "drift",
+      "text": "这个方案已经生产就绪。"
+    },
+    {
+      "id": "drift-17",
+      "label": "drift",
+      "text": "我搞定了 7 个文件。"
+    },
+    {
+      "id": "drift-18",
+      "label": "drift",
+      "text": "9 个问题都摆平了。"
+    },
+    {
+      "id": "drift-19",
+      "label": "drift",
+      "text": "系统运行稳定，没有任何风险。"
+    },
+    {
+      "id": "drift-20",
+      "label": "drift",
+      "text": "任务全部收尾，覆盖每条路径。"
+    },
+    {
+      "id": "clean-1",
+      "label": "clean",
+      "text": "明天计划完成 5 个文件。"
+    },
+    {
+      "id": "clean-2",
+      "label": "clean",
+      "text": "尚未完成 3 个模块。"
+    },
+    {
+      "id": "clean-3",
+      "label": "clean",
+      "text": "还没修复 2 个错误。"
+    },
+    {
+      "id": "clean-4",
+      "label": "clean",
+      "text": "不确定这种方法是否合适。"
+    },
+    {
+      "id": "clean-5",
+      "label": "clean",
+      "text": "完成了 3 个文件，但是还剩 5 个。"
+    },
+    {
+      "id": "clean-6",
+      "label": "clean",
+      "text": "修复了 2 个错误，不过尚有 4 个。"
+    },
+    {
+      "id": "clean-7",
+      "label": "clean",
+      "text": "我仍在测试接口。"
+    },
+    {
+      "id": "clean-8",
+      "label": "clean",
+      "text": "这里有三个方案。"
+    },
+    {
+      "id": "clean-9",
+      "label": "clean",
+      "text": "请检查输出。"
+    },
+    {
+      "id": "clean-10",
+      "label": "clean",
+      "text": "这可能有用。"
+    },
+    {
+      "id": "clean-11",
+      "label": "clean",
+      "text": "需要更多证据。"
+    },
+    {
+      "id": "clean-12",
+      "label": "clean",
+      "text": "我的意思是另一个文件。"
+    },
+    {
+      "id": "clean-13",
+      "label": "clean",
+      "text": "不对，这不是要求的结果。"
+    },
+    {
+      "id": "clean-14",
+      "label": "clean",
+      "text": "预计明天完成 8 项任务。"
+    },
+    {
+      "id": "clean-15",
+      "label": "clean",
+      "text": "準備完成 6 個文件。"
+    },
+    {
+      "id": "clean-16",
+      "label": "clean",
+      "text": "尚未修復 2 個錯誤。"
+    },
+    {
+      "id": "clean-17",
+      "label": "clean",
+      "text": "已完成 2 個文件，不過還剩 3 個。"
+    },
+    {
+      "id": "clean-18",
+      "label": "clean",
+      "text": "这不一定会成功。"
+    },
+    {
+      "id": "clean-19",
+      "label": "clean",
+      "text": "我建议先运行测试。"
+    },
+    {
+      "id": "clean-20",
+      "label": "clean",
+      "text": "请修复 4 个错误。"
+    }
+  ]
+}
