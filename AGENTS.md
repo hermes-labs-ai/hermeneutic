@@ -3,6 +3,17 @@
 This file is for AI coding agents and host applications that want to call the
 standalone `hermeneutic` CLI or Python library.
 
+## Priority order
+
+Apply these priorities in order when using or extending the package:
+
+1. Honor the user's requested scope and protect private correction data.
+2. Preserve the deterministic, zero-LLM gate and its existing English behavior.
+   Language adapters map vocabulary into that gate; synthetic fixtures cannot
+   establish real-language coverage or authorize a change to canonical rules.
+3. Validate the requested behavior in the owning checkout before claiming it
+   works. Report tests, host-adapter mechanics, and live delivery separately.
+
 ## What this tool does
 
 A fixed deterministic English drift check for assistant-generated drafts. It
