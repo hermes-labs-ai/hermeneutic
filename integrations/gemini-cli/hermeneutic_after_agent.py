@@ -13,7 +13,7 @@ from typing import Any
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 
-from hermeneutic.lang import risk_score  # noqa: E402
+from hermeneutic.lang import deployment_findings  # noqa: E402
 from hermeneutic.response_gate import repair_reason, retry_warning, summarize_hits  # noqa: E402
 
 
@@ -33,11 +33,13 @@ def evaluate(payload: object) -> dict[str, Any]:
     if not isinstance(response, str):
         return _allow(system_message="Hermeneutic skipped: prompt_response was missing.")
 
-    hits = risk_score(response)
+    hits, blocking = deployment_findings(response)
     if not hits:
         return _allow()
 
-    summary = summarize_hits(hits)
+    summary = summarize_hits(blocking or hits)
+    if not blocking:
+        return _allow(system_message=f"Hermeneutic language advisory: {summary}")
 
     # Gemini CLI reports a genuine retry here, so the flag alone bounds the loop.
     if payload.get("stop_hook_active") is True:

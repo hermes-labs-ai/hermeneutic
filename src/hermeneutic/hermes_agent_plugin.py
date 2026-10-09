@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from .gates.regex import highest_severity
-from .lang import risk_score
+from .lang import deployment_findings
 
 _ACTIONABLE_SEVERITIES = frozenset({"med", "high"})
 
@@ -16,7 +16,7 @@ def check_outgoing_claims(response_text: str, **_: Any) -> str | None:
         return None
 
     hits = [
-        hit for hit in risk_score(response_text)
+        hit for hit in deployment_findings(response_text)[0]
         if hit.severity in _ACTIONABLE_SEVERITIES
     ]
     if not hits:

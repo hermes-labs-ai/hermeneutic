@@ -1,4 +1,4 @@
-# hermeneutic repository (latest tagged release v0.1.13)
+# hermeneutic repository (latest tagged release v0.1.14)
 
 Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
@@ -13,13 +13,13 @@ Mining personalizes the corpus and optional retrieval. It does not generate or m
 Install the current release from PyPI:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.13'
+python3 -m pip install 'hermeneutic==0.1.14'
 ```
 
 For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
 ```bash
-git clone --branch v0.1.13 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+git clone --branch v0.1.14 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
 cd hermeneutic
 python3 -m pip install .
 ```
@@ -57,7 +57,7 @@ Expected first line: `RISK — highest severity: high`.
 
 ## Scope and maturity
 
-The canonical gate remains English-only and advisory unless a caller blocks before sending. Experimental adapters map Korean, Chinese, Japanese, Turkish, German, French, Spanish, and Portuguese triggers into it. Use `hermeneutic gate --lang auto` or an explicit language code; English remains the CLI default. Synthetic development results and rerunnable receipts are in `evals/languages/`; real-language coverage and native-speaker validation are unmeasured. The current repository includes a live-verified Qwen Code 0.23.2 native Stop extension; its exact host and provider boundary is recorded in `evals/qwen-code/RESULTS.md`. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
+The canonical gate remains English-only and advisory unless a caller blocks before sending. Experimental adapters map Korean, Chinese, Japanese, Turkish, German, French, Spanish, and Portuguese triggers into it. Use `hermeneutic gate --lang auto` or an explicit language code; English remains the CLI default. Mapped findings are advisory in CLI/Router/Gemini/Qwen; raw English findings retain their existing enforcement even in mixed-language drafts. Independent simulated deployment evaluation is in `evals/production-languages/`. Original synthetic development results and rerunnable receipts are in `evals/languages/`; real-language coverage and native-speaker validation are unmeasured. The current repository includes a live-verified Qwen Code 0.23.2 native Stop extension; its exact host and provider boundary is recorded in `evals/qwen-code/RESULTS.md`. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
 
 ## Privacy
 
