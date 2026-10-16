@@ -88,6 +88,7 @@ If you have Claude Code session logs, mine correction episodes, group the recurr
 hermeneutic mine ~/.claude/projects --format claude-code \
   --glob '**/*.jsonl' --out ~/.hermeneutic/triples.jsonl
 hermeneutic bucket ~/.hermeneutic/triples.jsonl
+hermeneutic inspect ~/.hermeneutic/triples.jsonl --limit 3
 ollama pull nomic-embed-text
 hermeneutic compile-index --triples ~/.hermeneutic/triples.jsonl
 hermeneutic compile 'Finish the release and report what passed.'
@@ -96,6 +97,16 @@ hermeneutic compile 'Finish the release and report what passed.'
 The last two commands need [Ollama](https://ollama.com/) running locally. If your logs contain a relevant correction, `compile` can return a short advisory preamble grounded in those past episodes. An empty result is possible when no match clears the threshold. The [worked example](evals/compile-walkthrough.md) shows the full path from a real correction to retrieved guidance. Codex and OpenAI message logs are also supported; see `hermeneutic mine --help` for the input formats.
 
 Mining reads the paths you supply and stores local JSONL records. It does not silently teach new rules to the fixed gate. Retrieval uses local embeddings; it does not use Ollama to generate the guidance text.
+
+Before indexing, `inspect` validates the complete existing JSONL file and emits
+at most five preview records by default; `--limit` accepts a positive record
+count. Each JSON preview includes its source line, session (up to 128
+characters), timestamp (64), and correction (160), with explicit truncation
+flags. Prior/next assistant messages and the original prompt are omitted.
+Malformed records produce a line-specific error and exit `2` without partial
+preview output. Inspection reads the file without modifying it and needs no
+network connection or Ollama. Previews can still contain private text; review
+them before sharing.
 
 ## Where it fits
 

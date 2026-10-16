@@ -4,6 +4,11 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- Add `inspect` for read-only, bounded correction previews with provenance and
+  complete JSONL validation before indexing. No network or model is required.
+
 ## [0.1.13] — 2026-10-09
 
 ### Added
