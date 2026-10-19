@@ -137,6 +137,6 @@ or deletion.
 
 Sources checked 2026-07-15:
 
-- [Codex hooks](https://developers.openai.com/codex/hooks)
-- [Build Codex plugins](https://developers.openai.com/codex/build-plugins)
-- [Codex notification configuration](https://developers.openai.com/codex/config-advanced#notifications)
+- [Codex hooks](https://learn.chatgpt.com/docs/hooks)
+- [Build Codex plugins](https://learn.chatgpt.com/docs/build-plugins)
+- [Codex notification configuration](https://learn.chatgpt.com/docs/config-file/config-advanced#notifications)
