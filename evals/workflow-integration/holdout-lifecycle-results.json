@@ -1,0 +1,95 @@
+{
+  "manager_sha256": "99682074da6bd55f35b4cf3c93e68fb473b1b2198c372fa2e2c0eed01b748d30",
+  "scope": "Synthetic staged files only; real project AGENTS configuration was not read or changed.",
+  "cases": [
+    {
+      "case": "install_scoped_replacement",
+      "pass": true
+    },
+    {
+      "case": "private_backups_and_mode",
+      "pass": true
+    },
+    {
+      "case": "install_2",
+      "pass": true
+    },
+    {
+      "case": "enable_3",
+      "pass": true
+    },
+    {
+      "case": "enable_4",
+      "pass": true
+    },
+    {
+      "case": "status_5",
+      "pass": true
+    },
+    {
+      "case": "disable_6",
+      "pass": true
+    },
+    {
+      "case": "disable_7",
+      "pass": true
+    },
+    {
+      "case": "status_8",
+      "pass": true
+    },
+    {
+      "case": "enable_9",
+      "pass": true
+    },
+    {
+      "case": "uninstall_10",
+      "pass": true
+    },
+    {
+      "case": "uninstall_11",
+      "pass": true
+    },
+    {
+      "case": "status_12",
+      "pass": true
+    },
+    {
+      "case": "install_13",
+      "pass": true
+    },
+    {
+      "case": "concurrent_edit_refused",
+      "pass": true
+    },
+    {
+      "case": "state_target_mismatch_refused",
+      "pass": true
+    },
+    {
+      "case": "replacement_count_0_refused",
+      "pass": true
+    },
+    {
+      "case": "replacement_count_2_refused",
+      "pass": true
+    },
+    {
+      "case": "damaged_before_uninstall_refused",
+      "pass": true
+    },
+    {
+      "case": "damaged_before_status_refused",
+      "pass": true
+    },
+    {
+      "case": "damaged_after_uninstall_refused",
+      "pass": true
+    },
+    {
+      "case": "damaged_after_status_refused",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

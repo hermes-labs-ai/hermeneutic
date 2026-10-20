@@ -1,0 +1,10 @@
+{
+  "runtime_candidate_commit": "f0380811d1f5a5919ac26e84ac3fb4f6961dc32e",
+  "native_pytest": {"command": "python -m pytest -ra", "passed": 557, "skipped": 1, "seconds": 8.70, "skip_reason": "Latest CHANGELOG entry makes no numeric test-count claim."},
+  "ruff": {"command": "ruff check src tests integrations/codex/recall.py evals/workflow-integration/holdout-evaluate.py evals/workflow-integration/holdout-lifecycle.py", "exit": 0},
+  "build": {"command": "python3 -m build", "wheel": true, "sdist": true, "exit": 0},
+  "installed_cli_smoke": {"command": "bash scripts/smoke-installed-cli.sh", "installed_candidate_wheel": true, "exit": 0},
+  "canonical_gate": {"diff_against_base": "empty", "base_commit": "4f357b7385ec2783f086416b8bca0513238f6d46"},
+  "hermes_gate": {"fast": "NOT_CONFIGURED", "review": "NOT_CONFIGURED", "exit": 2, "reason": "Repository has no .hermes/gate.toml. No adoption or profile was added; no full-profile requirement exists."},
+  "privacy": {"private_rollout_or_corpus_committed": false, "public_local_identity_path_scan": "no matches"}
+}

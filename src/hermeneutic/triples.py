@@ -36,6 +36,26 @@ DEFAULT_PATTERNS = [
     r"\bi said\b",
     r"\bnot what i\b",
     r"^\s*ugh\b",
+    # Explicit first-person clarifications can steer without leading pushback.
+    # Anchor these to the speaker; quoted examples and general conditionals do
+    # not establish a correction. Keep the mapping on one line and bounded.
+    r"^\s*(?:when(?:ever)?|if) i (?:say|type|write|mention|use|ask for) "
+    r"[^\n.!?]{1,160}?[,;:]?\s+i (?:mean(?! to\b)|am referring to)\s+\S",
+    r"^\s*(?!(?:example|sample|quote)\s*:)(?:[^\n.!?\"'`<>]{1,180}[.!?]\s+)?"
+    r"if i (?:say|type|write|mention|use) [^\n.!?=]{1,100}\s*=\s*"
+    r"[^\n.!?=]{1,100},\s*(?:(?:please\s+)?remember (?:that|this) (?:meaning|mapping)\b|"
+    r"that should be (?:remembered\b|part of (?:the |this )?[^\n.!?]{0,80}\blesson\b))",
+    r"^\s*by [^\n.!?]{1,120}?\s+i meant\s+\S",
+    # Retrospective requests need an explicit scope restriction, rather than
+    # treating polite new requests ("I wanted to ask...") as correction events.
+    r"^\s*i wanted (?!to (?:ask|request|know|discuss)\b)[^\n.!?]{1,180}"
+    r"(?:[.;]\s*do not\b|[,;]\s*not\b|\s+rather than\b)",
+    r"^\s*i requested [^\n.!?]{1,180}[.;]\s*i (?:did not|never) authori[sz]e\b",
+    r"^\s*i already asked you\b",
+    # A scoped definition is a steer only with an explicit disambiguating
+    # contrast. Unqualified factual definitions are not correction signals.
+    r"^\s*here [^\n.!?]{1,100} means (?:use|invoke|run|mark|select|treat)\b"
+    r"[^\n.!?]{1,180}[;,]\s*it does not mean\b",
 ]
 
 # Substrings that mark a "user" turn as actually subagent / system input — skip these.
@@ -157,9 +177,13 @@ class CodexReader(LogReader):
                         d = json.loads(line)
                     except json.JSONDecodeError:
                         continue
+                    if not isinstance(d, dict):
+                        continue
                     if d.get("type") != "response_item":
                         continue
                     p = d.get("payload") or {}
+                    if not isinstance(p, dict):
+                        continue
                     if p.get("type") != "message":
                         continue
                     role = p.get("role")
@@ -190,7 +214,9 @@ def _extract_text(content) -> str:
         for b in content:
             if isinstance(b, dict):
                 if b.get("type") in ("text", "input_text", "output_text"):
-                    parts.append(b.get("text", ""))
+                    text = b.get("text", "")
+                    if isinstance(text, str):
+                        parts.append(text)
                 elif b.get("type") == "tool_use":
                     parts.append(f"[tool:{b.get('name','?')}]")
         return "\n".join(parts)

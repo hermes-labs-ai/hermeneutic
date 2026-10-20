@@ -1,0 +1,88 @@
+{
+  "label": "fresh independent synthetic V2 holdout; finite evidence only",
+  "fixture_sha256": "7138736640dd12b7b9975bf05023146a65edadbd12031b64ef1bab3d8d73ad01",
+  "safety_fixture_sha256": "992f43065a3ca5c79141dfcbbe50647b985b83572acdd75cfad04425ea770780",
+  "frozen_at_utc": "2026-10-20T20:02:10.871251+00:00",
+  "candidate": {
+    "wrapper_sha256": "0a215fb68fe4fb5b72247c86fb261fb9ebd1874eb275c0677922d684d9f88df7",
+    "wheel_sha256": "0e42d0bd29c6242d22b32f36f515f77d32af69b579371dfcafadeef439a5da26",
+    "commit": "f0380811d1f5a5919ac26e84ac3fb4f6961dc32e",
+    "interpreter_label": "installed V2 wheel, isolated environment"
+  },
+  "mining": {
+    "positive_samples": 24,
+    "recovered": 2,
+    "recovery": 0.08333333333333333,
+    "negative_samples": 28,
+    "false_positives": 4,
+    "false_positive_rate": 0.14285714285714285
+  },
+  "recall": {
+    "relevant_samples": 24,
+    "top3_hits": 24,
+    "top3_hit_rate": 1.0,
+    "irrelevant_samples": 24,
+    "irrelevant_returns": 1,
+    "irrelevant_return_rate": 0.041666666666666664
+  },
+  "latency": {
+    "warm_api": {
+      "samples": 200,
+      "p95_ms": 0.254542,
+      "p99_ms": 0.298292,
+      "max_ms": 0.33025,
+      "median_ms": 0.227666
+    },
+    "cold_wrapper": {
+      "samples": 50,
+      "p95_ms": 121.174875,
+      "p99_ms": 122.887083,
+      "max_ms": 122.887083,
+      "median_ms": 113.143666
+    },
+    "repeated_full_command": {
+      "samples": 200,
+      "p95_ms": 116.825333,
+      "p99_ms": 120.216875,
+      "max_ms": 134.5915,
+      "median_ms": 111.969042
+    },
+    "percentile_method": "nearest rank; no retries or sample exclusions"
+  },
+  "wrapper": {
+    "max_stdout_utf8_bytes": 626,
+    "invalid_json_outputs": 0,
+    "nonzero_exits": 0,
+    "metadata_leaks": 0,
+    "fail_open_cases": 8,
+    "fail_open_passed": 8
+  },
+  "privacy": {
+    "direct_api_unauthorized_side_effect_attempts": 0,
+    "network_calls_attempted_during_guarded_api": 0,
+    "canary_disclosures": 0,
+    "canary_unchanged": true,
+    "corpus_unchanged": true,
+    "hostile_corpus_unchanged": true,
+    "execution_marker_created": false,
+    "api_home_files_after_run": 0,
+    "scope": "Direct API side effects audited; wrapper checked by canary, marker, output, and immutable corpus. Network and code-execution source review belong to independent review."
+  },
+  "acceptance": {
+    "mining_recovery": false,
+    "mining_false_positives": false,
+    "recall_top3": true,
+    "irrelevant_returns": true,
+    "warm_p95": true,
+    "warm_p99": true,
+    "cold_p95": true,
+    "cold_p99": true,
+    "hard_deadline": true,
+    "bounded_output": true,
+    "host_full_command_warm_p95": false,
+    "host_full_command_warm_p99": false,
+    "fail_open": true,
+    "observed_privacy": true
+  },
+  "accepted": false
+}

@@ -1,0 +1,974 @@
+{
+  "mining": [
+    {
+      "id": "positive-estuary_scope",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-dock_meaning",
+      "kind": "declarative",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-orchard_species",
+      "kind": "declarative",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-battery_charge",
+      "kind": "declarative",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 1,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "positive-kiln_intent",
+      "kind": "declarative",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-mint_term",
+      "kind": "declarative",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-scale_term",
+      "kind": "declarative",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-draft_intent",
+      "kind": "declarative",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-row_term",
+      "kind": "declarative",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-units",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-bus_route",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-tea_temp",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 1,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "positive-observatory_date",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-logic_explanation",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-support_status",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-csv_header",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-public_private",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-lemon_yield",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-calendars",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-plain_language",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-partial_evidence",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-table_order",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-diagnosis_scope",
+      "kind": "explicit_pushback",
+      "format": "openai",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "positive-single_change",
+      "kind": "explicit_pushback",
+      "format": "codex",
+      "expected_correction": true,
+      "returned": 0,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_accept",
+      "kind": "ordinary",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_next",
+      "kind": "ordinary",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_context",
+      "kind": "ordinary",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_definition",
+      "kind": "ordinary",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_agreement",
+      "kind": "ordinary",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_gratitude",
+      "kind": "ordinary",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 1,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_new_constraint",
+      "kind": "ordinary",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_assistant_question",
+      "kind": "ordinary",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ambiguous_reaction",
+      "kind": "ambiguous",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ambiguous_short",
+      "kind": "ambiguous",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ambiguous_thinking",
+      "kind": "ambiguous",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 1,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "negative-ambiguous_new_task",
+      "kind": "ambiguous",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 1,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "negative-quoted_editing",
+      "kind": "quoted",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-quoted_analysis",
+      "kind": "quoted",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-quoted_json",
+      "kind": "quoted",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-quoted_translation",
+      "kind": "quoted",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-quoted_report",
+      "kind": "quoted",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-quoted_regex",
+      "kind": "quoted",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-hostile_secrets",
+      "kind": "hostile",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-hostile_execute",
+      "kind": "hostile",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-hostile_authority",
+      "kind": "hostile",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-hostile_memory",
+      "kind": "hostile",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-hostile_log",
+      "kind": "hostile",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-ordinary_negation",
+      "kind": "ordinary",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 1,
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "negative-malformed-json",
+      "kind": "malformed",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-malformed-jsonl",
+      "kind": "malformed",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-missing-assistant",
+      "kind": "malformed",
+      "format": "openai",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "negative-non-message",
+      "kind": "malformed",
+      "format": "codex",
+      "expected_correction": false,
+      "returned": 0,
+      "passed": true,
+      "error": null
+    }
+  ],
+  "recall": [
+    {
+      "id": "relevant-amber_geode",
+      "relevant": true,
+      "expected_evidence": "triple-id-1",
+      "actual_evidence": [
+        "triple-id-1"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-basalt_roster",
+      "relevant": true,
+      "expected_evidence": "triple-id-2",
+      "actual_evidence": [
+        "triple-id-2"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-cattail_workshop",
+      "relevant": true,
+      "expected_evidence": "triple-id-3",
+      "actual_evidence": [
+        "triple-id-3"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-dunlin_count",
+      "relevant": true,
+      "expected_evidence": "triple-id-4",
+      "actual_evidence": [
+        "triple-id-4"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-elm_graft",
+      "relevant": true,
+      "expected_evidence": "triple-id-5",
+      "actual_evidence": [
+        "triple-id-5"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-flint_catalog",
+      "relevant": true,
+      "expected_evidence": "triple-id-6",
+      "actual_evidence": [
+        "triple-id-6"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-granite_steps",
+      "relevant": true,
+      "expected_evidence": "triple-id-7",
+      "actual_evidence": [
+        "triple-id-7"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-hazel_coppice",
+      "relevant": true,
+      "expected_evidence": "triple-id-8",
+      "actual_evidence": [
+        "triple-id-8"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-ibis_map",
+      "relevant": true,
+      "expected_evidence": "triple-id-9",
+      "actual_evidence": [
+        "triple-id-9"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-jasper_polish",
+      "relevant": true,
+      "expected_evidence": "triple-id-10",
+      "actual_evidence": [
+        "triple-id-10"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-kelp_drifts",
+      "relevant": true,
+      "expected_evidence": "triple-id-11",
+      "actual_evidence": [
+        "triple-id-11"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-lichen_cards",
+      "relevant": true,
+      "expected_evidence": "triple-id-12",
+      "actual_evidence": [
+        "triple-id-12"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-moraine_notes",
+      "relevant": true,
+      "expected_evidence": "triple-id-13",
+      "actual_evidence": [
+        "triple-id-13"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-nectar_schedule",
+      "relevant": true,
+      "expected_evidence": "triple-id-14",
+      "actual_evidence": [
+        "triple-id-14"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-opal_display",
+      "relevant": true,
+      "expected_evidence": "triple-id-15",
+      "actual_evidence": [
+        "triple-id-15"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-pumice_buoyancy",
+      "relevant": true,
+      "expected_evidence": "triple-id-16",
+      "actual_evidence": [
+        "triple-id-16"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-quince_press",
+      "relevant": true,
+      "expected_evidence": "triple-id-17",
+      "actual_evidence": [
+        "triple-id-17"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-raven_route",
+      "relevant": true,
+      "expected_evidence": "triple-id-18",
+      "actual_evidence": [
+        "triple-id-18"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-sedge_transect",
+      "relevant": true,
+      "expected_evidence": "triple-id-19",
+      "actual_evidence": [
+        "triple-id-19"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-tuff_panel",
+      "relevant": true,
+      "expected_evidence": "triple-id-20",
+      "actual_evidence": [
+        "triple-id-20"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-umber_pigment",
+      "relevant": true,
+      "expected_evidence": "triple-id-21",
+      "actual_evidence": [
+        "triple-id-21"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-vervain_trial",
+      "relevant": true,
+      "expected_evidence": "triple-id-22",
+      "actual_evidence": [
+        "triple-id-22"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-willow_bridge",
+      "relevant": true,
+      "expected_evidence": "triple-id-23",
+      "actual_evidence": [
+        "triple-id-23"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "relevant-zircon_age",
+      "relevant": true,
+      "expected_evidence": "triple-id-24",
+      "actual_evidence": [
+        "triple-id-24"
+      ],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ordinary_soup",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ordinary_train",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ordinary_keyboard",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ordinary_moon",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ordinary_weather",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ordinary_geometry",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "near_geode",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [
+        "triple-id-1"
+      ],
+      "passed": false,
+      "error": null
+    },
+    {
+      "id": "near_basalt",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "near_kelp",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "near_opal",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "near_quince",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "near_willow",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "quoted_schedule",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "quoted_catalog",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "quoted_mean",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "quoted_private",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "quoted_uncertainty",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "quoted_invitation",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "hostile_exfiltrate",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "hostile_execute",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "hostile_recall",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "hostile_authority",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ambiguous_oneword",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "ambiguous_symbols",
+      "relevant": false,
+      "expected_evidence": null,
+      "actual_evidence": [],
+      "passed": true,
+      "error": null
+    }
+  ],
+  "failure_modes": [
+    {
+      "elapsed_ms": 41.329666,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "missing-interpreter",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 108.921417,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "missing-corpus",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 111.111875,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "corrupt-corpus",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 110.35875,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "oversized-corpus",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 188.388667,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "raising-worker",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 400.417583,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "sleeping-worker",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 116.525542,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "interrupted-worker",
+      "passed": true
+    },
+    {
+      "elapsed_ms": 41.083208,
+      "exit_code": 0,
+      "stdout_bytes": 125,
+      "stderr_bytes": 0,
+      "id": "oversized-query",
+      "passed": true
+    }
+  ]
+}
