@@ -24,9 +24,10 @@ _MAP: list[tuple[str, str]] = [
     ("(?:확인|검증|동의|합의|승인|찾)\\s*(?:못|안)\\s*(?:했|하)", " unconfirmed "),
     ("(?:확실|분명|안정적)(?:하|이)?지(?:는)?\\s*(?:않|못)|정확히\\s*작동하지\\s*(?:않|못)", " uncertain "),
     ("(?<=[가-힣])(\\d+(?:\\.\\d+)?)", " \\1"),
-    ("(했|됐|되었|하였)지만", "\\1 but "),
+    ("(했|됐|되었|하였)(?:지만|는데)", "\\1 but "),
     ("하지만|그러나|그런데|지만", " but "),
     ("아직|나머지|남아|남았|진행 중|작업 중|테스트 중", " remaining "),
+    ("다음은", " next up "),
     ("(\\d+(?:\\.\\d+)?)\\s*(개의|개|건|번|명|줄|가지|차례)", "\\1 "),
     (
         "(patch|fix(?:ed)?|merge[d]?|deploy(?:ed)?|refactoring|release[d]?|"
@@ -95,4 +96,13 @@ def is_dominant(text: str, threshold: float = 0.3) -> bool:
     if not letters:
         return False
     hangul = sum(1 for c in letters if "가" <= c <= "힣")
-    return hangul / len(letters) >= threshold
+    if hangul / len(letters) >= threshold:
+        return True
+    # Technical drafts can contain many Latin identifiers. Route sparse Hangul
+    # only when a mapped Korean assertion is present; counters alone do not
+    # establish a language. This remains a one-adapter heuristic.
+    return hangul >= 4 and any(
+        replacement.strip() in {"completed", "built", "finished", "passed", "all"}
+        and pattern.search(text)
+        for pattern, replacement in _COMPILED
+    )

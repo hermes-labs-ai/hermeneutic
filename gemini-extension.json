@@ -1,5 +1,5 @@
 {
   "name": "hermeneutic",
-  "version": "0.1.15",
+  "version": "0.1.16a1",
   "description": "Deterministic epistemic checks for Gemini CLI final responses, with one bounded automatic repair attempt."
 }

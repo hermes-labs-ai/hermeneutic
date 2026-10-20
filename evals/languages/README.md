@@ -45,7 +45,7 @@ denominators, percentages, and Korean batch counts are retained in `results.json
 
 | Language | Explicit catch | Explicit false fire | Auto catch | Auto false fire |
 | --- | --- | --- | --- | --- |
-| Korean | 116/180 (64.4%) | 4/135 (3.0%) | 111/180 (61.7%) | 4/135 (3.0%) |
+| Korean | 116/180 (64.4%) | 2/135 (1.5%) | 116/180 (64.4%) | 2/135 (1.5%) |
 | Chinese | 16/20 (80.0%) | 0/20 (0.0%) | 16/20 (80.0%) | 0/20 (0.0%) |
 | Japanese | 16/20 (80.0%) | 0/20 (0.0%) | 16/20 (80.0%) | 0/20 (0.0%) |
 | Turkish | 16/20 (80.0%) | 0/20 (0.0%) | 16/20 (80.0%) | 0/20 (0.0%) |
@@ -115,13 +115,15 @@ eight languages through the CLI, with affirmative and negative controls.
   Kanji-only Japanese is ambiguous and requires an explicit code. Latin-script
   routing uses small vocabulary lists, with English fallback on ties. Sparse
   or heavily code-switched text can be missed; one adapter runs per draft.
+  Sparse Korean with at least four Hangul letters and a mapped completion or
+  universal assertion now routes to Korean; counters alone do not select it.
 - Completion tense, negation and contrast handling are vocabulary-dependent.
   Chinese/Japanese assertion and request forms are intentionally limited as
   described above; the tables do not understand unrestricted grammar. French,
   Spanish, Portuguese and Turkish inflections outside the maps are missed.
-- Korean still has clean false fires on a question about additional scope,
-  an unrecognized contrast, a qualified stability statement, and a progress
-  report. The receipt lists their IDs. Keep those visible when extending maps.
+- Korean still has clean false fires on a question about additional scope and
+  a qualified stability statement. It misses 64/180 labeled drift drafts. The
+  receipt lists their IDs. Keep those visible when extending maps.
 - Correction markers map to canonical English text but this change does not
   wire multilingual correction detection into the miner or retrieval index.
 - `hermeneutic.gates.regex.risk_score` stays English-only. The language scorer
@@ -133,3 +135,14 @@ eight languages through the CLI, with affirmative and negative controls.
   retry/advisory policy. Downstream Router reviewers and repairers still see
   the original draft. Host tests establish adapter behavior, not live delivery
   in each host. A package release is a separate action from this source PR.
+
+## Experimental Korean follow-up
+
+The 2026-10-20 follow-up maps the Korean contrast ending `-했는데` and the
+next-step marker `다음은` into the existing English partial-progress guard.
+It also routes sparse Korean technical assertions despite many Latin
+identifiers. Replaying the same frozen development corpus changes Korean auto
+catch from 111/180 to 116/180 and false fires from 4/135 to 2/135; explicit
+catch remains 116/180. The other language results and the separate negative
+controls are unchanged. These are repairs developed against known failures,
+not a new held-out result or evidence of general language understanding.

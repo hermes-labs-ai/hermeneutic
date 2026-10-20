@@ -48,7 +48,7 @@ def normalize(text: str, lang: str = "auto") -> str:
 
 
 def risk_score(draft: str, lang: str = "auto") -> list[RiskHit]:
-    """Normalize before the English gate; report hits in original coordinates.
+    """Experimental vocabulary mapping; report hits in original coordinates.
 
     The canonical gate and its English API remain unchanged. These spans
     describe the source vocabulary that generated a hit, not translation.

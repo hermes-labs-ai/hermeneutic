@@ -24,7 +24,7 @@ Python 3.10+ is sufficient; this replay needs no account, logs, model or server:
 ```sh
 python3 -m venv .venv
 . .venv/bin/activate
-python -m pip install hermeneutic==0.1.15
+python -m pip install hermeneutic==0.1.16a1
 demo_dir="$(mktemp -d)"
 hermeneutic demo --out "$demo_dir/sessions"
 hermeneutic mine "$demo_dir/sessions" --format openai --glob '*.json' \
@@ -59,7 +59,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.15
+python -m pip install hermeneutic==0.1.16a1
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
@@ -69,7 +69,10 @@ The check highlights English wording that needs a closer look. It cannot tell wh
 
 ## Experimental language support
 
-The published package supports Korean (`ko`), Chinese (`zh`),
+**0.1.16a1 is an opt-in prerelease.** Language adapters remain experimental;
+the current evidence does not establish stable general-language coverage.
+
+The experimental API provides vocabulary adapters for Korean (`ko`), Chinese (`zh`),
 Japanese (`ja`), Turkish (`tr`), German (`de`), French (`fr`), Spanish (`es`), and
 Portuguese (`pt`) through **trigger mapping**. Local phrases map to the triggers
 the same English gate already checks. This is not translation or a separate
@@ -98,7 +101,7 @@ Synthetic development-set results, replayed with explicit language selection:
 
 | Language | Drafts caught | Clean drafts flagged |
 | --- | --- | --- |
-| Korean | 116/180 (64.4%) | 4/135 (3.0%) |
+| Korean | 116/180 (64.4%) | 2/135 (1.5%) |
 | Chinese | 16/20 (80.0%) | 0/20 (0.0%) |
 | Japanese | 16/20 (80.0%) | 0/20 (0.0%) |
 | Turkish | 16/20 (80.0%) | 0/20 (0.0%) |
@@ -109,10 +112,12 @@ Synthetic development-set results, replayed with explicit language selection:
 
 A catch means any gate hit, including a low-severity advisory. These are small
 synthetic development sets, not held-out measurements or real-use coverage
-estimates. Automatic Korean routing catches 111/180 (61.7%) with 4/135 (3.0%)
-false fires; the other fixture results match explicit routing. See the
-[validation methodology](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/languages/README.md) and
-[replayable receipt](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/languages/results.json) for misses and limitations.
+estimates. Automatic Korean routing catches 116/180 (64.4%) with 2/135 (1.5%)
+false fires; the other fixture results match explicit routing. Korean still misses
+64/180 labeled drift drafts and flags a scope question and qualified stability
+statement. These results do not support stable general-language coverage. See the
+[validation methodology](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/README.md) and
+[replayable receipt](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/results.json) for misses and limitations.
 
 ## Use your corrections
 
@@ -183,6 +188,6 @@ Use the standalone CLI in any workflow you control. The [integration guides](htt
 
 Hermeneutic's gate matches fixed English surface patterns and can miss a mistake or flag an innocent phrase. Correction retrieval depends on the history you supply and has not been shown to improve downstream outcomes across users. It is a way to surface previous guidance and scrutinize a draft, not a security boundary or a factuality guarantee.
 
-[Worked example](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/examples/before_after.md) · [Integration guides](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md) · [Evaluation results](https://github.com/hermes-labs-ai/hermeneutic/tree/v0.1.15/evals) · [Privacy and security](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/SECURITY.md) · [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CONTRIBUTING.md) · [Changelog](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CHANGELOG.md)
+[Worked example](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/examples/before_after.md) · [Integration guides](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md) · [Evaluation results](https://github.com/hermes-labs-ai/hermeneutic/tree/v0.1.15/evals) · [Privacy and security](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/SECURITY.md) · [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CONTRIBUTING.md) · [Changelog](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/CHANGELOG.md)
 
 Apache-2.0. [Hermes Labs](https://hermes-labs.ai) builds agentic infrastructure for autonomous systems.

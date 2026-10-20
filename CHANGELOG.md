@@ -4,6 +4,23 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+## [0.1.16a1] — 2026-10-20
+
+### Experimental language fixes
+
+- Route sparse Korean technical assertions with mapped completion/universal
+  vocabulary through the Korean adapter even when Latin identifiers dominate.
+  Counters alone do not select Korean.
+- Map the Korean contrast ending `-했는데` and next-step marker `다음은` into
+  the canonical gate's existing partial-progress guard. English rules are unchanged.
+- Replay the frozen synthetic language corpora and negative controls: Korean
+  auto catch changes from 111/180 to 116/180; explicit catch stays 116/180;
+  clean false fires change from 4/135 to 2/135. The other seven language results
+  and the separate negative/affirmative relay controls are unchanged.
+- This is an opt-in alpha prerelease. Korean still misses 64/180 authored drift
+  drafts and flags two clean drafts. The other authored sets catch 14–16/20
+  drift drafts each. No held-out, native-speaker or real-language coverage is established.
+
 ## [0.1.15] — 2026-10-20
 
 ### Changed

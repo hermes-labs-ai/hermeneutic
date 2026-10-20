@@ -1,10 +1,14 @@
 {
   "upload_type": "software",
   "title": "hermeneutic: local correction evidence, retrieval, and deterministic English drift checks",
-  "version": "0.1.13",
-  "description": "hermeneutic is a local-first Python toolkit that mines correction triples from supported AI chat logs, optionally retrieves similar prior corrections through a local Ollama-backed compiler, and runs eight fixed deterministic English surface checks on outgoing drafts. Mining personalizes the local corpus and retrieval; it does not rewrite the gate. A separate programmable Python Router can compose optional external rubric, model-critic, and repair callables. The project is a review aid and reliability floor, not proof of correctness. Its historical corpus and retrieval measurements are single-user, and downstream effectiveness has not been measured. Private triples and embeddings are not distributed.",
+  "version": "0.1.16a1",
+  "description": "hermeneutic is a local-first Python toolkit that mines correction triples from supported AI chat logs, optionally retrieves similar prior corrections through a local Ollama-backed compiler, and runs eight fixed deterministic English surface checks on outgoing drafts. Mining personalizes the local corpus and retrieval; it does not rewrite the gate. A separate programmable Python Router can compose optional external rubric, model-critic, and repair callables. The project is a review aid and reliability floor, not proof of correctness. Its historical corpus and retrieval measurements are single-user, and downstream effectiveness has not been measured. Private triples and embeddings are not distributed. Language trigger adapters remain experimental vocabulary mappings, with synthetic development-set validation and unmeasured real-language coverage.",
   "creators": [
-    { "name": "Bosch Rodriguez, Rolando", "orcid": "0009-0005-4896-1112", "affiliation": "Hermes Labs" }
+    {
+      "name": "Bosch Rodriguez, Rolando",
+      "orcid": "0009-0005-4896-1112",
+      "affiliation": "Hermes Labs"
+    }
   ],
   "keywords": [
     "AI reliability",
@@ -18,6 +22,10 @@
   ],
   "license": "Apache-2.0",
   "related_identifiers": [
-    { "identifier": "10.5281/zenodo.21652316", "relation": "isReferencedBy", "scheme": "doi" }
+    {
+      "identifier": "10.5281/zenodo.21652316",
+      "relation": "isReferencedBy",
+      "scheme": "doi"
+    }
   ]
 }
