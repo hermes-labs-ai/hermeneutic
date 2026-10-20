@@ -137,3 +137,68 @@ def test_codex_reader_parses_rollout_schema(tmp_path):
         ("user", "fix the login bug", "2026-07-08T00:00:01Z"),
         ("assistant", "Done — fixed all 3 bugs.", "2026-07-08T00:00:03Z"),
     ]
+
+
+@pytest.mark.parametrize("clarification", [
+    "When I type cargo scan, I mean invoke the Cargo Scan skill.",
+    "When I say cargo scan I mean invoke the Cargo Scan skill.",
+    "Whenever I write release check, I am referring to the existing release checklist.",
+    "If I mention the amber report, I mean the local audit report.",
+    "When I ask for the cedar build, I mean the existing build task.",
+    "If I say cargo scna = cargo scan, remember that meaning.",
+    "If I type cedar biuld = cedar build, please remember this mapping.",
+    "cargo-scan allways means invoke the Cargo Scan skill. if i say cargo scna = cargo-scan, "
+    "that should be remembered for future requests.",
+    "The cedar build means the existing task. If I say cedar biuld = cedar build, "
+    "that should be part of this clarification lesson.",
+])
+def test_mine_explicit_self_referential_clarification(tmp_path, clarification):
+    log = tmp_path / "clarification.json"
+    _write_openai_log(log, [
+        ("user", "cargo scan"),
+        ("assistant", "I will write a scanner."),
+        ("user", clarification),
+        ("assistant", "I will use the existing task."),
+    ])
+    triples = mine_file(log, fmt="openai")
+    assert [triple.user_correction for triple in triples] == [clarification]
+    assert triples[0].orig_prompt == "cargo scan"
+
+
+@pytest.mark.parametrize("ordinary", [
+    "When the scan runs, produce a report.",
+    "If I say hello, respond politely.",
+    "When I type the report, I mean to finish before lunch.",
+    "If I say cargo scna = cargo scan, would that be clear?",
+    "If the cargo scan fails, remember that meaning.",
+    '"When I say cargo scan, I mean invoke the skill."',
+    "> When I type cargo scan, I mean invoke the skill.",
+    "Example: When I say cargo scan, I mean invoke the skill.",
+    "```text\nWhen I say cargo scan, I mean invoke the skill.\n```",
+    "The manual says: If I say cargo scna = cargo scan, remember that meaning.",
+    '"cargo-scan means invoke the skill. if i say cargo scna = cargo-scan, that should be remembered."',
+    "Example: cargo-scan means invoke the skill. if i say cargo scna = cargo-scan, that should be remembered.",
+    "When I type cargo scan, what do you think I mean?",
+])
+def test_mine_does_not_infer_clarification_from_ordinary_or_quoted_text(tmp_path, ordinary):
+    log = tmp_path / "ordinary.json"
+    _write_openai_log(log, [("assistant", "Prior response."), ("user", ordinary)])
+    assert mine_file(log, fmt="openai") == []
+
+
+def test_codex_reader_ignores_malformed_record_shapes(tmp_path):
+    from hermeneutic.triples import CodexReader
+
+    rows = [
+        None, [], "text", 7,
+        {"type": "response_item", "payload": ["message"]},
+        {"type": "response_item", "payload": "message"},
+        {"type": "response_item", "payload": {"type": "message", "role": "assistant", "content": [
+            {"type": "output_text", "text": {"malformed": "text"}},
+            {"type": "output_text", "text": None},
+            {"type": "output_text", "text": "Readable response."},
+        ]}},
+    ]
+    log = tmp_path / "malformed.jsonl"
+    log.write_text("\n".join(json.dumps(row) for row in rows))
+    assert list(CodexReader().iter_turns(log)) == [("assistant", "Readable response.", "")]

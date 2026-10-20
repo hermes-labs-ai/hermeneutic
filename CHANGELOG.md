@@ -4,6 +4,14 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- Mine explicit first-person clarifications as correction evidence, with
+  regression fixtures for ordinary requests and quoted examples.
+- Add opt-in conservative keyword recall and a bounded Codex on-demand adapter.
+  Keep default recall and the deterministic drift gate unchanged. Integration
+  acceptance and its measured limits live in `evals/workflow-integration/`.
+
 ## [0.1.15] — 2026-10-20
 
 ### Changed

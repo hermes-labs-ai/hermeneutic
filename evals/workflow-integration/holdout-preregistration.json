@@ -1,0 +1,14 @@
+{
+  "frozen_utc": "2026-10-20T19:52:38.424938+00:00",
+  "sha256": "733c0656cc6fa2ffb9c50854d26ee88cfebcb12815110aee7b71552ce38f8069",
+  "bytes": 40169,
+  "counts": {
+    "mining_corrections": 24,
+    "mining_noncorrections": 24,
+    "corpus": 24,
+    "recall_relevant": 24,
+    "recall_irrelevant": 24
+  },
+  "source": "Independently authored synthetic content; no personal correction logs or candidate source inspected.",
+  "labels_frozen": true
+}

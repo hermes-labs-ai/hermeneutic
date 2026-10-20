@@ -302,7 +302,7 @@ def _cmd_recall(args: argparse.Namespace) -> int:
     corpus = Path(args.triples) if args.triples else home / "triples.jsonl"
     try:
         matches = recall(args.prompt, corpus, home=home, limit=args.limit, threshold=args.threshold,
-                         method=args.method)
+                         method=args.method, min_shared_terms=args.min_shared_terms)
     except (OSError, ValueError, KeyError, TypeError, hcompile.OllamaUnavailable) as error:
         # Do not echo corpus contents or provider response bodies.
         print(f"ERROR: recall unavailable ({type(error).__name__}); check corpus, index and local Ollama.",
@@ -723,6 +723,8 @@ def main(argv: list[str] | None = None) -> int:
     p_recall.add_argument("--method", choices=("hybrid", "semantic", "keyword"), default="keyword",
                           help="Hybrid/semantic require local Ollama; keyword needs no inference.")
     p_recall.add_argument("--threshold", type=float, default=0.4, help="Existing CLI cosine floor (default: 0.4).")
+    p_recall.add_argument("--min-shared-terms", type=int, default=0,
+                          help="Keyword-only distinct term floor; 2 opts into stricter abstention (default: 0).")
     p_recall.set_defaults(func=_cmd_recall)
 
     p_idx = sub.add_parser("compile-index", help="Build/refresh the embedding index from a triples.jsonl.")

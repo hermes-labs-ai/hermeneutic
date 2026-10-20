@@ -121,3 +121,41 @@ def test_public_keyword_retrieval_regression_floor(tmp_path):
     assert keyword["negative_trials"] == 8
     assert keyword["positive_hits"] >= 15
     assert keyword["negative_empty"] >= 4
+
+
+def test_strict_keyword_abstains_on_one_domain_term_without_changing_default(corpus, tmp_path):
+    assert recall("fruit", corpus, home=tmp_path)
+    assert recall("fruit", corpus, home=tmp_path, min_shared_terms=2) == []
+    assert recall("fruit salad", corpus, home=tmp_path, min_shared_terms=2)[0]["evidence"] == "triple-id-1"
+    # Distinct terms are counted, not repetitions or stopwords.
+    assert recall("fruit fruit fruit and the", corpus, home=tmp_path, min_shared_terms=2) == []
+
+
+def test_cli_strict_keyword_option(corpus, tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("HERMENEUTIC_HOME", str(tmp_path))
+    assert main(["recall", "fruit", "--triples", str(corpus), "--min-shared-terms", "2"]) == 0
+    assert json.loads(capsys.readouterr().out)["matches"] == []
+    assert main(["recall", "fruit", "--triples", str(corpus), "--min-shared-terms", "-1"]) == 2
+
+
+@pytest.mark.parametrize("method", ["semantic", "hybrid"])
+def test_strict_keyword_option_cannot_silently_enable_inference(corpus, tmp_path, method):
+    with pytest.raises(ValueError, match="keyword"):
+        recall("fruit salad", corpus, home=tmp_path, method=method, min_shared_terms=2)
+
+
+def test_bounded_corpus_reads_snapshot_and_rejects_oversize(corpus, tmp_path):
+    original = corpus.read_bytes()
+    assert recall("fruit salad", corpus, home=tmp_path, min_shared_terms=2,
+                  max_corpus_bytes=len(original))[0]["evidence"] == "triple-id-1"
+    with pytest.raises(ValueError, match="byte limit"):
+        recall("fruit salad", corpus, home=tmp_path, max_corpus_bytes=len(original) - 1)
+    assert corpus.read_bytes() == original
+
+
+@pytest.mark.parametrize("data", [b"\xff", b"[]", b"{bad json}", b'{}', b'{"session":false}'])
+def test_bounded_corpus_rejects_corrupt_records(tmp_path, data):
+    corpus = tmp_path / "corrupt.jsonl"
+    corpus.write_bytes(data)
+    with pytest.raises(ValueError):
+        recall("fruit salad", corpus, home=tmp_path, max_corpus_bytes=1024)

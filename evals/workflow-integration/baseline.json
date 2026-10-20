@@ -1,0 +1,24 @@
+{
+  "source_commit": "4f357b7385ec2783f086416b8bca0513238f6d46",
+  "installed_cli_version": "0.1.15",
+  "private_development_episode": {
+    "reported_parsed_turns": 31,
+    "reported_triples": 0,
+    "replayed_prefix_parsed_turns": 31,
+    "replayed_prefix_triples": 0,
+    "continued_source_snapshot_parsed_turns": 36,
+    "continued_source_snapshot_triples": 0,
+    "scope": "One owner-reported failure, reproduced using the installed CLI. The source continued after the original observation. No general mining recall inference. Raw source, identifiers, text and derived correction memory remain private."
+  },
+  "fresh_native_host_development_check": {
+    "host": "Codex CLI 0.162.1",
+    "surface": "Existing operational workspace AGENTS.md on-demand instruction",
+    "observed_configured_recall_invocation": true,
+    "recovered_target_meaning": false,
+    "host_exit": 0,
+    "seconds": 13.358,
+    "scope": "One read-only fresh-session check; duration includes model execution and is not adapter latency. Private transcript retained outside Git."
+  },
+  "native_tests": {"passed": 464, "skipped": 1},
+  "host_usage_basis": "Owner's Codex correction rollout, current operational root instructions naming Codex as the normal entry point, and migration receipt's prior native entrypoint probes. No inference from an installed binary alone."
+}

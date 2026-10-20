@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
+import json
 import math
 import re
 from collections import Counter
 from pathlib import Path
 
 from hermeneutic import compile as compiler
+from hermeneutic.triples import Triple
 
 
-def keyword_scores(query: str, documents: list[str]) -> list[float]:
+def keyword_scores(query: str, documents: list[str], *, min_shared_terms: int = 0) -> list[float]:
     """Small native token-overlap baseline with corpus inverse document frequency."""
     stopwords = set(
         [
@@ -69,7 +71,32 @@ def keyword_scores(query: str, documents: list[str]) -> list[float]:
     sets = [tokens(document) for document in documents]
     frequencies = Counter(term for document in sets for term in document)
     weights = {term: math.log((len(sets) + 1) / (frequencies[term] + 1)) + 1 for term in terms}
-    return [sum(weights[term] for term in terms & document) / math.sqrt(max(len(document), 1)) for document in sets]
+    return [
+        sum(weights[term] for term in terms & document) / math.sqrt(max(len(document), 1))
+        if len(terms & document) >= min_shared_terms else 0.0
+        for document in sets
+    ]
+
+
+def _load_bounded_corpus(corpus: Path, max_bytes: int) -> list[Triple]:
+    """Validate a bounded snapshot, without a size-check/read race or disk writes."""
+    with corpus.open("rb") as stream:
+        data = stream.read(max_bytes + 1)
+    if len(data) > max_bytes:
+        raise ValueError("corpus exceeds byte limit")
+    required = {"session", "timestamp", "prior_assistant", "user_correction", "next_assistant"}
+    allowed = required | {"orig_prompt"}
+    triples = []
+    for line in data.decode("utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        if not isinstance(row, dict) or not required <= row.keys() or row.keys() - allowed:
+            raise ValueError("invalid corpus record")
+        if any(not isinstance(value, str) for field, value in row.items() if field != "timestamp"):
+            raise ValueError("invalid corpus text")
+        triples.append(Triple(**row))
+    return triples
 
 
 def recall(
@@ -81,20 +108,32 @@ def recall(
     threshold: float = 0.4,
     embedder: compiler.Embedder | None = None,
     method: str = "keyword",
+    min_shared_terms: int = 0,
+    max_corpus_bytes: int | None = None,
 ) -> list[dict]:
     """Return bounded evidence; corrections are historical data, never instructions.
 
     Semantic search uses the existing index and CLI cosine threshold. Unlike the advice
     compiler, this path does not require a correction to match a fixed bucket.
+    ``min_shared_terms`` opts into lexical abstention; it only supports keyword
+    retrieval. ``max_corpus_bytes`` bounds an offline snapshot for host adapters.
     """
     if limit < 1:
         raise ValueError("limit must be positive")
+    if min_shared_terms < 0:
+        raise ValueError("min_shared_terms must be nonnegative")
+    if (min_shared_terms or max_corpus_bytes is not None) and method != "keyword":
+        raise ValueError("bounded lexical options require keyword retrieval")
+    if max_corpus_bytes is not None and max_corpus_bytes < 1:
+        raise ValueError("max_corpus_bytes must be positive")
     if not prompt.strip():
         return []
-    triples = compiler._load_triples(corpus)
+    triples = (compiler._load_triples(corpus) if max_corpus_bytes is None
+               else _load_bounded_corpus(corpus, max_corpus_bytes))
     if method not in {"semantic", "keyword", "hybrid"}:
         raise ValueError("unknown retrieval method")
-    lexical = keyword_scores(prompt, [t.orig_prompt + "\n" + t.user_correction for t in triples])
+    lexical = keyword_scores(prompt, [t.orig_prompt + "\n" + t.user_correction for t in triples],
+                             min_shared_terms=min_shared_terms)
     lexical_ranked = sorted((i for i, score in enumerate(lexical) if score > 0), key=lambda i: (-lexical[i], i))
     index = compiler.load_index(home) if method != "keyword" else None
     ranked = []
