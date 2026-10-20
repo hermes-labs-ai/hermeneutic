@@ -23,7 +23,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.13
+python -m pip install hermeneutic==0.1.14
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
@@ -81,6 +81,10 @@ false fires; the other fixture results match explicit routing. See the
 [replayable receipt](evals/languages/results.json) for misses and limitations.
 
 ## Use your corrections
+
+For a fictional agent correction → saved episode → later evidence replay, start with
+the [five-minute developer demo](docs/correction-memory-demo.md). It needs no personal
+logs; retrieval explicitly requires local Ollama. The demo ships with `inspect` and offline `recall` in this release.
 
 If you have Claude Code session logs, mine correction episodes, group the recurring types, and build a local retrieval index:
 

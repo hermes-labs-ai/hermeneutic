@@ -1,0 +1,21 @@
+{
+  "package_version": "0.1.14",
+  "native_pytest": {
+    "passed": 457,
+    "skipped": 1,
+    "skip_reason": "No numeric count claim in Unreleased changelog"
+  },
+  "ruff": "passed",
+  "openclaw_node_tests": {
+    "passed": 4,
+    "runtime": "Codex bundled Node; system Homebrew Node has a missing dylib"
+  },
+  "wheel_install_outside_checkout": "passed",
+  "sdist_fresh_install": "passed",
+  "installed_cli_smoke": "passed",
+  "synthetic_demo_offline": "passed",
+  "synthetic_demo_local_ollama": "passed",
+  "real_corpus_evaluation": "internal-results.json",
+  "fresh_agent_session": "fresh-session-results.json",
+  "private_source_text_published": false
+}

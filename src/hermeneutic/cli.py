@@ -159,6 +159,26 @@ def _cmd_bucket(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_demo(args: argparse.Namespace) -> int:
+    from importlib.resources import files
+
+    destination = Path(args.out)
+    try:
+        destination.mkdir(parents=True, exist_ok=False)
+    except OSError:
+        print(f"ERROR: demo needs a new writable directory: {destination}", file=sys.stderr)
+        return 2
+    try:
+        fixture = files("hermeneutic").joinpath("data/synthetic-corrections.json").read_bytes()
+        (destination / "synthetic-corrections.json").write_bytes(fixture)
+    except OSError:
+        print(f"ERROR: cannot write synthetic demo to {destination}", file=sys.stderr)
+        return 2
+    print(f"Synthetic scripted agent session: {destination / 'synthetic-corrections.json'}")
+    print("No personal logs read; no inference performed. See docs/correction-memory-demo.md.")
+    return 0
+
+
 def _positive_int(value: str) -> int:
     number = int(value)
     if number < 1:
@@ -272,6 +292,25 @@ def _cmd_gate(args: argparse.Namespace) -> int:
         print(f"  {h}")
         print(f"    why: {h.description}")
     return 1 if sev in ("high", "med") else 0
+
+
+def _cmd_recall(args: argparse.Namespace) -> int:
+    from hermeneutic import compile as hcompile
+    from hermeneutic.memory import recall
+
+    home = hcompile.home_dir()
+    corpus = Path(args.triples) if args.triples else home / "triples.jsonl"
+    try:
+        matches = recall(args.prompt, corpus, home=home, limit=args.limit, threshold=args.threshold,
+                         method=args.method)
+    except (OSError, ValueError, KeyError, TypeError, hcompile.OllamaUnavailable) as error:
+        # Do not echo corpus contents or provider response bodies.
+        print(f"ERROR: recall unavailable ({type(error).__name__}); check corpus, index and local Ollama.",
+              file=sys.stderr)
+        return 2
+    print(json.dumps({"matches": matches, "usage": "Historical evidence; check scope and current instructions."},
+                     ensure_ascii=True))
+    return 0
 
 
 def _cmd_compile_index(args: argparse.Namespace) -> int:
@@ -606,6 +645,10 @@ def main(argv: list[str] | None = None) -> int:
     p_mine.add_argument("--out", default="-", help="Output path (default stdout).")
     p_mine.set_defaults(func=_cmd_mine)
 
+    p_demo = sub.add_parser("demo", help="Export a packaged synthetic correction session; no inference.")
+    p_demo.add_argument("--out", required=True, help="New directory for the fictional OpenAI-format session.")
+    p_demo.set_defaults(func=_cmd_demo)
+
     p_bucket = sub.add_parser("bucket", help="Bucket a triples.jsonl by surface pattern.")
     p_bucket.add_argument("triples", help="Path to triples.jsonl.")
     p_bucket.set_defaults(func=_cmd_bucket)
@@ -672,6 +715,15 @@ def main(argv: list[str] | None = None) -> int:
         help="Remove the Claude Code Stop hook installed by `install-hook`.",
     )
     p_uninstall.set_defaults(func=_cmd_uninstall_hook)
+
+    p_recall = sub.add_parser("recall", help="Retrieve bounded original correction evidence; keyword is offline.")
+    p_recall.add_argument("prompt", help="The subsequent task to retrieve evidence for.")
+    p_recall.add_argument("--triples", help="Path to triples.jsonl (default: memory home).")
+    p_recall.add_argument("--limit", type=_positive_int, default=3, help="Maximum episodes (default: 3).")
+    p_recall.add_argument("--method", choices=("hybrid", "semantic", "keyword"), default="keyword",
+                          help="Hybrid/semantic require local Ollama; keyword needs no inference.")
+    p_recall.add_argument("--threshold", type=float, default=0.4, help="Existing CLI cosine floor (default: 0.4).")
+    p_recall.set_defaults(func=_cmd_recall)
 
     p_idx = sub.add_parser("compile-index", help="Build/refresh the embedding index from a triples.jsonl.")
     p_idx.add_argument("--triples", help="Path to triples.jsonl (default: ~/.hermeneutic/triples.jsonl).")

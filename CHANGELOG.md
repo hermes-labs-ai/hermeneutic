@@ -4,8 +4,15 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+## [0.1.14] — 2026-10-20
+
 ### Added
 
+- Add `recall` for bounded original correction evidence with offline keyword
+  search by default, optional local semantic/hybrid modes, and private-corpus
+  development evaluation receipts.
+- Add a packaged synthetic correction-memory demo and reproducible presenter guide;
+  local Ollama is required only for embedding retrieval.
 - Add `inspect` for read-only, bounded correction previews with provenance and
   complete JSONL validation before indexing. No network or model is required.
 

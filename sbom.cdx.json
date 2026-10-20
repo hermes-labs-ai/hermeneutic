@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:466bc778-a89e-4bf9-93a9-6ce0fc8a38c3",
+  "serialNumber": "urn:uuid:05347397-ea23-46ab-90ce-420e23f30e3c",
   "version": 1,
   "metadata": {
     "tools": [
@@ -13,9 +13,9 @@
     ],
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.13",
+      "bom-ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.14",
       "name": "hermeneutic",
-      "version": "0.1.13",
+      "version": "0.1.14",
       "description": "Mine reusable correction evidence, retrieve similar past corrections, and run a fixed deterministic English drift check.",
       "licenses": [
         {
@@ -24,7 +24,7 @@
           }
         }
       ],
-      "purl": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.13",
+      "purl": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.14",
       "externalReferences": [
         {
           "type": "vcs",
@@ -35,12 +35,13 @@
           "url": "https://hermes-labs.ai"
         }
       ]
-    }
+    },
+    "timestamp": "2026-10-20T08:49:46.104926Z"
   },
   "components": [],
   "dependencies": [
     {
-      "ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.13",
+      "ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.14",
       "dependsOn": []
     }
   ]

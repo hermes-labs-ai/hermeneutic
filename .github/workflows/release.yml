@@ -30,6 +30,7 @@ jobs:
         run: |
           python -m pip install dist/*.whl
           bash scripts/smoke-installed-cli.sh
+          python scripts/check-correction-demo.py
       - name: Test the exact source distribution
         shell: bash
         run: |
