@@ -23,7 +23,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.13
+python -m pip install hermeneutic==0.1.14
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
@@ -82,6 +82,10 @@ false fires; the other fixture results match explicit routing. See the
 
 ## Use your corrections
 
+For a fictional agent correction → saved episode → later evidence replay, start with
+the [five-minute developer demo](docs/correction-memory-demo.md). It needs no personal
+logs; retrieval explicitly requires local Ollama. The demo ships with `inspect` and offline `recall` in this release.
+
 If you have Claude Code session logs, mine correction episodes, group the recurring types, and build a local retrieval index:
 
 ```bash
@@ -97,6 +101,10 @@ hermeneutic compile 'Finish the release and report what passed.'
 The last two commands need [Ollama](https://ollama.com/) running locally. If your logs contain a relevant correction, `compile` can return a short advisory preamble grounded in those past episodes. An empty result is possible when no match clears the threshold. The [worked example](evals/compile-walkthrough.md) shows the full path from a real correction to retrieved guidance. Codex and OpenAI message logs are also supported; see `hermeneutic mine --help` for the input formats.
 
 Mining reads the paths you supply and stores local JSONL records. It does not silently teach new rules to the fixed gate. Retrieval uses local embeddings; it does not use Ollama to generate the guidance text.
+
+Inspection rejects records larger than 1 MiB and non-standard JSON constants,
+escapes diagnostic paths, and rejects file changes observed during reading.
+Finish concurrent writers before inspection; this is not a transactional lock.
 
 Before indexing, `inspect` validates the complete existing JSONL file and emits
 at most five preview records by default; `--limit` accepts a positive record

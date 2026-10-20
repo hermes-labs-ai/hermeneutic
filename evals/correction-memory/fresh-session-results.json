@@ -1,0 +1,13 @@
+{
+  "validation": "fresh_codex_session_installed_tool_use",
+  "codex_version": "0.162.1",
+  "context": "ephemeral session with isolated project AGENTS.md; no conversation history supplied",
+  "global_pre_hook_installed": false,
+  "command_exit": 0,
+  "expected_episode_cited": "triple-id-2",
+  "episode_cited": true,
+  "final_proposes_internal_inspection": true,
+  "raw_text_published": false,
+  "private_event_log_sha256": "391d897a6046f8c3b9079e26f7022f9e7e353a0edfda70eb1a8ab0d85109601e",
+  "limits": "One read-only task; no downstream behavior comparison or productivity measurement."
+}

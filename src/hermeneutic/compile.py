@@ -190,7 +190,7 @@ def _load_triples(triples_path: Path) -> list[Triple]:
     )
     allowed_fields = {*required_fields, "orig_prompt"}
     triples: list[Triple] = []
-    for line_number, line in enumerate(triples_path.read_text().splitlines(), start=1):
+    for line_number, line in enumerate(triples_path.read_text().split("\n"), start=1):
         if not line.strip():
             continue
         try:
@@ -324,7 +324,7 @@ def compile_prompt(prompt: str, triples_path: Path, *, home: Path = DEFAULT_HOME
         # Corpus changed since indexing — positional triple_indices may resolve
         # to the wrong rows even when in bounds; silent skip until re-index.
         return ""
-    triples = [Triple.from_json(line) for line in triples_path.read_text().splitlines() if line.strip()]
+    triples = [Triple.from_json(line) for line in triples_path.read_text().split("\n") if line.strip()]
 
     embed = embedder or (lambda t: ollama_embed(t, model=model))
     try:

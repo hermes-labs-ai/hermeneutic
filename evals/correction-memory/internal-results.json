@@ -1,0 +1,343 @@
+{
+  "measurement": "exploratory_annotated_target_retrieval",
+  "limit": 3,
+  "corpus_sha256": "e14ff1c647833b9f92fd953b51505ac1bc7ae14479e9485ad380e66779af00ec",
+  "cases_sha256": "416fbe667cb7e8290eb33b4f025ab50b8818364adeed1b3f0f5c358ad31d1d6f",
+  "episodes": 16,
+  "private_text_emitted": false,
+  "always_include_baseline": {
+    "positive_target_coverage": "all targets included by construction",
+    "correction_chars_per_task": 3035
+  },
+  "results": {
+    "keyword": {
+      "positive_hits": 5,
+      "positive_trials": 5,
+      "negative_empty": 1,
+      "negative_trials": 2,
+      "mean_evidence_chars": 588.3,
+      "median_seconds": 0.0003,
+      "trials": [
+        {
+          "id": "internal-triage",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            2,
+            6,
+            12
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 783,
+          "seconds": 0.0005
+        },
+        {
+          "id": "feature-boundary",
+          "expected": [
+            5
+          ],
+          "retrieved": [
+            5,
+            14,
+            15
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 491,
+          "seconds": 0.0004
+        },
+        {
+          "id": "cover-design",
+          "expected": [
+            9
+          ],
+          "retrieved": [
+            9,
+            13,
+            10
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 955,
+          "seconds": 0.0004
+        },
+        {
+          "id": "submission-history",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            11,
+            1,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 900,
+          "seconds": 0.0003
+        },
+        {
+          "id": "avoid-overprocessing",
+          "expected": [
+            14,
+            15
+          ],
+          "retrieved": [
+            15,
+            14,
+            6
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 679,
+          "seconds": 0.0003
+        },
+        {
+          "id": "negative-cooking",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0003
+        },
+        {
+          "id": "negative-astronomy",
+          "expected": [],
+          "retrieved": [
+            12,
+            5
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 310,
+          "seconds": 0.0003
+        }
+      ]
+    },
+    "semantic": {
+      "positive_hits": 1,
+      "positive_trials": 5,
+      "negative_empty": 1,
+      "negative_trials": 2,
+      "mean_evidence_chars": 450.7,
+      "median_seconds": 0.0126,
+      "trials": [
+        {
+          "id": "internal-triage",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            6,
+            11,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 807,
+          "seconds": 0.0505
+        },
+        {
+          "id": "feature-boundary",
+          "expected": [
+            5
+          ],
+          "retrieved": [
+            16,
+            4,
+            2
+          ],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 312,
+          "seconds": 0.0168
+        },
+        {
+          "id": "cover-design",
+          "expected": [
+            9
+          ],
+          "retrieved": [
+            16,
+            6,
+            4
+          ],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 356,
+          "seconds": 0.0136
+        },
+        {
+          "id": "submission-history",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            1,
+            16,
+            2
+          ],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 729,
+          "seconds": 0.0124
+        },
+        {
+          "id": "avoid-overprocessing",
+          "expected": [
+            14,
+            15
+          ],
+          "retrieved": [
+            11,
+            16,
+            6
+          ],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 544,
+          "seconds": 0.0126
+        },
+        {
+          "id": "negative-cooking",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0099
+        },
+        {
+          "id": "negative-astronomy",
+          "expected": [],
+          "retrieved": [
+            9,
+            16
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 407,
+          "seconds": 0.0097
+        }
+      ]
+    },
+    "hybrid": {
+      "positive_hits": 4,
+      "positive_trials": 5,
+      "negative_empty": 1,
+      "negative_trials": 2,
+      "mean_evidence_chars": 642,
+      "median_seconds": 0.0134,
+      "trials": [
+        {
+          "id": "internal-triage",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            6,
+            2,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 1036,
+          "seconds": 0.0128
+        },
+        {
+          "id": "feature-boundary",
+          "expected": [
+            5
+          ],
+          "retrieved": [
+            5,
+            4,
+            14
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 321,
+          "seconds": 0.0134
+        },
+        {
+          "id": "cover-design",
+          "expected": [
+            9
+          ],
+          "retrieved": [
+            10,
+            6,
+            4
+          ],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 686,
+          "seconds": 0.0139
+        },
+        {
+          "id": "submission-history",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            1,
+            11,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 900,
+          "seconds": 0.0146
+        },
+        {
+          "id": "avoid-overprocessing",
+          "expected": [
+            14,
+            15
+          ],
+          "retrieved": [
+            6,
+            14,
+            10
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 856,
+          "seconds": 0.0148
+        },
+        {
+          "id": "negative-cooking",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0113
+        },
+        {
+          "id": "negative-astronomy",
+          "expected": [],
+          "retrieved": [
+            9,
+            12,
+            5
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 695,
+          "seconds": 0.0117
+        }
+      ]
+    }
+  },
+  "source_inventory": {
+    "format": "codex",
+    "jsonl_files": 5938,
+    "mined_episodes": 16,
+    "indexed_episodes": 15,
+    "compiler_bucketed": 6
+  }
+}

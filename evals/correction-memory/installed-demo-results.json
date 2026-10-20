@@ -1,0 +1,14 @@
+{
+  "synthetic": true,
+  "triples": 3,
+  "keyword_rows": [
+    1
+  ],
+  "triples_sha256": "278276bbe87ddc7f919d98bde08e18206b15a6f5b59b5aef34eac612ad0586c5",
+  "offline_checks": "passed",
+  "live_retrieval": "passed",
+  "query": "Prepare a widget service release and summarize the verification results.",
+  "preamble": "[hermeneutic compile-preamble \u2014 derived from 1 past corrections on similar prompts]\n- 1 prior steer(s) in bucket `over_completion`: default to citing evidence (file:line, command output) when claiming completion [evidence: triple-id-1]\n[end preamble]\n",
+  "embedding_model": "nomic-embed-text",
+  "endpoint": "http://127.0.0.1:11434"
+}
