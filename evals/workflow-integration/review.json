@@ -1,0 +1,88 @@
+{
+  "reviewed_commit": "ca2d109fac4c77fe3b33e404da5168064038a2a7",
+  "base_commit": "4f357b7385ec2783f086416b8bca0513238f6d46",
+  "runtime_freeze_commit": "f0380811d1f5a5919ac26e84ac3fb4f6961dc32e",
+  "reviewer": "Independent review agent; no implementation authorship or prior approval",
+  "disposition": {
+    "source_and_evidence": "Suitable for an explicitly experimental draft PR with the documented limitations. No unresolved newly introduced source defect identified in this review.",
+    "operational_installation": "HOLD: preregistered mining and repeated full-command latency criteria failed. Do not replace the operational command.",
+    "merge": "Not approved by this review; draft review and operational acceptance are separate."
+  },
+  "acceptance": {
+    "preregistered_commit": "398a41391db9b1bd5ba2478bb476903f5daeb0d5",
+    "thresholds_waived": false,
+    "fresh_mining": {
+      "recovered": 2,
+      "positive_samples": 24,
+      "recovery_min": 0.8,
+      "false_positives": 4,
+      "negative_samples": 28,
+      "false_positive_rate_max": 0.05,
+      "met": false,
+      "baseline_comparison": "Same mining observations on the frozen baseline; these are unmet absolute acceptance criteria, not an introduced regression."
+    },
+    "fresh_strict_recall": {
+      "top3_hits": 24,
+      "positive_samples": 24,
+      "target_hit_rate_min": 0.85,
+      "irrelevant_returns": 1,
+      "negative_samples": 24,
+      "irrelevant_return_rate_max": 0.05,
+      "met": true
+    },
+    "repeated_full_command_latency": {
+      "p95_ms": 116.825333,
+      "p99_ms": 120.216875,
+      "warm_p95_max_ms": 30,
+      "warm_p99_max_ms": 50,
+      "met": false,
+      "scope": "API warm timing excludes startup; it cannot establish warm host-command acceptance. Cold-command thresholds passed in the evaluator receipt."
+    },
+    "evidence": [
+      "acceptance.json",
+      "holdout-results.json",
+      "holdout-report.md",
+      "fresh-receipt.json",
+      "fresh-baseline-comparison.json",
+      "fresh-verification.json"
+    ]
+  },
+  "source_review": {
+    "canonical_gate_diff_empty": true,
+    "runtime_and_test_diff_since_freeze_empty": true,
+    "default_recall_preserved": "Default keyword scoring and existing semantic/hybrid paths retain their behavior. Strict quote exclusion and correction-text overlap require explicit opt-in.",
+    "mining_scope": "Added lexical clarification markers affect mining only. They do not create skill aliases or modify the deterministic gate.",
+    "offline_and_privacy": "The adapter explicitly uses keyword retrieval, bounds corpus/input/output, strips source metadata, and treats previews as JSON data. Source review found no recalled-data execution, network call, telemetry, or corpus write in that path.",
+    "packaging": "The standalone adapter is distributed through repository/sdist source and copied privately; it is not advertised as a wheel entry point. Installed wheel evidence is reported separately.",
+    "documentation": "RESULTS.md and the Codex recipe state failed installation acceptance, preserve the initial failed evaluation, distinguish API/command latency and staged delivery, and limit synthetic claims. The cited project-instruction mechanism matches the locally retained official documentation.",
+    "public_identity_path_scan": "No known owner identity, home/volume path, or private rollout filename matched in the reviewed changed text. Raw private logs and corpus were not read by this reviewer."
+  },
+  "resolved_local_findings": [
+    {
+      "severity": "P2",
+      "component": "Private installation switch",
+      "finding": "Corrupting the saved prior snapshot made uninstall overwrite configuration with damaged bytes and report successful restoration.",
+      "resolution": "Validate both saved snapshots against receipt SHA256 values before status or mutation.",
+      "independent_retest": "Temporary-target corruption of either snapshot made status/install/enable/disable/uninstall refuse while preserving the current target bytes."
+    },
+    {
+      "severity": "P2",
+      "component": "Private launcher",
+      "finding": "A non-exec shell layer returned signal failure when the configured command received SIGTERM despite the child eventually returning empty evidence.",
+      "resolution": "Use exec for the stable stdlib parent; retain explicit bounded fallback when the parent or wrapper is unavailable.",
+      "independent_retest": "Launcher copies returned empty JSON/status 0 for absent parent/wrapper and for SIGINT/SIGTERM after worker startup. Signal tests confirmed the worker was reaped. No shared native staging files were modified by these tests."
+    }
+  ],
+  "reviewed_component_sha256": {
+    "private_install_manager": "99682074da6bd55f35b4cf3c93e68fb473b1b2198c372fa2e2c0eed01b748d30",
+    "private_launcher": "1b33c80291a439a96c1e0b725a044a31c78cecb156c7db5a5b2a5fc26156a65c",
+    "standalone_wrapper": "0a215fb68fe4fb5b72247c86fb261fb9ebd1874eb275c0677922d684d9f88df7"
+  },
+  "assurance_evidence": {
+    "reviewer_checks": "Exact source/document review, frozen-runtime comparison, canonical-gate diff, git diff --check, public path scan, and independent temporary-copy lifecycle reproductions.",
+    "native_tests_build_and_smoke": "Inspected checks.json; native suite/lint, wheel/sdist, and installed CLI smoke are parent-run evidence, not reruns by this reviewer.",
+    "native_host": "Inspected native-checks.json: staged fresh Codex delivery and missing-package continuation are separate from holdout quality. The parent reports prior staging bytes restored and real operational configuration unchanged.",
+    "hermes_gate": "NOT_CONFIGURED, not PASS; repository adoption was not forced.",
+    "private_evidence_boundary": "No operational install was authorized by this review. Private transcripts remain outside Git; selected synthetic labels were inspected only after their evaluation was complete."
+  }
+}
