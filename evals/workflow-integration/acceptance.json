@@ -1,0 +1,16 @@
+{
+  "status": "preregistered before candidate implementation",
+  "host": "Codex CLI project AGENTS.md, on-demand offline recall",
+  "scope": "one Hermes operational workspace; no global hook or skill contract change",
+  "baseline": "Existing miner misses a private clarification episode; existing keyword recall returns domain-word false positives. Private evidence is retained outside Git.",
+  "mining": {"positive_samples_min": 20, "negative_samples_min": 20, "recovery_min": 0.8, "false_positive_rate_max": 0.05},
+  "recall": {"positive_samples_min": 20, "negative_samples_min": 20, "top_k": 3, "target_hit_rate_min": 0.85, "irrelevant_return_rate_max": 0.05},
+  "latency_ms": {"warm_samples": 200, "cold_samples": 50, "warm_p95_max": 30, "warm_p99_max": 50, "cold_p95_max": 150, "cold_p99_max": 250, "hard_deadline": 500},
+  "output_utf8_bytes_max": 4096,
+  "privacy": {"unauthorized_disclosures_max": 0, "network_calls_max": 0, "private_oss_artifacts_max": 0},
+  "failure_modes": ["missing dependency", "missing corpus", "corrupt corpus", "timeout", "exception", "interrupted execution", "hostile memory", "malformed input"],
+  "lifecycle": ["real installed wheel", "native fresh Codex invocation", "disable", "uninstall", "prior configuration restored byte-for-byte", "idempotent install", "recovery"],
+  "fail_open": "Failure returns bounded empty evidence with success exit status, leaves prompt and host result unchanged, and never executes recalled data.",
+  "holdout": "Independent evaluator authors and freezes labels without reading implementation or private evidence; candidate source identity frozen before execution. Seed and development cases never count as holdout.",
+  "installation": "Only after acceptance and independent review; preserve exact prior configuration and verify rollback before re-enabling."
+}
