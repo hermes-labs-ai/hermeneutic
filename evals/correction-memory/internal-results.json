@@ -1,6 +1,8 @@
 {
   "measurement": "exploratory_annotated_target_retrieval",
   "limit": 3,
+  "package_version": "0.1.14",
+  "memory_source_sha256": "b606e3790adde1a9dc992b7f444fdf8734a9a7cb09b9b7408e48b02dd085ee8d",
   "corpus_sha256": "e14ff1c647833b9f92fd953b51505ac1bc7ae14479e9485ad380e66779af00ec",
   "cases_sha256": "416fbe667cb7e8290eb33b4f025ab50b8818364adeed1b3f0f5c358ad31d1d6f",
   "episodes": 16,
@@ -123,7 +125,7 @@
       "negative_empty": 1,
       "negative_trials": 2,
       "mean_evidence_chars": 450.7,
-      "median_seconds": 0.0126,
+      "median_seconds": 0.0108,
       "trials": [
         {
           "id": "internal-triage",
@@ -138,7 +140,7 @@
           "target_hit": true,
           "negative_empty": null,
           "evidence_chars": 807,
-          "seconds": 0.0505
+          "seconds": 0.0593
         },
         {
           "id": "feature-boundary",
@@ -153,7 +155,7 @@
           "target_hit": false,
           "negative_empty": null,
           "evidence_chars": 312,
-          "seconds": 0.0168
+          "seconds": 0.0118
         },
         {
           "id": "cover-design",
@@ -168,7 +170,7 @@
           "target_hit": false,
           "negative_empty": null,
           "evidence_chars": 356,
-          "seconds": 0.0136
+          "seconds": 0.0108
         },
         {
           "id": "submission-history",
@@ -183,7 +185,7 @@
           "target_hit": false,
           "negative_empty": null,
           "evidence_chars": 729,
-          "seconds": 0.0124
+          "seconds": 0.0104
         },
         {
           "id": "avoid-overprocessing",
@@ -199,7 +201,7 @@
           "target_hit": false,
           "negative_empty": null,
           "evidence_chars": 544,
-          "seconds": 0.0126
+          "seconds": 0.0109
         },
         {
           "id": "negative-cooking",
@@ -208,7 +210,7 @@
           "target_hit": null,
           "negative_empty": true,
           "evidence_chars": 0,
-          "seconds": 0.0099
+          "seconds": 0.0085
         },
         {
           "id": "negative-astronomy",
@@ -220,7 +222,7 @@
           "target_hit": null,
           "negative_empty": false,
           "evidence_chars": 407,
-          "seconds": 0.0097
+          "seconds": 0.0081
         }
       ]
     },
@@ -230,7 +232,7 @@
       "negative_empty": 1,
       "negative_trials": 2,
       "mean_evidence_chars": 642,
-      "median_seconds": 0.0134,
+      "median_seconds": 0.011,
       "trials": [
         {
           "id": "internal-triage",
@@ -245,7 +247,7 @@
           "target_hit": true,
           "negative_empty": null,
           "evidence_chars": 1036,
-          "seconds": 0.0128
+          "seconds": 0.0106
         },
         {
           "id": "feature-boundary",
@@ -260,7 +262,7 @@
           "target_hit": true,
           "negative_empty": null,
           "evidence_chars": 321,
-          "seconds": 0.0134
+          "seconds": 0.011
         },
         {
           "id": "cover-design",
@@ -275,7 +277,7 @@
           "target_hit": false,
           "negative_empty": null,
           "evidence_chars": 686,
-          "seconds": 0.0139
+          "seconds": 0.0125
         },
         {
           "id": "submission-history",
@@ -290,7 +292,7 @@
           "target_hit": true,
           "negative_empty": null,
           "evidence_chars": 900,
-          "seconds": 0.0146
+          "seconds": 0.0115
         },
         {
           "id": "avoid-overprocessing",
@@ -306,7 +308,7 @@
           "target_hit": true,
           "negative_empty": null,
           "evidence_chars": 856,
-          "seconds": 0.0148
+          "seconds": 0.0123
         },
         {
           "id": "negative-cooking",
@@ -315,7 +317,7 @@
           "target_hit": null,
           "negative_empty": true,
           "evidence_chars": 0,
-          "seconds": 0.0113
+          "seconds": 0.0088
         },
         {
           "id": "negative-astronomy",
@@ -328,7 +330,7 @@
           "target_hit": null,
           "negative_empty": false,
           "evidence_chars": 695,
-          "seconds": 0.0117
+          "seconds": 0.009
         }
       ]
     }

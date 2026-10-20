@@ -74,3 +74,17 @@ def test_preview_caps_and_invalid_dimensions(corpus, tmp_path):
     compiler.compile_index(corpus, home=tmp_path, embedder=lambda _: [1.0, 0.0])
     with pytest.raises(ValueError, match="dimension"):
         recall("fruit", corpus, home=tmp_path, method="semantic", embedder=lambda _: [1.0])
+
+
+def test_evaluation_reports_targets_and_abstention_without_private_text(corpus, tmp_path):
+    import runpy
+    from pathlib import Path
+
+    runner = runpy.run_path(str(Path(__file__).resolve().parents[1] / "evals/correction-memory/runner.py"))
+    cases = [{"id": "positive", "query": "persimmons", "expected": [1]},
+             {"id": "negative", "query": "spaceships", "expected": []}]
+    result = runner["evaluate"](corpus, tmp_path, cases, ["keyword"], 1)
+    assert result["results"]["keyword"]["positive_hits"] == 1
+    assert result["results"]["keyword"]["negative_empty"] == 1
+    assert "persimmons" not in json.dumps(result)
+    assert "prior" not in json.dumps(result)

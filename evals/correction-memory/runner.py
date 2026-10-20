@@ -13,6 +13,8 @@ import statistics
 import time
 from pathlib import Path
 
+import hermeneutic.memory as memory
+from hermeneutic import __version__
 from hermeneutic.memory import recall
 
 
@@ -42,6 +44,8 @@ def evaluate(corpus, home, cases, methods, limit):
                            "median_seconds": round(statistics.median(t["seconds"] for t in trials), 4),
                            "trials": trials}
     return {"measurement": "exploratory_annotated_target_retrieval", "limit": limit,
+            "package_version": __version__,
+            "memory_source_sha256": hashlib.sha256(Path(memory.__file__).read_bytes()).hexdigest(),
             "corpus_sha256": hashlib.sha256(corpus.read_bytes()).hexdigest(),
             "cases_sha256": hashlib.sha256(json.dumps(cases, sort_keys=True).encode()).hexdigest(),
             "episodes": len(rows), "private_text_emitted": False,
