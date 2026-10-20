@@ -13,7 +13,7 @@ Install the release in a fresh Python environment (Python 3.10+):
 ```sh
 python3 -m venv .demo-venv
 . .demo-venv/bin/activate
-python -m pip install 'hermeneutic==0.1.16a1'
+python -m pip install 'hermeneutic==0.1.15'
 demo_dir="$(mktemp -d)"
 export HERMENEUTIC_HOME="$demo_dir/memory"
 hermeneutic demo --out "$demo_dir/sessions"
