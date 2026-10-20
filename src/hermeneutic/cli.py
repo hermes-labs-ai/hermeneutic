@@ -3,6 +3,7 @@
 Subcommands:
   mine    Walk a directory of session logs and emit triples.jsonl
   bucket  Bucket a triples.jsonl into surface-pattern categories
+  inspect Validate a triples.jsonl and display bounded correction previews
   gate    Run the regex-only gate on a draft (read from stdin or --draft)
 """
 from __future__ import annotations
@@ -14,7 +15,7 @@ from pathlib import Path
 
 from hermeneutic import __version__
 from hermeneutic.gates.regex import highest_severity
-from hermeneutic.triples import READERS, mine_dir
+from hermeneutic.triples import READERS, Triple, mine_dir
 
 
 def _open_out(path: str, mode: str = "w"):
@@ -155,6 +156,85 @@ def _cmd_bucket(args: argparse.Namespace) -> int:
     for name, _ in BUCKETS:
         print(f"  {name:20s} {counts[name]:5d}")
     print(f"  {'(unbucketed)':20s} {unbucketed:5d}")
+    return 0
+
+
+def _positive_int(value: str) -> int:
+    number = int(value)
+    if number < 1:
+        raise argparse.ArgumentTypeError("must be a positive integer")
+    return number
+
+
+def _cmd_inspect(args: argparse.Namespace) -> int:
+    import os
+
+    safe_path = ascii(str(args.triples))
+    previews = []
+    total = 0
+    text_fields = ("session", "prior_assistant", "user_correction", "next_assistant", "orig_prompt")
+    try:
+        with open(args.triples, "rb") as source:
+            before = os.fstat(source.fileno())
+            for line_number, raw in enumerate(iter(lambda: source.readline(1_048_577), b""), start=1):
+                if len(raw) > 1_048_576:
+                    print(f"ERROR: {safe_path}: line {line_number}: record exceeds 1 MiB", file=sys.stderr)
+                    return 2
+                try:
+                    line = raw.decode("utf-8")
+                except UnicodeDecodeError:
+                    reason = "invalid UTF-8"
+                else:
+                    if not line.strip():
+                        continue
+                    try:
+                        def reject_constant(_value):
+                            raise ValueError("non-standard JSON constant")
+                        json.loads(line, parse_constant=reject_constant)
+                        triple = Triple.from_json(line)
+                    except json.JSONDecodeError:
+                        reason = "invalid JSON"
+                    except (AttributeError, TypeError, ValueError, RecursionError):
+                        reason = "invalid triple schema"
+                    else:
+                        reason = next(
+                            (f"field {field!r} must be a string" for field in text_fields
+                             if not isinstance(getattr(triple, field), str)),
+                            "",
+                        )
+                if reason:
+                    print(f"ERROR: {safe_path}: line {line_number}: {reason}", file=sys.stderr)
+                    return 2
+                total += 1
+                if len(previews) < args.limit:
+                    preview = {"line": line_number}
+                    for field, cap in (("session", 128), ("timestamp", 64), ("user_correction", 160)):
+                        value = getattr(triple, field)
+                        try:
+                            text = value if isinstance(value, str) else json.dumps(value, ensure_ascii=True)
+                        except (ValueError, RecursionError):
+                            print(
+                                f"ERROR: {safe_path}: line {line_number}: cannot preview metadata",
+                                file=sys.stderr,
+                            )
+                            return 2
+                        preview[f"{field}_preview"] = text[:cap]
+                        preview[f"{field}_truncated"] = len(text) > cap
+                    previews.append(preview)
+            after = os.fstat(source.fileno())
+            current = Path(args.triples).stat()
+            def identity(stat):
+                return stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns
+            if identity(before) != identity(after) or identity(after) != identity(current):
+                print(f"ERROR: {safe_path}: file changed during inspection; retry after writer finishes.",
+                      file=sys.stderr)
+                return 2
+    except OSError:
+        print(f"ERROR: cannot read triples file: {safe_path}", file=sys.stderr)
+        return 2
+    for preview in previews:
+        print(json.dumps(preview, ensure_ascii=True))
+    print(f"Showing {len(previews)} of {total} records; complete file validated.", file=sys.stderr)
     return 0
 
 
@@ -529,6 +609,14 @@ def main(argv: list[str] | None = None) -> int:
     p_bucket = sub.add_parser("bucket", help="Bucket a triples.jsonl by surface pattern.")
     p_bucket.add_argument("triples", help="Path to triples.jsonl.")
     p_bucket.set_defaults(func=_cmd_bucket)
+
+    p_inspect = sub.add_parser("inspect", help="Validate triples and show bounded correction previews.")
+    p_inspect.add_argument("triples", help="Path to an existing UTF-8 triples.jsonl.")
+    p_inspect.add_argument(
+        "--limit", type=_positive_int, default=5,
+        help="Maximum records to display (default: 5); the complete file is validated.",
+    )
+    p_inspect.set_defaults(func=_cmd_inspect)
 
     p_gate = sub.add_parser("gate", help="Run the regex-only risk gate on a draft.")
     p_gate.add_argument("--draft", help="Path to draft file (default: read stdin).")
