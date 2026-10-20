@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import shlex
 import signal
 import subprocess
 import sys
@@ -29,7 +30,11 @@ def corpus(tmp_path):
 def _interpreter(tmp_path, code):
     """A test interpreter entrypoint; no installation or host configuration edits."""
     path = tmp_path / "test-python"
-    path.write_text(f"#!{sys.executable}\n" + code)
+    worker = tmp_path / "test-python.py"
+    worker.write_text(code)
+    # POSIX shebangs split interpreter paths on whitespace. This fixture-only
+    # launcher quotes the pinned Python and preserves its argument boundaries.
+    path.write_text(f'#!/bin/sh\nexec {shlex.quote(sys.executable)} {shlex.quote(str(worker))} "$@"\n')
     path.chmod(0o700)
     return path
 
