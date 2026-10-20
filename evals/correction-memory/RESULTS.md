@@ -51,3 +51,39 @@ and cited the real triage episode in a proposed internal next action. This is on
 read-only tool-use check, not a behavior-improvement experiment or proof of global
 hook delivery. The [installed demo receipt](installed-demo-results.json) separately
 records the synthetic fixture and live local embedding continuation.
+
+
+## Public reproducible check
+
+The [public corpus and query cases](public/README.md) contain no private logs.
+Labels were frozen before execution after the 0.1.14 algorithm was written; this
+is a public regression set, not an independently sampled or held-out benchmark.
+No retrieval algorithm or threshold was changed after observing these results.
+The [receipt](public/results.json) records source and corpus identities and the
+per-case misses, with three candidates permitted per task.
+
+| Method | Target found | Unrelated query returned no evidence |
+|---|---:|---:|
+| Keyword (offline default) | 15/18 | 4/8 |
+| Semantic (local Ollama) | 18/18 | 2/8 |
+| Hybrid (local Ollama) | 18/18 | 2/8 |
+
+On this public set, embeddings recover the paraphrases missed by keyword search
+and return more evidence on unrelated tasks. This differs from the private
+development set; neither establishes a general winner. Questions that share a
+domain word with a correction account for the offline false positives. The
+interface returns historical search candidates, not a relevance verdict or
+instructions to apply automatically.
+
+The offline suite runs in pytest with the observed target and abstention counts
+as regression floors; improvements can exceed those floors. The evaluator
+rejects nonexistent target rows, duplicate case IDs and empty queries, so a
+misconfigured case file cannot silently count them as a quality measurement.
+
+The 0.1.15 maintenance candidate was also checked in a
+[fresh Codex session](fresh-session-0.1.15.json) using its installed wheel against
+the real private corpus. The session ran recall successfully and cited the triage
+episode in its next-action proposal. The runtime retrieval source is byte-identical
+to the internally verified 0.1.14 source; onboarding, public evaluation data and
+evaluator input validation are the changes. See the
+[release check receipt](release-0.1.15.json).

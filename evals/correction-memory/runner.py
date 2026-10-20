@@ -15,11 +15,28 @@ from pathlib import Path
 
 import hermeneutic.memory as memory
 from hermeneutic import __version__
+from hermeneutic.compile import _load_triples
 from hermeneutic.memory import recall
 
 
 def evaluate(corpus, home, cases, methods, limit):
-    rows = [json.loads(line) for line in corpus.read_text().splitlines() if line.strip()]
+    rows = _load_triples(corpus)
+    if limit < 1:
+        raise ValueError("limit must be positive")
+    if not cases:
+        raise ValueError("cases must not be empty")
+    ids = set()
+    for case in cases:
+        if not isinstance(case, dict) or not isinstance(case.get("id"), str) or not case["id"].strip():
+            raise ValueError("each case needs a nonempty string id")
+        if case["id"] in ids:
+            raise ValueError("case ids must be unique")
+        ids.add(case["id"])
+        if not isinstance(case.get("query"), str) or not case["query"].strip():
+            raise ValueError("each case needs a nonempty query")
+        expected = case.get("expected")
+        if not isinstance(expected, list) or any(type(i) is not int or not 1 <= i <= len(rows) for i in expected):
+            raise ValueError("expected IDs must be integer corpus row numbers")
     results = {}
     for method in methods:
         trials = []
@@ -50,7 +67,7 @@ def evaluate(corpus, home, cases, methods, limit):
             "cases_sha256": hashlib.sha256(json.dumps(cases, sort_keys=True).encode()).hexdigest(),
             "episodes": len(rows), "private_text_emitted": False,
             "always_include_baseline": {"positive_target_coverage": "all targets included by construction",
-                                         "correction_chars_per_task": sum(len(r["user_correction"]) for r in rows)},
+                                         "correction_chars_per_task": sum(len(row.user_correction) for row in rows)},
             "results": results}
 
 
@@ -67,7 +84,10 @@ if __name__ == "__main__":
     cases = json.loads(args.cases.read_text())
     if not cases:
         parser.error("cases must not be empty")
-    receipt = evaluate(args.triples, args.home, cases, args.methods, args.limit)
+    try:
+        receipt = evaluate(args.triples, args.home, cases, args.methods, args.limit)
+    except ValueError as error:
+        parser.error(str(error))
     args.out.write_text(json.dumps(receipt, indent=2) + "\n")
     print(json.dumps({method: {k: v for k, v in result.items() if k != "trials"}
                       for method, result in receipt["results"].items()}, indent=2))

@@ -1,4 +1,4 @@
-# hermeneutic repository (latest tagged release v0.1.14)
+# hermeneutic repository (latest tagged release v0.1.15)
 
 Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
@@ -13,13 +13,13 @@ Mining personalizes the corpus and optional retrieval. It does not generate or m
 Install the current release from PyPI:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.14'
+python3 -m pip install 'hermeneutic==0.1.15'
 ```
 
 For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
 ```bash
-git clone --branch v0.1.14 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+git clone --branch v0.1.15 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
 cd hermeneutic
 python3 -m pip install .
 ```
@@ -52,6 +52,8 @@ Expected first line: `RISK — highest severity: high`.
 - `hermeneutic harvest`, `promote`, and `stats`: local review and audit workflow.
 
 ## Evidence boundary
+
+- Public synthetic retrieval regression: keyword target retrieval 15/18 and unrelated-query abstention 4/8; optional local semantic/hybrid modes each retrieve 18/18 targets and abstain on 2/8 unrelated queries. Labels were frozen before execution after implementation; not held out, no tuning against these results. Corpus, queries and receipts are in `evals/correction-memory/public/`.
 
 - 0.1.14 internal development set: 16 mined episodes; keyword found annotated targets in 5/5 queries, semantic in 1/5 and hybrid in 4/5. Each abstained on 1/2 unrelated queries. These cases informed development and are not held out. See `evals/correction-memory/RESULTS.md` and `docs/correction-memory-demo.md` for the native comparison, real internal example and separate fresh-session tool-use check.
 

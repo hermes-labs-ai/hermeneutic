@@ -88,3 +88,36 @@ def test_evaluation_reports_targets_and_abstention_without_private_text(corpus, 
     assert result["results"]["keyword"]["negative_empty"] == 1
     assert "persimmons" not in json.dumps(result)
     assert "prior" not in json.dumps(result)
+
+
+@pytest.mark.parametrize("cases", [
+    [],
+    [{"id": "case", "query": "persimmons", "expected": [0]}],
+    [{"id": "case", "query": "persimmons", "expected": [3]}],
+    [{"id": "case", "query": "persimmons", "expected": [True]}],
+    [{"id": "case", "query": "", "expected": [1]}],
+    [{"id": "same", "query": "persimmons", "expected": [1]}] * 2,
+])
+def test_evaluation_rejects_invalid_labels(corpus, tmp_path, cases):
+    import runpy
+    from pathlib import Path
+
+    runner = runpy.run_path(str(Path(__file__).resolve().parents[1] / "evals/correction-memory/runner.py"))
+    with pytest.raises(ValueError):
+        runner["evaluate"](corpus, tmp_path, cases, ["keyword"], 1)
+
+
+def test_public_keyword_retrieval_regression_floor(tmp_path):
+    import runpy
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    data = root / "evals/correction-memory/public"
+    runner = runpy.run_path(str(root / "evals/correction-memory/runner.py"))
+    result = runner["evaluate"](data / "triples.jsonl", tmp_path,
+                                json.loads((data / "cases.json").read_text()), ["keyword"], 3)
+    keyword = result["results"]["keyword"]
+    assert keyword["positive_trials"] == 18
+    assert keyword["negative_trials"] == 8
+    assert keyword["positive_hits"] >= 15
+    assert keyword["negative_empty"] >= 4

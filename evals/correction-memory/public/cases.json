@@ -1,0 +1,168 @@
+[
+  {
+    "id": "release-evidence",
+    "query": "Prepare a widget service release and summarize verification evidence.",
+    "expected": [
+      1
+    ]
+  },
+  {
+    "id": "timeout-scope",
+    "query": "Fix the login timeout without redesigning authentication.",
+    "expected": [
+      2
+    ]
+  },
+  {
+    "id": "owning-repository",
+    "query": "Which repository README should I edit for the server documentation?",
+    "expected": [
+      3
+    ]
+  },
+  {
+    "id": "stdlib-http",
+    "query": "Implement an HTTP helper using urllib without third-party dependencies.",
+    "expected": [
+      4
+    ]
+  },
+  {
+    "id": "csv-order",
+    "query": "Export usage CSV and keep the column ordering stable.",
+    "expected": [
+      5
+    ]
+  },
+  {
+    "id": "spanish-summary",
+    "query": "Summarize the incident in Spanish.",
+    "expected": [
+      6
+    ]
+  },
+  {
+    "id": "secret-existence",
+    "query": "Check deployment credential existence without printing secrets.",
+    "expected": [
+      7
+    ]
+  },
+  {
+    "id": "dialog-keyboard",
+    "query": "Implement dialog keyboard navigation, Escape and visible focus.",
+    "expected": [
+      8
+    ]
+  },
+  {
+    "id": "utc-events",
+    "query": "Emit audit event timestamps in UTC with a timezone suffix.",
+    "expected": [
+      9
+    ]
+  },
+  {
+    "id": "transport-checks",
+    "query": "Run asynchronous transport integration verification.",
+    "expected": [
+      10
+    ]
+  },
+  {
+    "id": "pagination-api",
+    "query": "Repair pagination while preserving the public API signature.",
+    "expected": [
+      11
+    ]
+  },
+  {
+    "id": "migration-restore",
+    "query": "Apply a schema migration after verifying database restore and backup.",
+    "expected": [
+      12
+    ]
+  },
+  {
+    "id": "release-paraphrase",
+    "query": "Show executed checks before asserting the widget deployment is complete.",
+    "expected": [
+      1
+    ]
+  },
+  {
+    "id": "scope-paraphrase",
+    "query": "Resolve the sign-in delay without replacing the whole auth module.",
+    "expected": [
+      2
+    ]
+  },
+  {
+    "id": "dependency-paraphrase",
+    "query": "Keep the network helper free of external Python packages.",
+    "expected": [
+      4
+    ]
+  },
+  {
+    "id": "language-paraphrase",
+    "query": "Produce the incident report en espanol.",
+    "expected": [
+      6
+    ]
+  },
+  {
+    "id": "ui-paraphrase",
+    "query": "Ensure a person can operate and dismiss the modal without a mouse.",
+    "expected": [
+      8
+    ]
+  },
+  {
+    "id": "api-paraphrase",
+    "query": "Keep existing callers compatible when repairing page iteration.",
+    "expected": [
+      11
+    ]
+  },
+  {
+    "id": "negative-cooking",
+    "query": "What temperature should I bake banana bread at?",
+    "expected": []
+  },
+  {
+    "id": "negative-astronomy",
+    "query": "Describe how neutron star magnetic fields form.",
+    "expected": []
+  },
+  {
+    "id": "negative-gardening",
+    "query": "When should I plant tomato seedlings outdoors?",
+    "expected": []
+  },
+  {
+    "id": "negative-arithmetic",
+    "query": "Calculate the square root of eighty-one.",
+    "expected": []
+  },
+  {
+    "id": "negative-csv-definition",
+    "query": "What is a CSV file?",
+    "expected": []
+  },
+  {
+    "id": "negative-timezone-definition",
+    "query": "Explain what UTC means.",
+    "expected": []
+  },
+  {
+    "id": "negative-database-definition",
+    "query": "Define a database schema.",
+    "expected": []
+  },
+  {
+    "id": "negative-keyboard-history",
+    "query": "Describe the history of the computer keyboard.",
+    "expected": []
+  }
+]

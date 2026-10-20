@@ -13,7 +13,7 @@ Install the release in a fresh Python environment (Python 3.10+):
 ```sh
 python3 -m venv .demo-venv
 . .demo-venv/bin/activate
-python -m pip install 'hermeneutic==0.1.14'
+python -m pip install 'hermeneutic==0.1.15'
 demo_dir="$(mktemp -d)"
 export HERMENEUTIC_HOME="$demo_dir/memory"
 hermeneutic demo --out "$demo_dir/sessions"
@@ -150,10 +150,12 @@ they do not measure correctness of an agent's subsequent work.
 
 ## Public explanation
 
-Hermeneutic turns agent corrections into inspectable evidence for later tasks.
-We used it internally on owner-authorized Codex logs and checked retrieval in a
-fresh session. The public demo uses fictional data so anyone can reproduce the
-workflow without sharing conversations. In our small exploratory evaluation,
-simple keyword retrieval performed better than the optional local embedding
-modes. The release packages capture, bounded inspection and evidence recall;
-it does not establish improved agent behavior or current upstream adoption.
+Hermeneutic preserves agent correction episodes so a later session can inspect
+the original evidence. We used it internally on owner-authorized Codex logs and
+verified the installed tool in a fresh session. The default keyword workflow is
+offline; local Ollama embeddings are optional. A public replay and labeled
+retrieval set let developers check the workflow without sharing conversations.
+The public set exposes missed paraphrases and irrelevant candidates, while the
+private development set favored simple search. The product adds capture, bounded
+inspection and provenance; it does not establish improved agent behavior or
+current upstream adoption.
