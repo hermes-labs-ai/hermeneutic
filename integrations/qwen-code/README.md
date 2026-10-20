@@ -6,6 +6,8 @@ host contract below was checked against the published
 `@qwen-code/qwen-code` 0.23.2 bundle, and clean, risky-repair, and bounded-risky
 turns were exercised through that CLI. See the
 [live receipt](../../evals/qwen-code/RESULTS.md).
+That receipt covers the earlier English policy. This candidate's multilingual
+advisory policy has mechanical tests, without a fresh live-host delivery claim.
 
 ## Why Qwen Code needs its own manifest and hook config
 
@@ -34,7 +36,8 @@ hook config — so the Stop command uses `${CLAUDE_PLUGIN_ROOT}`.
 ## Behavior
 
 - A clean response is allowed.
-- The first risky response is blocked once with a single evidence-focused repair
+- Mapping-only findings in the unreleased candidate allow the response with an advisory.
+- The first response with raw English findings is blocked once with a single evidence-focused repair
   reason, which Qwen feeds back to the model as the continuation prompt.
 - The repaired response is allowed. If it is still risky, the allow carries a
   visible `systemMessage` warning.

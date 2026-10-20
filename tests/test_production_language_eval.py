@@ -67,3 +67,28 @@ def test_failed_exposure_cannot_be_retried(tmp_path, monkeypatch):
     assert (tmp_path / 'holdout-exposure.json').exists()
     with pytest.raises(ValueError, match='already exposed'):
         EVAL.main()
+
+
+def test_current_regression_receipt_matches_source_without_rebinding_holdout():
+    import json
+
+    spec = importlib.util.spec_from_file_location('current_language_eval', EVAL.HERE / 'replay-current.py')
+    replay = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(replay)
+    receipt = json.loads((EVAL.HERE / 'current-regression.json').read_text())
+    assert receipt == replay.evaluate(), 'Regenerate current regression only; never rebind the consumed holdout'
+
+
+def test_current_summary_does_not_call_medium_hits_high_true_positives():
+    spec = importlib.util.spec_from_file_location('current_language_eval', EVAL.HERE / 'replay-current.py')
+    replay = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(replay)
+    summary = replay.summarize({
+        'high_severity_recall': {'count': 1, 'denominator': 3},
+        'actionable_recall': {'count': 2, 'denominator': 3},
+        'false_positive': {'count': 1, 'denominator': 4},
+        'outcomes': {},
+    })
+    assert summary['counts'] == {
+        'high_severity_tp': 1, 'high_severity_fn': 2, 'any_hit_fp': 1, 'no_hit_tn': 3, 'uncertain': None,
+    }

@@ -8,7 +8,7 @@ can reject it with a reason that becomes an automatic repair prompt. The root
 `gemini-extension.json` and `hooks/hooks.json` register Hermeneutic's fixed,
 offline epistemic gate on that lifecycle.
 
-The adapter permits clean responses. On the first risky response it requests
+The adapter permits clean responses. On the first response with raw English findings it requests
 one evidence-focused revision. If the retry is also risky,
 `stop_hook_active` bounds the loop: the response is allowed with a visible
 warning. Malformed input and internal errors fail open with a warning.
@@ -39,5 +39,5 @@ optional personal correction corpus, call a model, or send response text over
 the network. Hermeneutic flags surface wording; it does not establish whether a
 claim is true.
 
-Experimental language mappings produce visible advisories and allow the response.
+In the unreleased candidate, experimental language mappings produce visible advisories and allow the response.
 Raw English findings retain the bounded repair policy, including in mixed-language drafts.

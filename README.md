@@ -73,9 +73,12 @@ The check highlights English wording that needs a closer look. It cannot tell wh
 ## Experimental language support
 
 **0.1.16a1 is an unreleased opt-in experimental candidate.** Mapped-language
-findings are advisory in the CLI, Router and shipped response consumers. Raw
+findings are advisory in this candidate's CLI, Router and response adapters. Raw
 canonical English findings retain enforcement, including in mixed drafts.
 The independent evaluation does not establish reliable general-language coverage.
+The examples below require a source install of this PR in a separate environment
+(`python -m pip install -e .` from the checkout). Stable 0.1.15 does not contain
+this advisory correction.
 
 The experimental API provides vocabulary adapters for Korean (`ko`), Chinese (`zh`),
 Japanese (`ja`), Turkish (`tr`), German (`de`), French (`fr`), Spanish (`es`), and
@@ -123,8 +126,8 @@ estimates. Automatic Korean routing catches 116/180 (64.4%) with 2/135 (1.5%)
 false fires; the other fixture results match explicit routing. Korean still misses
 64/180 labeled drift drafts and flags a scope question and qualified stability
 statement. These results do not support stable general-language coverage. See the
-[synthetic validation methodology](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/README.md) and
-[replayable receipt](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/results.json) for misses and limitations.
+[synthetic validation methodology](evals/languages/README.md) and
+[replayable receipt](evals/languages/results.json) for misses and limitations.
 
 The recovered [independent simulated evaluation](evals/production-languages/README.md)
 is stronger evidence of the current limits than the development fixtures above.
@@ -135,6 +138,9 @@ or 0/30 auto. None met both predeclared targets; these are model-authored
 simulations, not native-speaker or production validation. The current bounded
 Korean repairs were developed against the older synthetic corpus, not this
 consumed holdout. The original frozen receipt and denominators are retained.
+The [current-source regression replay](evals/production-languages/current-regression.json)
+reports the same quality counts on those now-exposed cases; it is not a fresh
+holdout. Uncertain judgments remain unmeasured without independent adjudication.
 
 ## Use your corrections
 
@@ -205,6 +211,6 @@ Use the standalone CLI in any workflow you control. The [integration guides](htt
 
 Hermeneutic's gate matches fixed English surface patterns and can miss a mistake or flag an innocent phrase. Correction retrieval depends on the history you supply and has not been shown to improve downstream outcomes across users. It is a way to surface previous guidance and scrutinize a draft, not a security boundary or a factuality guarantee.
 
-[Worked example](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/examples/before_after.md) · [Integration guides](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md) · [Evaluation results](https://github.com/hermes-labs-ai/hermeneutic/tree/v0.1.15/evals) · [Privacy and security](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/SECURITY.md) · [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CONTRIBUTING.md) · [Changelog](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/CHANGELOG.md)
+[Worked example](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/examples/before_after.md) · [Integration guides](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md) · [Evaluation results](https://github.com/hermes-labs-ai/hermeneutic/tree/v0.1.15/evals) · [Privacy and security](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/SECURITY.md) · [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 Apache-2.0. [Hermes Labs](https://hermes-labs.ai) builds agentic infrastructure for autonomous systems.

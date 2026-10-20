@@ -131,8 +131,9 @@ eight languages through the CLI, with affirmative and negative controls.
   CLI snippets and telemetry. Numbers, punctuation and unrecognized text pass
   through, except local numeric counters are separated from digits.
 - The CLI and Python Router retain English defaults. Shipped response hooks
-  use automatic mapping before their existing gate and preserve their host
-  retry/advisory policy. Downstream Router reviewers and repairers still see
+  use automatic mapping. In the unreleased candidate, mapping-only findings
+  remain advisory; raw English findings retain the existing host policy.
+  Downstream Router reviewers and repairers still see
   the original draft. Host tests establish adapter behavior, not live delivery
   in each host. A package release is a separate action from this source PR.
 

@@ -4,7 +4,7 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
-## [0.1.16a1] — Unreleased
+## [0.1.16a1] — Candidate, unreleased
 
 ### Experimental language fixes
 
@@ -24,7 +24,11 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
   and the separate negative/affirmative relay controls are unchanged.
 - This is an opt-in alpha prerelease. Korean still misses 64/180 authored drift
   drafts and flags two clean drafts. The other authored sets catch 14–16/20
-  drift drafts each. No held-out, native-speaker or real-language coverage is established.
+  drift drafts each. No fresh held-out, native-speaker or real-use coverage is established.
+- Keep the original #57 candidate and consumed evaluation immutable. A separate
+  current-source regression receipt reports severity-specific TP/FN and any-hit
+  FP/TN on the exposed cases, with uncertain adjudication explicitly unmeasured.
+  This replay does not qualify a language for enforcement or establish a new holdout.
 
 ## [0.1.15] — 2026-10-20
 

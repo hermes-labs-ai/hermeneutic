@@ -80,4 +80,4 @@ Core mining, bucketing, gate, harvest, review, and promotion are local and make 
 - License: Apache-2.0
 - Public display author: Rolando Bosch, Hermes Labs
 
-Experimental mapped-language findings are advisory in shipped consumers. Raw English findings retain their enforcement. Independent simulated evaluation in evals/production-languages/ missed its quality targets; real-language coverage remains unvalidated.
+In unreleased 0.1.16a1, experimental mapped-language findings are advisory in consumer adapters. Raw English findings retain their enforcement. Independent simulated evaluation in evals/production-languages/ missed its quality targets; real-language coverage remains unvalidated. Stable 0.1.15 does not include this advisory correction.

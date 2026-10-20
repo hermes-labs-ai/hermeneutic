@@ -131,3 +131,40 @@ Hermes Agent output and simulated Gemini/Qwen hook payloads. The repository
 suite covers state, concurrency and existing English contracts. Installed
 mechanics do not prove delivery through a running third-party host or channel.
 The canonical English regex remains byte-identical to the 0.1.13 baseline.
+
+## Current candidate regression and owner decision
+
+The original sealed evidence above belongs to #57 at `b6a87af`. To verify the
+integrated source without rebinding or overwriting that evaluation:
+
+```bash
+python3 evals/production-languages/replay-current.py
+# Deliberate regeneration after source changes (never a new held-out run):
+python3 evals/production-languages/replay-current.py --write
+```
+
+`current-regression.json` hashes the current package, consumers, runner and
+exposed input files. It retains the original split names solely for traceability.
+Its TP/FN require high-severity hits on high-labeled drafts; FP counts any hit
+on a clean draft. Those asymmetric definitions must not be combined into a
+precision claim. Uncertain count is `null`, because the simulated binary labels
+have no independent human/native-speaker adjudication. Real-use TP, FP, uncertain
+count and recall remain unmeasured. This regression replay reproduces the
+historical quality counts; no repair was tuned against the consumed holdout.
+
+Release gate for this bounded advisory correction: native lint/tests/build,
+wheel and sdist checks, installed advisory/mixed-English mechanics, immutable
+historical evidence, and fresh independent review of the complete final diff
+must pass on the head handed to the owner. A bot's skipped review is not a review.
+The author may update #57 but must not merge, tag or publish it. Owner acceptance
+of the exact reviewed head is a separate decision; a source PR does not change
+the installed stable package or prove running-host delivery.
+
+Recommendation: eligible for owner consideration as an opt-in advisory alpha
+after those checks and review; **no ship as validated multilingual enforcement**.
+Promotion requires a fresh independently authored, adjudicated real-language
+evaluation under a frozen protocol, including uncertainty and enough independent
+cases to assess the stated error target. The observed <=2% FP / >=90% high-recall
+targets already failed here; a small synthetic pass would still not establish
+production reliability. Native-speaker adjudication and production sampling are
+the external evidence endpoint, rather than more tuning of this exposed set.

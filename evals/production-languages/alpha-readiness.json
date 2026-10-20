@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "date": "2026-10-20",
+  "version": "0.1.16a1",
+  "scope": "Local candidate assurance, not merge/release authorization. Final head CI and independent review are recorded on PR #57.",
+  "native": {
+    "ruff check src tests": "pass",
+    "python -m pytest -ra": {
+      "passed": 531,
+      "skipped": 1,
+      "skip_reason": "Latest changelog entry makes no test-count claim"
+    },
+    "node --test integrations/openclaw/test.mjs": {
+      "passed": 4
+    }
+  },
+  "package": {
+    "python -m build": "wheel and sdist pass",
+    "twine check": "wheel and sdist pass",
+    "sdist pytest": {
+      "passed": 527,
+      "skipped": 5,
+      "skip_reason": "Four repository-workflow contracts omitted from sdist; one optional changelog-count check"
+    },
+    "sdist ruff": "pass",
+    "installed CLI smoke": "pass; raw English rejection, neutral PASS, error exit, language advisory and negative controls",
+    "installed correction demo": "offline checks pass; no live retrieval requested"
+  },
+  "installed_mechanics": {
+    "version": "0.1.16a1",
+    "wheel_source_python_files_equal": 25,
+    "languages": {
+      "ko": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass",
+      "ja": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass",
+      "zh": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass",
+      "es": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass"
+    },
+    "boundary": "Installed artifact and simulated hook payloads; no running third-party host delivery claim."
+  },
+  "historical_evaluation": {
+    "commit": "b6a87af445ef31b8ee7c2189cbfe6b8005546434",
+    "exact_frozen_replay": "matches",
+    "preserved_sha256": {
+      "evals/production-languages/candidate.json": "9c9f207710d05a79a84440dd560c4c57cb56be0ad8c45cb130ad1bee9d55941b",
+      "evals/production-languages/development.json": "a608754360307efd4a1da14f84c363965613677b714f572c3f4f62b5ab032bab",
+      "evals/production-languages/holdout.json": "8f393a0c25ce3e2482d87e16017c8330e9bfc3fd76d6e6a602fdfb5bb42f8ac0",
+      "evals/production-languages/holdout-exposure.json": "f743b5d3049ee09be1e546402223661e33fb14f6417cbfee4eb5ad12c7da7527",
+      "evals/production-languages/results.json": "cbe435f3d3008b185651d3f2c3801e35df2e3a4899dca5ad088eb8cc4ab21132",
+      "evals/production-languages/manifest.json": "2ad602f706b1bed57d1c08e7f66232f52842c575b907a286b25efa2cf4b628b7",
+      "evals/production-languages/run.py": "0a87f7d6569687b0c4467311fe484da80da96ec5c8a1320923bdd767ceebe73a"
+    }
+  },
+  "english_gate_sha256": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
+  "hermes_gate": "Not adopted: .hermes/gate.toml absent. Native assurance only.",
+  "limitations": [
+    "No fresh sealed or real-language evaluation",
+    "Uncertain adjudication unmeasured",
+    "No fresh live third-party host delivery",
+    "No merge, tag, release or publication authorized in this task"
+  ],
+  "recommendation": "Owner may consider advisory-only alpha after final-head CI and independent review; no ship as validated multilingual enforcement"
+}

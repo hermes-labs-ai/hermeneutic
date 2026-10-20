@@ -52,8 +52,8 @@ package-controlled checks still complete, so MISSION COMPLETE is not evidence
 that real log harvesting ran. Native Windows execution was not exercised, and
 the kit has no single reset/cleanup command.
 
-The generic CLI verdict contract is not binary by exit status alone. Experimental
-map-only findings are advisory (exit 0) in CLI and shipped host consumers; raw
+The generic CLI verdict contract is not binary by exit status alone. In the
+unreleased 0.1.16a1 candidate, map-only findings are advisory (exit 0); raw
 English findings retain the existing enforcement even in mixed-language drafts:
 
 ```bash
@@ -61,7 +61,8 @@ printf '%s\n' "$response" | hermeneutic gate
 ```
 
 The command prints `PASS` or `RISK`. Exit 1 means a raw English high- or medium-severity
-RISK; exit 0 means either PASS or a low-severity advisory RISK; exit 2 means an
+RISK; exit 0 means PASS, a raw-English low-severity RISK, or mapping-only RISK
+at any severity; exit 2 means an
 input error. A caller that must observe every RISK must inspect the printed
 verdict or use the Python result, not only `$?`.
 
