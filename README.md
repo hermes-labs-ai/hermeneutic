@@ -98,6 +98,10 @@ The last two commands need [Ollama](https://ollama.com/) running locally. If you
 
 Mining reads the paths you supply and stores local JSONL records. It does not silently teach new rules to the fixed gate. Retrieval uses local embeddings; it does not use Ollama to generate the guidance text.
 
+Inspection rejects records larger than 1 MiB and non-standard JSON constants,
+escapes diagnostic paths, and rejects file changes observed during reading.
+Finish concurrent writers before inspection; this is not a transactional lock.
+
 Before indexing, `inspect` validates the complete existing JSONL file and emits
 at most five preview records by default; `--limit` accepts a positive record
 count. Each JSON preview includes its source line, session (up to 128

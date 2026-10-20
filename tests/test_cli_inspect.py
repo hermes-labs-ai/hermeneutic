@@ -26,6 +26,7 @@ def no_network(monkeypatch):
     def forbidden(*args, **kwargs):
         pytest.fail("inspection attempted a network connection")
     monkeypatch.setattr(socket, "create_connection", forbidden)
+    monkeypatch.setattr(socket.socket, "connect", forbidden)
 
 
 def test_inspect_default_is_bounded_read_only_and_omits_assistant_text(tmp_path, capsys):
@@ -38,7 +39,7 @@ def test_inspect_default_is_bounded_read_only_and_omits_assistant_text(tmp_path,
     result = capsys.readouterr()
     previews = [json.loads(line) for line in result.out.splitlines()]
     assert len(previews) == 5
-    assert previews[0]["line"] == 2
+    assert [preview["line"] for preview in previews] == [2, 3, 4, 5, 6]
     assert [p["session_preview"] for p in previews] == [f"s{i}" for i in range(5)]
     assert "PRIVATE" not in result.out
     assert "Showing 5 of 7 records; complete file validated." in result.err
@@ -72,7 +73,8 @@ def test_inspect_marks_provenance_and_correction_truncation(tmp_path, capsys):
     result = capsys.readouterr()
     preview = json.loads(result.out)
     for field, cap in (("session", 128), ("timestamp", 64), ("user_correction", 160)):
-        assert len(preview[f"{field}_preview"]) == cap
+        expected = {"session": "s" * 200, "timestamp": "t" * 200, "user_correction": "\x1b\n修" * 100}
+        assert preview[f"{field}_preview"] == expected[field][:cap]
         assert preview[f"{field}_truncated"] is True
     assert "\x1b" not in result.out
     assert len(result.out.splitlines()) == 1
@@ -127,3 +129,45 @@ def test_inspect_empty_file(tmp_path, capsys):
     result = capsys.readouterr()
     assert result.out == ""
     assert "Showing 0 of 0" in result.err
+
+
+@pytest.mark.parametrize("constant", ["NaN", "Infinity", "-Infinity"])
+def test_inspect_rejects_nonstandard_constants(constant, tmp_path, capsys):
+    source = tmp_path / "triples.jsonl"
+    source.write_text(json.dumps(_triple()).replace('"2026-10-16"', constant) + "\n")
+    assert main(["inspect", str(source)]) == 2
+    assert capsys.readouterr().out == ""
+
+
+def test_inspect_caps_record_bytes_and_escapes_path(tmp_path, capsys):
+    source = tmp_path / "bad\x1b[2J.jsonl"
+    source.write_bytes(b" " * 1_048_577)
+    assert main(["inspect", str(source)]) == 2
+    result = capsys.readouterr()
+    assert "record exceeds 1 MiB" in result.err
+    assert "\x1b" not in result.err
+    assert result.out == ""
+
+
+def test_inspect_and_index_accept_unicode_line_separator(tmp_path, capsys):
+    from hermeneutic import compile as compiler
+    source = tmp_path / "triples.jsonl"
+    source.write_text(json.dumps(_triple(user_correction="No, use \u2028 this."), ensure_ascii=False) + "\n")
+    assert main(["inspect", str(source)]) == 0
+    assert compiler.compile_index(source, home=tmp_path / "memory", embedder=lambda _: [1.0]).n_triples == 1
+
+
+def test_inspect_rejects_change_during_read(tmp_path, capsys, monkeypatch):
+    from hermeneutic.triples import Triple
+    source = tmp_path / "triples.jsonl"
+    source.write_text(json.dumps(_triple()) + "\n")
+    original = Triple.from_json
+    def mutate(line):
+        result = original(line)
+        source.write_text(json.dumps(_triple(session="changed")) + "\n")
+        return result
+    monkeypatch.setattr(Triple, "from_json", mutate)
+    assert main(["inspect", str(source)]) == 2
+    result = capsys.readouterr()
+    assert result.out == ""
+    assert "changed during inspection" in result.err

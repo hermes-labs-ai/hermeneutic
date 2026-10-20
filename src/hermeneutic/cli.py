@@ -167,12 +167,19 @@ def _positive_int(value: str) -> int:
 
 
 def _cmd_inspect(args: argparse.Namespace) -> int:
+    import os
+
+    safe_path = ascii(str(args.triples))
     previews = []
     total = 0
     text_fields = ("session", "prior_assistant", "user_correction", "next_assistant", "orig_prompt")
     try:
         with open(args.triples, "rb") as source:
-            for line_number, raw in enumerate(source, start=1):
+            before = os.fstat(source.fileno())
+            for line_number, raw in enumerate(iter(lambda: source.readline(1_048_577), b""), start=1):
+                if len(raw) > 1_048_576:
+                    print(f"ERROR: {safe_path}: line {line_number}: record exceeds 1 MiB", file=sys.stderr)
+                    return 2
                 try:
                     line = raw.decode("utf-8")
                 except UnicodeDecodeError:
@@ -181,6 +188,9 @@ def _cmd_inspect(args: argparse.Namespace) -> int:
                     if not line.strip():
                         continue
                     try:
+                        def reject_constant(_value):
+                            raise ValueError("non-standard JSON constant")
+                        json.loads(line, parse_constant=reject_constant)
                         triple = Triple.from_json(line)
                     except json.JSONDecodeError:
                         reason = "invalid JSON"
@@ -193,7 +203,7 @@ def _cmd_inspect(args: argparse.Namespace) -> int:
                             "",
                         )
                 if reason:
-                    print(f"ERROR: {args.triples}: line {line_number}: {reason}", file=sys.stderr)
+                    print(f"ERROR: {safe_path}: line {line_number}: {reason}", file=sys.stderr)
                     return 2
                 total += 1
                 if len(previews) < args.limit:
@@ -204,15 +214,23 @@ def _cmd_inspect(args: argparse.Namespace) -> int:
                             text = value if isinstance(value, str) else json.dumps(value, ensure_ascii=True)
                         except (ValueError, RecursionError):
                             print(
-                                f"ERROR: {args.triples}: line {line_number}: cannot preview metadata",
+                                f"ERROR: {safe_path}: line {line_number}: cannot preview metadata",
                                 file=sys.stderr,
                             )
                             return 2
                         preview[f"{field}_preview"] = text[:cap]
                         preview[f"{field}_truncated"] = len(text) > cap
                     previews.append(preview)
+            after = os.fstat(source.fileno())
+            current = Path(args.triples).stat()
+            def identity(stat):
+                return stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns
+            if identity(before) != identity(after) or identity(after) != identity(current):
+                print(f"ERROR: {safe_path}: file changed during inspection; retry after writer finishes.",
+                      file=sys.stderr)
+                return 2
     except OSError:
-        print(f"ERROR: cannot read triples file: {args.triples}", file=sys.stderr)
+        print(f"ERROR: cannot read triples file: {safe_path}", file=sys.stderr)
         return 2
     for preview in previews:
         print(json.dumps(preview, ensure_ascii=True))
