@@ -27,7 +27,7 @@ def test_cli_explicit_and_auto_language(code, text, tmp_path, capsys):
     path = tmp_path / "draft.txt"
     path.write_text(text, encoding="utf-8")
     for choice in (code, "auto"):
-        assert main(["gate", "--draft", str(path), "--lang", choice]) == 1
+        assert main(["gate", "--draft", str(path), "--lang", choice]) == 0
         assert "RISK" in capsys.readouterr().out
     assert main(["gate", "--draft", str(path)]) == 0
     assert "PASS" in capsys.readouterr().out
@@ -63,7 +63,7 @@ def test_hits_reference_original_draft(code, text):
     assert hits
 
 
-def test_router_gates_normalized_text_but_passes_original_to_probe():
+def test_router_records_mapping_without_automatic_probe():
     seen = []
 
     class Probe:
@@ -74,7 +74,7 @@ def test_router_gates_normalized_text_but_passes_original_to_probe():
 
     text = SAMPLES["ko"]
     result = Router(probe=Probe(), use_rubric=False, lang="auto").gate("request", text)
-    assert result.risk_hits and seen == [text]
+    assert result.risk_hits and seen == []
     assert result.final_output == text and result.original_draft == text
     assert Router(use_rubric=False).gate("request", text).risk_hits == []
 
@@ -87,7 +87,7 @@ def test_telemetry_hashes_original_matched_span(tmp_path, monkeypatch, capsys):
     text = SAMPLES["ko"]
     path = tmp_path / "draft.txt"
     path.write_text(text, encoding="utf-8")
-    assert main(["gate", "--draft", str(path), "--lang", "auto"]) == 1
+    assert main(["gate", "--draft", str(path), "--lang", "auto"]) == 0
     capsys.readouterr()
     record = json.loads(sink.read_text())
     hit = lang.risk_score(text)[0]
@@ -111,20 +111,20 @@ def test_python_response_hooks_gate_original_language(code, text, tmp_path, monk
     assert "number_then_completion" in advisory or "completion_with_number" in advisory
     assert "before relying on these claims.]" in advisory
     monkeypatch.setenv("HERMENEUTIC_QWEN_STATE_DIR", str(tmp_path / "qwen-state"))
-    for relative, payload, decision in (
-        ("integrations/gemini-cli/hermeneutic_after_agent.py", {"prompt_response": text}, "deny"),
-        ("integrations/qwen-code/hermeneutic_stop.py", {"last_assistant_message": text, "session_id": code}, "block"),
+    for relative, payload in (
+        ("integrations/gemini-cli/hermeneutic_after_agent.py", {"prompt_response": text}),
+        ("integrations/qwen-code/hermeneutic_stop.py", {"last_assistant_message": text, "session_id": code}),
     ):
         spec = importlib.util.spec_from_file_location(f"{code}_hook", ROOT / relative)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        assert module.evaluate(payload)["decision"] == decision
+        assert module.evaluate(payload).get("decision", "allow") == "allow"
         if "gemini" in relative:
             retry = module.evaluate({**payload, "stop_hook_active": True})
         else:
             retry = module.evaluate(payload)
         assert retry.get("decision", "allow") == "allow"
-        assert "bounded retry" in retry["systemMessage"]
+        assert "language advisory" in retry["systemMessage"]
 
 
 @pytest.mark.parametrize("code,text", SAMPLES.items())

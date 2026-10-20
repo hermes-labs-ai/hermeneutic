@@ -33,7 +33,8 @@ when:
 - You want a cheap second-opinion gate that doesn't require an LLM call.
 
 Inspect the printed verdict as well as the exit code: low-severity `RISK` is
-advisory and exits 0; medium/high `RISK` exits 1. A caller that chooses to hold a
+advisory and exits 0; raw English medium/high `RISK` exits 1.
+Mapped-language findings remain advisory even at medium/high severity and exit 0. A caller that chooses to hold a
 draft should either:
 1. Add the missing evidence (run the verification commands, paste the output).
 2. Hedge the claim ("appears to" / "based on N samples").
@@ -93,7 +94,10 @@ release. The personal corpus can affect optional compile retrieval after
 - Not a replacement for human review. It's a floor-raiser.
 - Multilingual support is experimental trigger mapping into the fixed English
   rules. Use `hermeneutic gate --lang auto` or an explicit language code;
-  synthetic fixture results do not establish real-language coverage.
+  mapped findings are advisory in shipped consumers; raw English findings keep
+  their existing enforcement even in mixed-language drafts. Diagnostic severity
+  does not imply automatic rejection. Synthetic fixture results do not establish
+  real-language coverage. See `evals/production-languages/` for deployment evidence.
 - Not proof that a caller's external Router backends or repair behavior are safe.
 
 ## Working on this repository

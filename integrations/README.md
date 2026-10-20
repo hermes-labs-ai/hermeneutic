@@ -33,7 +33,7 @@ remain bound to their cited release or receipt.
 | Codex plugin bundle | `MECHANICALLY_TESTED_INTEGRATION` | Script and manifest shape are tested. The repository does not ship a Codex marketplace catalog, and plugin installation was not exercised live. |
 | Codex notify sentinel | `MECHANICALLY_TESTED_INTEGRATION` | Install/refusal/uninstall and decision mechanics are tested. Live notifications and Windows were not exercised. |
 | Gemini CLI `AfterAgent` gate | `MECHANICALLY_TESTED_INTEGRATION` | The native response-bearing hook requests one evidence-focused retry and then fails open with a warning. Manifest, hook output, bounded retry, and local host loading are tested. See [Gemini CLI](gemini-cli/README.md). |
-| Qwen Code native `Stop` gate (unreleased) | `LIVE_VERIFIED_INTEGRATION` | A native `qwen-extension.json` points at a Qwen-only `Stop` hook config, because Qwen's Gemini converter copies hooks without translating event names and drops `AfterAgent`. The gate requests one evidence-focused revision, then allows with a visible warning. Qwen 0.23.2 hardcodes `stop_hook_active: true` on the first `Stop`, so bounding uses a per-session marker file instead of that flag. Clean, risky-repair, and still-risky bounded turns ran through the published 0.23.2 CLI; see the [receipt](../evals/qwen-code/RESULTS.md) and [Qwen Code guide](qwen-code/README.md). |
+| Qwen Code native `Stop` gate | `LIVE_VERIFIED_INTEGRATION` | A native `qwen-extension.json` points at a Qwen-only `Stop` hook config, because Qwen's Gemini converter copies hooks without translating event names and drops `AfterAgent`. The gate requests one evidence-focused revision, then allows with a visible warning. Qwen 0.23.2 hardcodes `stop_hook_active: true` on the first `Stop`, so bounding uses a per-session marker file instead of that flag. Clean, risky-repair, and still-risky bounded turns ran through the published 0.23.2 CLI; see the [receipt](../evals/qwen-code/RESULTS.md) and [Qwen Code guide](qwen-code/README.md). |
 | OpenClaw reply-payload plugin | `MECHANICALLY_TESTED_INTEGRATION` | A native `reply_payload_sending` hook runs the deterministic local gate and appends an advisory for medium/high findings. Adapter/privacy behavior is tested, and isolated OpenClaw v2026.9.5 runtime inspection confirmed registration; Gateway/channel reply delivery was not exercised. See [OpenClaw](openclaw/README.md). |
 | Cursor via imported Claude hooks | `REMOVE` | Cursor's compatibility mechanism exists, but importing the unsupported Hermeneutic Claude Stop adapter does not make that adapter ready. See [Cursor](cursor.md). |
 | Cursor native two-hook concept | `DESIGN_SKETCH` | The former recipe referenced two absent helpers and returned the wrong `stop` result shape. No executable recipe ships. |
@@ -52,13 +52,15 @@ package-controlled checks still complete, so MISSION COMPLETE is not evidence
 that real log harvesting ran. Native Windows execution was not exercised, and
 the kit has no single reset/cleanup command.
 
-The generic CLI verdict contract is not binary by exit status alone:
+The generic CLI verdict contract is not binary by exit status alone. Experimental
+map-only findings are advisory (exit 0) in CLI and shipped host consumers; raw
+English findings retain the existing enforcement even in mixed-language drafts:
 
 ```bash
 printf '%s\n' "$response" | hermeneutic gate
 ```
 
-The command prints `PASS` or `RISK`. Exit 1 means a high- or medium-severity
+The command prints `PASS` or `RISK`. Exit 1 means a raw English high- or medium-severity
 RISK; exit 0 means either PASS or a low-severity advisory RISK; exit 2 means an
 input error. A caller that must observe every RISK must inspect the printed
 verdict or use the Python result, not only `$?`.

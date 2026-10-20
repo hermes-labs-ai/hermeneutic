@@ -123,7 +123,7 @@ try:
 except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
     sys.exit(0)
 
-if proc.returncode != 0 and proc.stdout.strip():
+if proc.stdout.startswith(("RISK — highest severity: high", "RISK — highest severity: med")):
     print(f"[hermeneutic] {{proc.stdout.splitlines()[0]}}", file=sys.stderr)
 
 sys.exit(0)  # advisory only — never block

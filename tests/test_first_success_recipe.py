@@ -195,4 +195,8 @@ def test_readme_first_success_install_pins_the_packaged_release():
     installs = re.findall(r"^.*pip install hermeneutic.*$", recipe, re.MULTILINE)
     assert installs, "First-success recipe must publish an install command"
     for line in installs:
-        assert f"hermeneutic=={__version__}" in line, line
+        expected = __version__
+        if not re.fullmatch(r"\d+\.\d+\.\d+", expected):
+            changelog = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+            expected = re.search(r"^## \[(\d+\.\d+\.\d+)\]", changelog, re.MULTILINE).group(1)
+        assert f"hermeneutic=={expected}" in line, line

@@ -1,4 +1,4 @@
-# hermeneutic repository (experimental prerelease v0.1.16a1)
+# hermeneutic repository (stable v0.1.15; unreleased experimental candidate 0.1.16a1)
 
 Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
 
@@ -13,13 +13,13 @@ Mining personalizes the corpus and optional retrieval. It does not generate or m
 Install the current release from PyPI:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.16a1'
+python3 -m pip install 'hermeneutic==0.1.15'
 ```
 
 For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
 
 ```bash
-git clone --branch v0.1.16a1 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
+git clone --branch v0.1.15 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
 cd hermeneutic
 python3 -m pip install .
 ```
@@ -79,3 +79,5 @@ Core mining, bucketing, gate, harvest, review, and promotion are local and make 
 - Security: SECURITY.md
 - License: Apache-2.0
 - Public display author: Rolando Bosch, Hermes Labs
+
+Experimental mapped-language findings are advisory in shipped consumers. Raw English findings retain their enforcement. Independent simulated evaluation in evals/production-languages/ missed its quality targets; real-language coverage remains unvalidated.

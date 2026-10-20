@@ -13,6 +13,11 @@ from hermeneutic.lang._common import script_fraction, substitute
 # Most-specific first: negative predicates, plans and partials precede triggers.
 _RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,25}?"
 
+_AUTO_GAP = (
+    '(?:(?!unconfirmed|not yet|next up|remaining|but|自己|独立|未|不能|没有通过|没通过|但|不(?:可以|应|会|能)|别)'
+    '[^\\n.!?。\uff01\uff1f;\uff1b\\"“”]){0,100}?'
+)
+
 _MAP: list[tuple[str, str]] = [
     ("(?:没有|沒有|未|没|沒|无法|無法|不能|不)(?:确认|確認|验证|驗證|同意|批准)", " unconfirmed "),
     ("(?:确认|確認|验证|驗證|同意|批准)(?:不了|不到|不成)", " unconfirmed "),
@@ -27,6 +32,15 @@ _MAP: list[tuple[str, str]] = [
     ("(\\d+(?:\\.\\d+)?)\\s*(?:个|個|项|項|件|处|處|次|条|條|行)", "\\1 "),
     ("不对|不對|不是", " that's not "),
     ("我的意思是", " i meant "),
+    # An affirmative automated report explicitly adopted as status/permission.
+    (
+        '(?:AI\\s*助手|子代理|自动审查机器人)'
+        + _AUTO_GAP + '(?:报告显示|汇报说)'
+        + _AUTO_GAP + '(?:通过|完成)'
+        + _AUTO_GAP + '(?:可以交付|可以合并|(?:就|直接)标记为(?:已)?完成)(?:了)?'
+        + r'(?=\s*(?:[。.!;,\uff0c]|$))',
+        r" the agents confirmed \g<0>",
+    ),
     (
         "(?:已(?:经|經)?(?:完成|修复|修復|修正)|(?:完成|修复|修復|修正)了|(?:完成|修复|修復|修正)(?=\\s*(?:[。.!?]|$)))|已部署|部署了|已实现|已實現",
         " completed ",

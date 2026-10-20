@@ -67,17 +67,17 @@ Bounding instead uses one small marker file per session:
   The session id itself never appears in a path.
 - Body: `{"schema": 1, "blocked_at": "<the host's event timestamp>"}`. No
   response text, no prompt, no session id, no working directory.
-- Lifecycle: written when the adapter blocks; always consumed and deleted by the
-  next `Stop` of the same session, whether that response is clean or risky and
+- Lifecycle: written when the adapter blocks; consumed and deleted by the
+  next applicable English/enforceable `Stop` of the same session, whether that response is clean or risky and
   regardless of marker age. So one response gets at most one repair request and
   even a long repair cannot trigger a second block.
-- Cleanup TTL: each run removes markers older than 30 minutes for other
+- Cleanup TTL: each applicable run removes markers older than 30 minutes for other
   sessions. Only files matching the owned name above are eligible, so pointing
   `$HERMENEUTIC_QWEN_STATE_DIR` at a directory shared with other tools never
   deletes JSON this hook did not write. The current session's marker is never
   expired before consumption,
   because that would reintroduce a loop. If a blocked turn is cancelled or
-  abandoned, the next response in that same session is therefore allowed once;
+  abandoned, the next applicable response in that same session is therefore allowed once;
   this is the deliberate fail-open edge. The following response starts a fresh
   bounded attempt.
 
@@ -130,3 +130,10 @@ optional personal correction corpus, call a model, or send response text over
 the network. The regex rules come from `hermeneutic.gates.regex` and the shared
 decision text from `hermeneutic.response_gate`; this adapter restates neither.
 Hermeneutic flags surface wording; it does not establish whether a claim is true.
+
+Experimental language mappings allow the response with a visible advisory.
+A non-English advisory response does not read, create, sweep or consume repair
+markers. A pending English marker therefore remains for the next applicable
+English/enforceable response; without a host turn identifier an intervening
+advisory can leave that later response with a spent repair opportunity. Raw
+English findings retain enforcement, including in mixed-language drafts.

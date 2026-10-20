@@ -16,6 +16,9 @@ by [Hermes Labs](https://hermes-labs.ai)
 
 Your agent says a feature is done before it has checked the work. You correct it. A week later, another session makes the same claim. Hermeneutic gives you two ways to close that loop: a **fixed, fast draft gate** for risky wording, and **personal correction memory** that retrieves past guidance when a similar task comes up. Either part can be used on its own.
 
+The default onboarding below uses stable **0.1.15**. The local 0.1.16a1
+candidate is an opt-in experimental build; it has not been released.
+
 ## Try correction memory
 
 For developers whose agents need evidence from earlier corrections across sessions.
@@ -24,7 +27,7 @@ Python 3.10+ is sufficient; this replay needs no account, logs, model or server:
 ```sh
 python3 -m venv .venv
 . .venv/bin/activate
-python -m pip install hermeneutic==0.1.16a1
+python -m pip install hermeneutic==0.1.15
 demo_dir="$(mktemp -d)"
 hermeneutic demo --out "$demo_dir/sessions"
 hermeneutic mine "$demo_dir/sessions" --format openai --glob '*.json' \
@@ -59,7 +62,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.16a1
+python -m pip install hermeneutic==0.1.15
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
@@ -69,8 +72,10 @@ The check highlights English wording that needs a closer look. It cannot tell wh
 
 ## Experimental language support
 
-**0.1.16a1 is an opt-in prerelease.** Language adapters remain experimental;
-the current evidence does not establish stable general-language coverage.
+**0.1.16a1 is an unreleased opt-in experimental candidate.** Mapped-language
+findings are advisory in the CLI, Router and shipped response consumers. Raw
+canonical English findings retain enforcement, including in mixed drafts.
+The independent evaluation does not establish reliable general-language coverage.
 
 The experimental API provides vocabulary adapters for Korean (`ko`), Chinese (`zh`),
 Japanese (`ja`), Turkish (`tr`), German (`de`), French (`fr`), Spanish (`es`), and
@@ -83,7 +88,9 @@ printf '%s\n' '5개 파일을 수정했습니다.' | hermeneutic gate --lang aut
 hermeneutic gate --draft response.txt --lang zh
 ```
 
-The CLI keeps its English default. `--lang auto` uses script and vocabulary
+The CLI keeps its English default. Mapping-dependent findings print
+`ADVISORY` and do not cause exit 1 or automatic Router review/repair. Raw English
+medium/high findings still cause CLI exit 1. `--lang auto` uses script and vocabulary
 hints; select a code explicitly for ambiguous or short text. Japanese kana is
 checked before Chinese Han characters; kanji-only Japanese needs `--lang ja`.
 Shared Spanish/Portuguese vocabulary may fall back to English. One adapter is
@@ -116,8 +123,18 @@ estimates. Automatic Korean routing catches 116/180 (64.4%) with 2/135 (1.5%)
 false fires; the other fixture results match explicit routing. Korean still misses
 64/180 labeled drift drafts and flags a scope question and qualified stability
 statement. These results do not support stable general-language coverage. See the
-[validation methodology](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/README.md) and
+[synthetic validation methodology](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/README.md) and
 [replayable receipt](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.16a1/evals/languages/results.json) for misses and limitations.
+
+The recovered [independent simulated evaluation](evals/production-languages/README.md)
+is stronger evidence of the current limits than the development fixtures above.
+At its frozen candidate, held-out high-severity recall was Korean 2/30,
+Japanese 0/30, Chinese 0/30 and Spanish 3/30 explicit or 2/30 auto.
+False positives were Korean/Japanese 0/30, Chinese 1/30, Spanish 2/30 explicit
+or 0/30 auto. None met both predeclared targets; these are model-authored
+simulations, not native-speaker or production validation. The current bounded
+Korean repairs were developed against the older synthetic corpus, not this
+consumed holdout. The original frozen receipt and denominators are retained.
 
 ## Use your corrections
 

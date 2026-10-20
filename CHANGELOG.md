@@ -4,9 +4,14 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
-## [0.1.16a1] — 2026-10-20
+## [0.1.16a1] — Unreleased
 
 ### Experimental language fixes
+
+- Integrate the advisory policy and independent simulated evaluation from #57.
+  Mapped-only findings no longer trigger CLI rejection, Router review/repair
+  or Gemini/Qwen retry; raw canonical English enforcement is retained.
+  None of the four independently evaluated adapters met both quality targets.
 
 - Route sparse Korean technical assertions with mapped completion/universal
   vocabulary through the Korean adapter even when Latin identifiers dominate.

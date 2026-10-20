@@ -23,7 +23,7 @@ from dataclasses import dataclass, field
 from hermeneutic.gates import rubric as _rubric
 from hermeneutic.gates.regex import RiskHit, highest_severity
 from hermeneutic.gates.twin import PressureProbe, TwinVerdict
-from hermeneutic.lang import risk_score
+from hermeneutic.lang import deployment_findings
 
 # A repairer takes (request, draft, reason) and returns a revised draft.
 Repairer = Callable[[str, str, str], str]
@@ -75,7 +75,8 @@ class Router:
         regex_severity_threshold: minimum severity to trigger downstream stages.
             "low" gates everything, "high" gates only the loudest patterns.
         lang: stage-1 trigger adapter; "en" preserves the English default.
-            "auto" or an explicit language code enables experimental mapping.
+            "auto" or an explicit language code enables advisory mapping.
+            Only raw English findings trigger downstream review or repair.
         """
         self.probe = probe
         self.repairer = repairer
@@ -89,9 +90,9 @@ class Router:
         result = GateResult(final_output=draft, shipped_at_stage="regex", original_draft=draft)
 
         # Stage 1: regex
-        hits = risk_score(draft, lang=self.lang)
+        hits, blocking = deployment_findings(draft, lang=self.lang)
         result.risk_hits = hits
-        if not self._severity_triggers(highest_severity(hits)):
+        if not self._severity_triggers(highest_severity(blocking)):
             return result  # ship — no risk
 
         # Stage 2: rubric (if available)
