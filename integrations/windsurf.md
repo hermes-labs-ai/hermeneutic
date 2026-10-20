@@ -29,4 +29,4 @@ delete any locally created Hermeneutic helper. Review other hook entries before
 deleting the whole file.
 
 Source checked 2026-07-15:
-[Windsurf Cascade hooks](https://docs.windsurf.com/windsurf/cascade/hooks).
+[Windsurf Cascade hooks](https://docs.devin.ai/desktop/cascade/hooks).
