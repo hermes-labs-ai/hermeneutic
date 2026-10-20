@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "stage": "fresh_codex_public_design",
+  "excluded_from_frozen_denominators": true,
+  "fixture_sha256": {
+    "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+    "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+  },
+  "codex_version": "codex-cli 0.162.1",
+  "protocol": {
+    "runner": "codex exec --ignore-user-config --ignore-rules --ephemeral --sandbox read-only --skip-git-repo-check --output-schema schema.json",
+    "pairs": 6,
+    "jobs": 12,
+    "timeout_seconds_per_job": 120,
+    "conditions": [
+      "without_memory",
+      "with_memory"
+    ],
+    "same_instruction_and_world_per_pair": true,
+    "host_supplies_interpreted_lesson_and_scope": true,
+    "agent_action": "Select object IDs for the requested operation in a synthetic world; structured final action plan.",
+    "completion_metric": "Exact selected object-ID set equals expected selected object-ID set.",
+    "applicability_metric": "Record attributed memory applicability reasoning; source ID alone is not task completion.",
+    "retrieval_metric": "Positive cases retrieve attributed correction; unrelated and other-scope controls retrieve none; misleading narrow-task candidate retrieval is recorded separately from whether the host wrongly expands scope.",
+    "false_transfer_denominator": "Three frozen negative controls. Report lexical candidate retrieval, unwanted control recall, and behavioral overgeneralization separately; the narrower task intentionally resembles a learned WHEN and must not be expanded.",
+    "no_retry_or_tuning_after_results": true,
+    "no_real_user_effect_claim": true
+  },
+  "pairs": [
+    {
+      "case_id": "public-table-dishes",
+      "kind": "public_design",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "sink-bowl",
+            "table-plate"
+          ],
+          "memory_checks": [],
+          "explanation": "Wash the dirty bowl in the sink and dirty plate on the dining table. The clean plate needs no washing, and the office mug is outside the supper-dishes scope. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "22fd79b7d286c99b84f863cba91f88f20c548f1edbcd2822085572a6502c63e0",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "sink-bowl",
+            "table-plate"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-391e37a69867e24a67d66eb5",
+              "applies": true,
+              "reason": "The correction covers kitchen dishwashing in this household and includes dirty dishes in the sink and dining table, consistent with the current task."
+            }
+          ],
+          "explanation": "Wash the dirty sink bowl and dining-table plate. Leave the clean plate and unrelated office mug alone."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "c3b33d2455085e687e8a55bc384e3d65237f897318cde9bc100ee5f366fceae4",
+        "tool_items": 0
+      }
+    }
+  ],
+  "limitations": [
+    "Synthetic object-selection action plans, not effects in a real repository or household.",
+    "One fresh invocation per condition; stochastic results do not establish general effectiveness.",
+    "No retries, lesson changes, WHEN changes, or fixture tuning after results.",
+    "Applicability explanations are recorded for inspection; exact action sets are scored independently."
+  ],
+  "metrics": {
+    "transfer_denominator": 1,
+    "baseline_transfer_completed": 1,
+    "memory_transfer_completed": 1,
+    "improved_pairs": 0,
+    "regressed_pairs": 0,
+    "negative_control_denominator": 0,
+    "negative_controls_with_retrieved_candidate": 0,
+    "strict_negative_recall_denominator": 0,
+    "strict_negative_false_recalls": 0,
+    "behavioral_overgeneralizations_with_memory": 0,
+    "baseline_control_completed": 0,
+    "memory_control_completed": 0,
+    "execution_errors": 0
+  }
+}

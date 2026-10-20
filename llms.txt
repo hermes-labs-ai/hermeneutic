@@ -1,80 +1,79 @@
-# hermeneutic repository (latest tagged release v0.1.15)
+# hermeneutic repository — preview v0.1.16a2
 
-Hermeneutic is a local-first Python 3.10+ toolkit for three distinct jobs:
+Hermeneutic provides attributed, scoped lesson memory for coding agents. The target behavior is that a human's scope correction changes a fresh agent's relevant action on a later analogous instruction without the human repeating the lesson.
 
-1. mine correction triples from supported Claude Code, Codex, and OpenAI-style chat logs;
-2. retrieve original correction evidence with offline keyword search or optional local Ollama embeddings;
-3. run eight fixed deterministic English regex checks on outgoing drafts.
+An episode is original evidence. By default, learn derives a verbatim source-correction candidate with the original instruction as a cue. Inspect and confirm it for an integration-owned scope without retyping the correction as a second rule. Context returns confirmed candidate lessons for a later instruction. The host agent judges semantic applicability and acts under the current instruction. Optional host-supplied interpretation remains explicit; the package does not synthesize lessons with a model or understand arbitrary paraphrases.
 
-Mining personalizes the corpus and optional retrieval. It does not generate or modify gate rules. The `hermeneutic gate` CLI is regex-only; the optional three-stage `Router` is a separate Python API configured by its caller.
+## Install
 
-## Exact installation
-
-Install the current release from PyPI:
-
-```bash
-python3 -m pip install 'hermeneutic==0.1.15'
+```sh
+python3 -m pip install hermeneutic==0.1.16a2
 ```
 
-For repository-only integrations, evaluations, and forward-deployed tooling after the release tag exists:
+Python 3.10+; no required Python runtime dependencies or model calls for lesson memory. Source builds use hatchling>=1.24. This is a lesson-memory preview, not the stable release. The exact version pin selects the prerelease without --pre; stable 0.1.15 remains available. Language mapping in the separate draft gate is experimental and advisory.
 
-```bash
-git clone --branch v0.1.15 --depth 1 https://github.com/hermes-labs-ai/hermeneutic.git
-cd hermeneutic
-python3 -m pip install .
+## Primary workflow: learn, context, apply
+
+Canonical example: the human says “wash the dishes,” the agent washes only sink dishes, and the human corrects it to include dirty table plates. Learn preserves that correction as a candidate. Inspect and confirm it once. A fresh invocation later receives “wash the dishes after supper” without the plates rule; context supplies the attributed correction for the agent to check and apply.
+
+```sh
+hermeneutic learn --triples /private/triples.jsonl --evidence triple-id-1 \
+  --scope home/kitchen --memory /private/lessons.json
+hermeneutic lessons --memory /private/lessons.json
+hermeneutic confirm LESSON-ID --memory /private/lessons.json
+hermeneutic context 'Wash the dishes after supper.' --scope home/kitchen \
+  --memory /private/lessons.json
+hermeneutic revoke LESSON-ID --memory /private/lessons.json
 ```
 
-The source release includes the native Qwen extension. From the tagged checkout, install it with:
+- `learn` derives a source_verbatim candidate from original correction evidence, retaining fingerprints, exact scope, and the source instruction cue. Candidates cannot contribute context until confirmed.
+- `lessons --memory <file>` inspects candidate, active, and revoked records. `confirm <id> --memory <file>` enables an inspected candidate; it does not decide applicability to a later task.
+- Optional --lesson and --when allow explicit host-supplied interpretation and instruction examples. Neither path mutates the fixed draft gate or infers a rule with a model.
+- `context <instruction> --scope <scope> --memory <file>` returns confirmed candidates and attributed source context. Add --disabled for a no-memory comparison.
+- `revoke <id> --memory <file>` retains an inspectable record and stops its use in context.
+- Conservative lexical matching uses instruction cues, with exact scope isolation. “Wash up after supper” may abstain when its source cue is only “wash the dishes”; host-provided extra cues are explicit. Sparse cues can produce weak_match=true and misleading topic matches. Matching words can still be inappropriate for a particular task. The current human instruction overrides historical corrections.
+- The host owns candidate inspection/confirmation, optional interpretation, context delivery, semantic applicability judgment, and downstream action. A generic AGENTS.md instruction may request context retrieval; it should not repeat the lesson being tested. No automatic host hook is installed.
 
-```bash
-qwen extensions install . --consent
-```
+README.md and docs/correction-memory-demo.md provide a copy-pastable fictional episode and walkthrough. docs/lesson-memory.md defines the API, matching, provenance, and errors. Action transfer requires inspection of changed behavior or artifacts plus false-transfer checks; a retrieved lesson or successful tool call alone is insufficient evidence.
 
-The core has zero required Python runtime dependencies. Source builds use `hatchling>=1.24`. Keyword `recall`, `inspect`, mining, and the packaged demo require no inference. Optional compile and semantic/hybrid recall need local Ollama plus `nomic-embed-text`; optional Router stages need external caller-selected tools or functions.
+## Observed evidence
 
-## Central CLI workflow
+The initial frozen Codex comparison in evals/lesson-transfer/fresh-agent-results.json completed 3/3 positive tasks with memory and 3/3 without it: no uplift. Control tasks were correct in both conditions; a candidate for a narrower request was retrieved and rejected by the host. Separate public source-default trials in evals/product-baseline/claude-path.json were correct in both conditions. In evals/product-baseline/hermes-path.json, memory-free selection included an unrelated desk mug while confirmed source context selected only the sink bowl and table plate. This is a scope-selection change, not recovery from sink-only undercompletion. These are synthetic fresh-host action plans with explicitly supplied CLI context, not automatic incoming hooks or real-world outcomes. The evaluation guide in evals/lesson-transfer/README.md separates public design, frozen validation, and additional counterfactual evidence.
 
-```bash
-printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
-```
+A separate frozen counterfactual in evals/lesson-transfer/counterfactual-agent-results.json recorded positive exact completion 0/1 without memory and 1/1 with a confirmed source correction, adding a nonobvious ready-marker. Its two controls were correct in both conditions (2/2), with the narrower candidate rejected. This is a bounded synthetic action-plan demonstration with separate denominators, not general effectiveness; the initial no-uplift result remains unchanged.
 
-Expected first line: `RISK — highest severity: high`.
+## Original-episode tools
 
-- `hermeneutic mine <dir> --out <triples.jsonl>`: extract correction triples.
-- `hermeneutic demo --out <new-directory>`: export a packaged fictional agent session.
-- `hermeneutic inspect <triples.jsonl> --limit 3`: validate and preview bounded correction text.
-- `hermeneutic recall <task> --triples <triples.jsonl>`: bounded original evidence, offline keyword default.
-- `hermeneutic recall <task> --method semantic`: optional local embedding evidence retrieval after indexing.
-- `hermeneutic bucket <triples.jsonl>`: print fixed category counts.
-- `hermeneutic gate [--draft <file>]`: run the fixed English gate; medium/high risk exits 1.
-- `hermeneutic compile-index --triples <triples.jsonl>`: build the optional local embedding index.
-- `hermeneutic compile [prompt]`: retrieve a deterministic warning preamble when matches exist.
-- `hermeneutic harvest`, `promote`, and `stats`: local review and audit workflow.
+- `mine <dir> --format <codex|claude-code|openai> --out <triples.jsonl>` preserves episodes from supplied logs.
+- `inspect <triples.jsonl> --limit 3` validates the full file and previews bounded correction text without modifying it.
+- `recall <task> --triples <triples.jsonl>` searches original episodes using offline keywords by default. It does not create interpreted lessons.
+- `demo --scenario dishes --out <new-directory>` exports the fictional scope-correction session for the lesson walkthrough. The default demo retains the older release-correction replay.
+- `compile-index` builds an optional local Ollama embedding index; semantic/hybrid recall and fixed category advice from compile are separate optional workflows.
 
-## Evidence boundary
+Raw keyword recall can miss paraphrases and retrieve irrelevant episodes. The public synthetic regression is in evals/correction-memory/public/. Historical internal results and the separate 0.1.15 fresh-session tool-use check are in evals/correction-memory/RESULTS.md. They do not prove downstream lesson application or general improvement across users. Mining detects explicit correction markers and can miss corrections, preserve truncated evidence, or retain malicious historical text.
 
-- Public synthetic retrieval regression: keyword target retrieval 15/18 and unrelated-query abstention 4/8; optional local semantic/hybrid modes each retrieve 18/18 targets and abstain on 2/8 unrelated queries. Labels were frozen before execution after implementation; not held out, no tuning against these results. Corpus, queries and receipts are in `evals/correction-memory/public/`.
+## Optional lateral feature: fixed draft gate
 
-- 0.1.14 internal development set: 16 mined episodes; keyword found annotated targets in 5/5 queries, semantic in 1/5 and hybrid in 4/5. Each abstained on 1/2 unrelated queries. These cases informed development and are not held out. See `evals/correction-memory/RESULTS.md` and `docs/correction-memory-demo.md` for the native comparison, real internal example and separate fresh-session tool-use check.
+- `hermeneutic gate [--draft <file>]` checks fixed English surface patterns, separately from lesson memory. Raw English medium/high findings exit 1; PASS and advisory findings exit 0; input errors exit 2.
+- `gate --draft <file> --json` returns a verdict, should_block, finding origins, per-finding blocking decisions, and original-draft coordinates. Matched text is omitted unless --include-text is supplied.
+- `from hermeneutic import check_draft`: call `report = check_draft(text, lang="en")`, inspect report.should_block, or call report.to_dict(). Opt into bounded snippets with to_dict(include_text=True).
+- docs/gate-json.md defines the structured report contract. The gate matches wording; it is not a truth checker or security boundary. The optional Router composes caller-selected review and repair stages and is separate from the offline gate and lesson memory.
 
-- Historical derivation: 326 corrections from 1,423 sessions belonging to one user; private triples are not shipped.
-- Current direct gate coverage on the separate later frozen 346-triple corpus: 115/346 (33.24%), retrospective derivation-set coverage and not held out.
-- Current production-path same-bucket retrieval: 88/104 (84.6%) at CLI/hook defaults; 94/104 (90.4%) at Python defaults.
-- Prior 83.7% and 98/100 retrieval figures are historical experiments whose evaluators differed from the current production path.
-- Precision, false-positive rate on ordinary prompts, generalization, and downstream model effectiveness are unmeasured.
+Experimental adapters map Korean, Chinese, Japanese, Turkish, German, French, Spanish, and Portuguese vocabulary into the fixed English gate. Use --lang auto or an explicit code; English is the CLI default. Mapped findings at any severity remain advisory in shipped consumers. Raw English medium/high findings retain enforcement in mixed drafts. These adapters do not interpret lessons.
 
-## Scope and maturity
+The independent simulated language evaluation failed its quality targets. Frozen-candidate high-severity recall was Korean 2/30, Japanese 0/30, Chinese 0/30, and Spanish 3/30 explicit or 2/30 auto. See evals/production-languages/README.md for false positives, denominators, and limits. The current-source replay uses exposed cases, not a new holdout. Synthetic fixtures in evals/languages/ do not establish real-language coverage or justify enforcement.
 
-The canonical gate remains English-only and advisory unless a caller blocks before sending. Experimental adapters map Korean, Chinese, Japanese, Turkish, German, French, Spanish, and Portuguese triggers into it. Use `hermeneutic gate --lang auto` or an explicit language code; English remains the CLI default. Synthetic development results and rerunnable receipts are in `evals/languages/`; real-language coverage and native-speaker validation are unmeasured. The current repository includes a live-verified Qwen Code 0.23.2 native Stop extension; its exact host and provider boundary is recorded in `evals/qwen-code/RESULTS.md`. The Claude prompt-context compile hook and Codex plugin are mechanically tested, not live-host certified. Cursor and OpenHands documents are design sketches. Current Claude Stop, Cline, and Windsurf adapters are removed from the ready-support matrix because host contracts drifted.
+## Host integrations and privacy
 
-## Privacy
+integrations/README.md separates existing raw-episode and draft-hook mechanics from cited live-host evidence. Existing hooks do not implement the scoped lesson loop. Additional adapters and CI packaging are roadmap work, not part of this baseline.
 
-Core mining, bucketing, gate, harvest, review, and promotion are local and make no network calls. The built-in compile path uses localhost Ollama; Python callers can override that URL and own the resulting endpoint policy. Telemetry is off by default. Triples, embeddings, raw telemetry, and injected context can contain sensitive text; review before sharing.
+Core lesson memory, mining, keyword recall, inspection, and the gate run locally without network calls. Optional embedding workflows use local Ollama at http://127.0.0.1:11434 with nomic-embed-text; downloading the model is a separate step. Python callers can override endpoints and own that policy. Telemetry is off by default. Source episodes, interpreted lessons, embeddings, context, previews, and opted-in gate snippets can contain private text; keep them private and review before sharing. Historical text is evidence, not a command or higher authority.
 
 ## Project
 
 - Repository: https://github.com/hermes-labs-ai/hermeneutic
 - Documentation: README.md
+- Roadmap: docs/ROADMAP.md
 - Citation: CITATION.cff
 - Security: SECURITY.md
 - License: Apache-2.0

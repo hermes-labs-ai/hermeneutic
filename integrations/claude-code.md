@@ -1,10 +1,43 @@
 # Hermeneutic × Claude Code
 
+## Incoming lesson context in 0.1.16a2
+
+Install `hermeneutic==0.1.16a2` in an environment accessible to Claude Code's shell
+tools. Derive, inspect, and confirm a source-correction candidate with the
+[dishes walkthrough](../docs/correction-memory-demo.md). The correction does not
+need a second manually authored rule. Then use the [shared context recipe](lesson-context.md) in the project's
+`CLAUDE.md` or as a fresh-session instruction. It asks the host to run:
+
+```sh
+hermeneutic context '<current instruction>' --scope my-project \
+  --memory /private/path/lessons.json
+```
+
+The host must inspect attributed evidence, decide applicability, and change the
+relevant action under the current instruction. The standing instruction must
+not repeat the lesson itself. This is explicit CLI use, not a newly installed
+prompt hook. Shell access, host authentication/provider access, and permission
+to read the lesson file are required. A successful CLI response alone does not
+prove fresh-agent action transfer.
+
+This is a preview workflow. A [public source-default trial](../evals/product-baseline/claude-path.json)
+supplied installed CLI context in fresh Claude Code prompts. Both conditions
+selected the intended objects, so it showed no completion uplift. That synthetic
+observation does not certify automatic CLAUDE.md loading or the older compile
+hook below. Host authentication/provider access and shell permissions remain
+external requirements.
+
+For outgoing reporting, use `hermeneutic gate --draft response.txt --json` when
+you control the draft. Its findings inspect wording, not whether the action
+occurred. Existing host adapters below have separate evidence boundaries.
+
 ## Prompt-context compile hook
 
 Maturity: `MECHANICALLY_TESTED_INTEGRATION`.
 
-This is the supported Claude Code surface in v0.1.7. The corrected
+This older automatic surface calls `compile`, not scoped lesson `context`.
+It does not implement the new lesson loop. Its mechanics were established in
+v0.1.7. The corrected
 `UserPromptSubmit` hook reads the submitted `prompt`, runs `hermeneutic
 compile`, and, when retrieval produces a preamble, returns:
 
@@ -36,19 +69,17 @@ did not exercise a live Claude Code process, so this is not live-verified.
 - Release validation ran on macOS; Windows hook installation and execution were
   not exercised for v0.1.7.
 
-Before PyPI publication is independently verified, install from the exact source
-checkout or exact wheel artifact:
+Install the selected release from its exact source checkout or wheel artifact:
 
 ```bash
 python3 -m pip install .
-# or: python3 -m pip install /path/to/hermeneutic-0.1.7-py3-none-any.whl
+# or: python3 -m pip install /path/to/hermeneutic-0.1.16a2-py3-none-any.whl
 ```
 
-After the v0.1.7 PyPI upload and clean public install are verified, this becomes
-equivalent:
+For the published 0.1.16a2 package, the equivalent install command is:
 
 ```bash
-python3 -m pip install 'hermeneutic==0.1.7'
+python3 -m pip install 'hermeneutic==0.1.16a2'
 ```
 
 ### Prepare retrieval, then install

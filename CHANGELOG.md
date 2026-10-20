@@ -2,7 +2,62 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.16a2] — 2026-10-20
+
+### Added
+
+- Scoped lesson memory preview: derive a source-verbatim candidate from an
+  attributed correction episode, inspect and confirm it, then retrieve bounded
+  context for later instructions. Optional host interpretation is explicit;
+  default operation uses no model or hidden learning. Revocation retains the
+  original episode.
+- Teach-and-transfer onboarding and a separate synthetic transfer evaluation.
+  Applicability and downstream action remain the host agent's responsibility.
+- Optional structured draft checks: `hermeneutic gate --json` and Python
+  `check_draft` expose source locations and blocking policy. Reports omit matched
+  text by default. This lateral check does not learn or apply correction lessons.
+- Machine-readable release metadata and provenance-labeled regression controls.
+
+### Fixed
+
+- Integrate the advisory-language correction from PR #57 while retaining its
+  review history and original frozen evaluation. Mapped findings cannot block
+  or invoke automatic repair; raw English enforcement survives mixed drafts.
+  Experimental mappings remain unvalidated for general-language coverage.
+
+### Documentation
+
+- Lead with interpreted correction transfer and publish an evidence-ordered
+  roadmap. The separate recall experiment in PR #63 and GitHub Action expansion
+  remain outside this release.
+
 ## [Unreleased]
+
+## [0.1.16a1] — Candidate, unreleased
+
+### Experimental language fixes
+
+- Integrate the advisory policy and independent simulated evaluation from #57.
+  Mapped-only findings no longer trigger CLI rejection, Router review/repair
+  or Gemini/Qwen retry; raw canonical English enforcement is retained.
+  None of the four independently evaluated adapters met both quality targets.
+
+- Route sparse Korean technical assertions with mapped completion/universal
+  vocabulary through the Korean adapter even when Latin identifiers dominate.
+  Counters alone do not select Korean.
+- Map the Korean contrast ending `-했는데` and next-step marker `다음은` into
+  the canonical gate's existing partial-progress guard. English rules are unchanged.
+- Replay the frozen synthetic language corpora and negative controls: Korean
+  auto catch changes from 111/180 to 116/180; explicit catch stays 116/180;
+  clean false fires change from 4/135 to 2/135. The other seven language results
+  and the separate negative/affirmative relay controls are unchanged.
+- This is an opt-in alpha prerelease. Korean still misses 64/180 authored drift
+  drafts and flags two clean drafts. The other authored sets catch 14–16/20
+  drift drafts each. No fresh held-out, native-speaker or real-use coverage is established.
+- Keep the original #57 candidate and consumed evaluation immutable. A separate
+  current-source regression receipt reports severity-specific TP/FN and any-hit
+  FP/TN on the exposed cases, with uncertain adjudication explicitly unmeasured.
+  This replay does not qualify a language for enforcement or establish a new holdout.
 
 ## [0.1.15] — 2026-10-20
 

@@ -15,6 +15,11 @@ from hermeneutic.lang._common import substitute
 # Most-specific first: negative predicates, plans and partials precede triggers.
 _RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,30}?"
 
+_AUTO_GAP = (
+    '(?:(?!unconfirmed|not yet|next up|remaining|but|직접|별도로|아니|않|못)'
+    '[^\\n.!?。\uff01\uff1f;\uff1b\\"“”]){0,100}?'
+)
+
 _MAP: list[tuple[str, str]] = [
     (
         "(?:안|못)\\s*(?:확인|검증|동의|합의|승인|찾)(?:했|됐)?|(?:확인|검증|동의|합의|승인|찾)(?:하|되)?지\\s*(?:않|못)",
@@ -24,9 +29,10 @@ _MAP: list[tuple[str, str]] = [
     ("(?:확인|검증|동의|합의|승인|찾)\\s*(?:못|안)\\s*(?:했|하)", " unconfirmed "),
     ("(?:확실|분명|안정적)(?:하|이)?지(?:는)?\\s*(?:않|못)|정확히\\s*작동하지\\s*(?:않|못)", " uncertain "),
     ("(?<=[가-힣])(\\d+(?:\\.\\d+)?)", " \\1"),
-    ("(했|됐|되었|하였)지만", "\\1 but "),
+    ("(했|됐|되었|하였)(?:지만|는데)", "\\1 but "),
     ("하지만|그러나|그런데|지만", " but "),
     ("아직|나머지|남아|남았|진행 중|작업 중|테스트 중", " remaining "),
+    ("다음은", " next up "),
     ("(\\d+(?:\\.\\d+)?)\\s*(개의|개|건|번|명|줄|가지|차례)", "\\1 "),
     (
         "(patch|fix(?:ed)?|merge[d]?|deploy(?:ed)?|refactoring|release[d]?|"
@@ -50,6 +56,14 @@ _MAP: list[tuple[str, str]] = [
     ("잘못(됐|되었|했|짚)", " wrong "),
     ("그거 말고", " not that one "),
     ("돌려놔", " revert that "),
+    # An affirmative automated report explicitly adopted as status/permission.
+    (
+        '(?:하위\\s*에이전트|서브\\s*에이전트)'
+        + _AUTO_GAP + '(?:통과시켰다고|완료했다고|완료되었다고)\\s*하니'
+        + _AUTO_GAP + '(?:(?:완료|종료)\\s*처리(?:하겠습니다|했습니다|합니다)|닫겠습니다)'
+        + r'(?=\s*(?:[.!。,;]|$))',
+        r" the agents confirmed \g<0>",
+    ),
     (
         "(완료|완성|구현|수정|배포|반영|충족|제거|해결|처리|적용|개선|통합|마무리|작성|생성|설치|설정|출시|릴리스|최적화|업데이트|검증|"
         "정리|복구|고쳐?)(했|됐|되었|하였|해 ?뒀|해 ?놓|졌)",
@@ -95,4 +109,13 @@ def is_dominant(text: str, threshold: float = 0.3) -> bool:
     if not letters:
         return False
     hangul = sum(1 for c in letters if "가" <= c <= "힣")
-    return hangul / len(letters) >= threshold
+    if hangul / len(letters) >= threshold:
+        return True
+    # Technical drafts can contain many Latin identifiers. Route sparse Hangul
+    # only when a mapped Korean assertion is present; counters alone do not
+    # establish a language. This remains a one-adapter heuristic.
+    return hangul >= 4 and any(
+        replacement.strip() in {"completed", "built", "finished", "passed", "all"}
+        and pattern.search(text)
+        for pattern, replacement in _COMPILED
+    )

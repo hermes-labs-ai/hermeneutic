@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "stage": "fresh_codex_action_plans",
+  "excluded_from_frozen_denominators": false,
+  "fixture_sha256": {
+    "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+    "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+  },
+  "codex_version": "codex-cli 0.162.1",
+  "protocol": {
+    "runner": "codex exec --ignore-user-config --ignore-rules --ephemeral --sandbox read-only --skip-git-repo-check --output-schema schema.json",
+    "pairs": 6,
+    "jobs": 12,
+    "timeout_seconds_per_job": 120,
+    "conditions": [
+      "without_memory",
+      "with_memory"
+    ],
+    "same_instruction_and_world_per_pair": true,
+    "host_supplies_interpreted_lesson_and_scope": true,
+    "agent_action": "Select object IDs for the requested operation in a synthetic world; structured final action plan.",
+    "completion_metric": "Exact selected object-ID set equals expected selected object-ID set.",
+    "applicability_metric": "Record attributed memory applicability reasoning; source ID alone is not task completion.",
+    "retrieval_metric": "Positive cases retrieve attributed correction; unrelated and other-scope controls retrieve none; misleading narrow-task candidate retrieval is recorded separately from whether the host wrongly expands scope.",
+    "false_transfer_denominator": "Three frozen negative controls. Report lexical candidate retrieval, unwanted control recall, and behavioral overgeneralization separately; the narrower task intentionally resembles a learned WHEN and must not be expanded.",
+    "no_retry_or_tuning_after_results": true,
+    "no_real_user_effect_claim": true
+  },
+  "pairs": [
+    {
+      "case_id": "transfer-service-handoff",
+      "kind": "transfer",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "maple-patch",
+            "maple-test-receipt",
+            "maple-rollback"
+          ],
+          "memory_checks": [],
+          "explanation": "Include the ready maple-worker patch, focused-test evidence, and rollback note for deployment handoff. Exclude scratch notes, credentials, and the unrelated cedar-api patch. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "369a2ed73684b142f3c6139b5c0676b50c671eaa940351b3f1089eb1322e8596",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "maple-patch",
+            "maple-test-receipt",
+            "maple-rollback"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-1866c18bf0a29f1d55fe4b53",
+              "applies": true,
+              "reason": "The task is a deployment handoff within the same synthetic-service-operations scope, so the recalled interpretation applies without conflicting with current constraints."
+            }
+          ],
+          "explanation": "Package maple-worker's ready patch, recorded focused-test receipt, and rollback note together. Exclude scratch notes, credentials, and the unrelated cedar-api patch."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "75497a0e12945a217465b60a93e88b22d1f220a6509b3211babe63b6f5893aaa",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "transfer-experiment-archive",
+      "kind": "transfer",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "parser-result",
+            "parser-manifest",
+            "parser-environment"
+          ],
+          "memory_checks": [],
+          "explanation": "Archive the parser run’s result, manifest, and environment snapshot. Shared resources and the tokenizer manifest are outside this run’s scope."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "f7c141a48f977631acc64528c731f0cf4b30325fe2074cae9fbc1a91f531c058",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "parser-result",
+            "parser-manifest",
+            "parser-environment"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-649cb89cd02e48773c52d4c6",
+              "applies": true,
+              "reason": "The lesson matches this scope and run-archiving operation and does not conflict with the current instruction."
+            }
+          ],
+          "explanation": "Archive the parser result report, run manifest, and environment snapshot together. Exclude shared source code, credentials, and the tokenizer run's manifest."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "3f1cabc53aa17aab903f0d28223ac7a415672228dffd338c9ca9169d67baa58b",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "transfer-handoff-second-paraphrase",
+      "kind": "transfer",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "spruce-patch",
+            "spruce-test-receipt",
+            "spruce-rollback"
+          ],
+          "memory_checks": [],
+          "explanation": "Include the ready patch, focused-test receipt, and rollback note for the spruce deployment handoff. Exclude scratch notes and credentials because they are not needed for the handoff. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "d746ed1aa7f6eb438e08b87164cce29b228be6a1933365a5af203178457a6dcb",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "spruce-patch",
+            "spruce-test-receipt",
+            "spruce-rollback"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-1866c18bf0a29f1d55fe4b53",
+              "applies": true,
+              "reason": "The current task is a deployment handoff within synthetic-service-operations, exactly matching the lesson's scope and operation, with no conflicting explicit constraints."
+            }
+          ],
+          "explanation": "Package spruce's ready patch, recorded focused-test receipt, and rollback note together. Exclude scratch notes and credentials."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "1b1b9b8348e5b37ef84d4b82b05ede81531446540b81e974270b0653e02a17f1",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "control-unrelated-same-scope",
+      "kind": "unrelated_control",
+      "retrieved_candidates": 0,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "approved-status"
+          ],
+          "memory_checks": [],
+          "explanation": "The instruction specifies the current approved status sheet as the source for the weekly status memo. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "bf2c580568a04ec28b7ed7257a8c0ab3431d8f045bf08adb23a1232970eaf68e",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "approved-status"
+          ],
+          "memory_checks": [],
+          "explanation": "The instruction specifies the current approved status sheet as the memo’s source. No recalled corrections were provided."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "fadcebc21c0b982eb8dffa91d1f55d5549c5d4291181a17c320bbfdc69647949",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "control-matching-words-other-scope",
+      "kind": "scope_control",
+      "retrieved_candidates": 0,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "client-brief"
+          ],
+          "memory_checks": [],
+          "explanation": "Only client-brief is approved external material for the client. The remaining objects are internal only and excluded. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "81c7ddb94d330c0a4d43f25be6a30f953808955accb26ffd4cab2ce271ba5f06",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "client-brief"
+          ],
+          "memory_checks": [],
+          "explanation": "Package only the ready, approved external client brief. All other objects are internal only and excluded. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "55a30688bfc9f3da810a955bdafe7b828639d7a69701130c227fb8eedc59ba6c",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "control-misleading-narrower-request",
+      "kind": "misleading_neighbor",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "today-patch"
+          ],
+          "memory_checks": [],
+          "explanation": "The instruction requests only today's patch, so the package includes the source patch and excludes test results, rollback notes, and scratch notes. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "d8d0e29a917ab6aedb90699ed7e1ec2205dd128853b90186dc34a012901e6c30",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "today-patch"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-1866c18bf0a29f1d55fe4b53",
+              "applies": false,
+              "reason": "The lesson matches the scope and handoff context, but its bundled packaging conflicts with today's explicit patch-only constraint."
+            }
+          ],
+          "explanation": "Package only today-patch. The current instruction excludes the test receipt, rollback note, and scratch notes."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "3409b45eff283bc6de3f2c71e38e6122bfd65bd57fd14ed30a92b49c31808bc6",
+        "tool_items": 0
+      }
+    }
+  ],
+  "limitations": [
+    "Synthetic object-selection action plans, not effects in a real repository or household.",
+    "One fresh invocation per condition; stochastic results do not establish general effectiveness.",
+    "No retries, lesson changes, WHEN changes, or fixture tuning after results.",
+    "Applicability explanations are recorded for inspection; exact action sets are scored independently."
+  ],
+  "metrics": {
+    "transfer_denominator": 3,
+    "baseline_transfer_completed": 3,
+    "memory_transfer_completed": 3,
+    "improved_pairs": 0,
+    "regressed_pairs": 0,
+    "negative_control_denominator": 3,
+    "negative_controls_with_retrieved_candidate": 1,
+    "strict_negative_recall_denominator": 2,
+    "strict_negative_false_recalls": 0,
+    "behavioral_overgeneralizations_with_memory": 0,
+    "baseline_control_completed": 3,
+    "memory_control_completed": 3,
+    "execution_errors": 0
+  }
+}

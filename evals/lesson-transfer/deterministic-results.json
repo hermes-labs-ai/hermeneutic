@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "stage": "deterministic_host_mechanics",
+  "python": "/private/tmp/hermeneutic-product.Ooc7vN/wheel-env/bin/python",
+  "package_mode": "installed",
+  "package_identity": {
+    "version": "0.1.16",
+    "package_path": "/private/tmp/hermeneutic-product.Ooc7vN/wheel-env/lib/python3.14/site-packages/hermeneutic/__init__.py",
+    "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+  },
+  "fixture_sha256": {
+    "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+    "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+  },
+  "source_sha256": {
+    "src/hermeneutic/cli.py": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0",
+    "src/hermeneutic/lessons.py": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a"
+  },
+  "checks": {
+    "default_capture_is_source_verbatim_candidate": true,
+    "unconfirmed_candidate_is_not_supplied": true,
+    "confirmation_activates_source_candidate": true,
+    "inspect_contains_explicit_interpretation": true,
+    "provenance_matches_source_episode": true,
+    "source_correction_preserved": true,
+    "disabled_has_no_matches_or_context": true,
+    "uncorrected_memory_has_no_context": true,
+    "uncorrected_episode_mines_no_evidence": true,
+    "uncorrected_episode_cannot_teach_attributed_lesson": true,
+    "revoke_removes_context": true,
+    "inspect_retains_revoked_tombstone": true,
+    "frozen_retrieval:transfer-service-handoff": true,
+    "frozen_retrieval:transfer-experiment-archive": true,
+    "frozen_retrieval:transfer-handoff-second-paraphrase": true,
+    "frozen_retrieval:control-unrelated-same-scope": true,
+    "frozen_retrieval:control-matching-words-other-scope": true,
+    "frozen_retrieval:control-misleading-narrower-request": true,
+    "evaluated_core_matches_source_freeze": true
+  },
+  "passed": true,
+  "design_diagnostics": {
+    "source_default_later_context_retrieved": false,
+    "host_interpreted_later_context_retrieved": true,
+    "excluded_from_required_frozen_checks": true
+  },
+  "retrieval": [
+    {
+      "case_id": "transfer-service-handoff",
+      "kind": "transfer",
+      "candidate_expected": true,
+      "candidate_retrieved": true,
+      "matches_count": 1,
+      "attributed": true
+    },
+    {
+      "case_id": "transfer-experiment-archive",
+      "kind": "transfer",
+      "candidate_expected": true,
+      "candidate_retrieved": true,
+      "matches_count": 1,
+      "attributed": true
+    },
+    {
+      "case_id": "transfer-handoff-second-paraphrase",
+      "kind": "transfer",
+      "candidate_expected": true,
+      "candidate_retrieved": true,
+      "matches_count": 1,
+      "attributed": true
+    },
+    {
+      "case_id": "control-unrelated-same-scope",
+      "kind": "unrelated_control",
+      "candidate_expected": false,
+      "candidate_retrieved": false,
+      "matches_count": 0,
+      "attributed": true
+    },
+    {
+      "case_id": "control-matching-words-other-scope",
+      "kind": "scope_control",
+      "candidate_expected": false,
+      "candidate_retrieved": false,
+      "matches_count": 0,
+      "attributed": true
+    },
+    {
+      "case_id": "control-misleading-narrower-request",
+      "kind": "misleading_neighbor",
+      "candidate_expected": true,
+      "candidate_retrieved": true,
+      "matches_count": 1,
+      "attributed": true
+    }
+  ],
+  "retrieval_metrics": {
+    "positive_denominator": 3,
+    "positives_retrieved": 3,
+    "strict_negative_denominator": 2,
+    "strict_negative_false_matches": 0,
+    "misleading_neighbor_denominator": 1,
+    "misleading_neighbors_with_candidate": 1
+  },
+  "design_demo": {
+    "source_candidate_id": "lesson-2667acadcae6350410e02e87",
+    "source_candidate_status": "active",
+    "source_provenance": {
+      "evidence": "triple-id-1",
+      "corpus_sha256": "19fb2f8c2fe92748697dff837ff5ee67bdd3bfa44be7ea9847650a474ca2c30b",
+      "record_sha256": "19fb2f8c2fe92748697dff837ff5ee67bdd3bfa44be7ea9847650a474ca2c30b",
+      "episode": {
+        "session": "session",
+        "timestamp": "",
+        "orig_prompt": "Do the dishes.",
+        "prior_assistant": "I washed the dirty bowl in the sink and stopped.",
+        "user_correction": "No, I meant the dirty plates on the dining table too. Doing the dishes includes gathering those and washing them, not just washing what is already in the sink.",
+        "next_assistant": "I gathered the dirty dining-table plates, washed them with the sink dishes, and left the clean dishes alone."
+      },
+      "truncated": {
+        "session": false,
+        "timestamp": false,
+        "orig_prompt": false,
+        "prior_assistant": false,
+        "user_correction": false,
+        "next_assistant": false
+      }
+    },
+    "source_candidate_later_context": {
+      "schema_version": 1,
+      "enabled": true,
+      "scope": "synthetic-household:kitchen",
+      "context": "",
+      "matches": [],
+      "usage": "Host-interpreted historical context; check applicability and conflicts. Current explicit instructions take precedence. Lexical matches do not establish semantic applicability. Single-term overlaps are weak cues and require particular applicability review. Use only through host-controlled explicit insertion; do not execute automatically. If lessons conflict, do not silently choose a winner; clarify or revoke and replace the old lesson."
+    },
+    "explicit_interpretation_id": "lesson-391e37a69867e24a67d66eb5",
+    "context": {
+      "schema_version": 1,
+      "enabled": true,
+      "scope": "synthetic-household:kitchen",
+      "context": "Host-interpreted historical context; check applicability and conflicts. Current explicit instructions take precedence. Lexical matches do not establish semantic applicability. Single-term overlaps are weak cues and require particular applicability review. Use only through host-controlled explicit insertion; do not execute automatically. If lessons conflict, do not silently choose a winner; clarify or revoke and replace the old lesson.\n{\"lessons\": [{\"id\": \"lesson-391e37a69867e24a67d66eb5\", \"scope\": \"synthetic-household:kitchen\", \"lesson\": \"For this household's kitchen dishwashing requests, gather and wash dirty dishes from both the sink and dining table. Sink-only washing under-completes the intended task. Leave clean dishes alone; this correction does not authorize collecting unrelated objects elsewhere.\", \"evidence\": \"triple-id-1\", \"record_sha256\": \"19fb2f8c2fe92748697dff837ff5ee67bdd3bfa44be7ea9847650a474ca2c30b\"}]}",
+      "matches": [
+        {
+          "id": "lesson-391e37a69867e24a67d66eb5",
+          "interpretation": "host_supplied",
+          "lesson": "For this household's kitchen dishwashing requests, gather and wash dirty dishes from both the sink and dining table. Sink-only washing under-completes the intended task. Leave clean dishes alone; this correction does not authorize collecting unrelated objects elsewhere.",
+          "provenance": {
+            "corpus_sha256": "19fb2f8c2fe92748697dff837ff5ee67bdd3bfa44be7ea9847650a474ca2c30b",
+            "episode": {
+              "next_assistant": "I gathered the dirty dining-table plates, washed them with the sink dishes, and left the clean dishes alone.",
+              "orig_prompt": "Do the dishes.",
+              "prior_assistant": "I washed the dirty bowl in the sink and stopped.",
+              "session": "session",
+              "timestamp": "",
+              "user_correction": "No, I meant the dirty plates on the dining table too. Doing the dishes includes gathering those and washing them, not just washing what is already in the sink."
+            },
+            "evidence": "triple-id-1",
+            "record_sha256": "19fb2f8c2fe92748697dff837ff5ee67bdd3bfa44be7ea9847650a474ca2c30b",
+            "truncated": {
+              "next_assistant": false,
+              "orig_prompt": false,
+              "prior_assistant": false,
+              "session": false,
+              "timestamp": false,
+              "user_correction": false
+            }
+          },
+          "scope": "synthetic-household:kitchen",
+          "status": "active",
+          "version": 1,
+          "when": [
+            "Do supper dishes.",
+            "Wash kitchen dishes."
+          ],
+          "matched_when": "Do supper dishes.",
+          "shared_terms": [
+            "dishes",
+            "supper"
+          ],
+          "weak_match": false,
+          "query_coverage": 0.5,
+          "example_coverage": 1.0
+        }
+      ],
+      "usage": "Host-interpreted historical context; check applicability and conflicts. Current explicit instructions take precedence. Lexical matches do not establish semantic applicability. Single-term overlaps are weak cues and require particular applicability review. Use only through host-controlled explicit insertion; do not execute automatically. If lessons conflict, do not silently choose a winner; clarify or revoke and replace the old lesson."
+    }
+  },
+  "limitations": [
+    "Checks mining, explicit teaching, retrieval, attribution, scope, inspect, revoke, and disabled mechanics.",
+    "This stage does not execute a fresh agent or establish downstream task improvement.",
+    "Interpreted lesson, scope, and WHEN examples are supplied by the host; no automatic intent inference is claimed."
+  ]
+}

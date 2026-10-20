@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "final_authorized_evaluation_iteration": true,
+  "reason": "Original ordinary completeness tasks were non-discriminating: baseline already selected the expected artifacts. Preserve those results and test one prospectively frozen household-specific convention.",
+  "frozen_before_first_run": true,
+  "source_tuning_allowed": false,
+  "files_sha256": {
+    "counterfactual-cases.json": "584910cd0a04b11a9a505e1fa1f2d33277e36a494083304106ec2d3368657a0a"
+  },
+  "original_fixture_sha256_unchanged": {
+    "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+    "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+  },
+  "core_source_freeze": {
+    "received_before_first_execution": true,
+    "frozen_cases_not_read_by_core_author": true,
+    "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+  },
+  "candidate_hash_unchanged": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+  "pairs": 3,
+  "calls": 6,
+  "timeout_seconds_per_call": 120,
+  "retries": 0,
+  "lesson_path": "Default source-verbatim correction candidate followed by explicit confirm; no manually rewritten lesson or WHEN examples.",
+  "prespecified_expected_delta": "In the positive later paraphrase, with-memory selection adds orange-counter to nook-book and nook-throw; generic baseline plausibly selects only nook objects. Neither narrower nor unrelated task should gain orange-counter.",
+  "scoring": "Same exact object-ID set metric as original. Report actual baseline selections even if baseline already includes the counter; count missing and extra IDs separately.",
+  "controls": {
+    "misleading_neighbor": "Candidate may retrieve but current blanket-only instruction must not expand.",
+    "unrelated_control": "No relevant candidate or behavioral transfer expected."
+  },
+  "conditions": [
+    "without_memory",
+    "with_memory"
+  ],
+  "same_instruction_and_world_per_pair": true,
+  "separate_denominators_from_original": true,
+  "stopping_rule": "No further prospective cases, retries, source changes, lesson changes, or WHEN changes after these results. If no attributable task delta is observed, report the acceptance gap and alpha/preview boundary.",
+  "raw_events_policy": "Keep raw JSONL runtime events outside Git; retain final action JSON, event hashes, tool-use counts, and receipts."
+}

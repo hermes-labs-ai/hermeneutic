@@ -1,0 +1,206 @@
+{
+  "corpus": "hermeneutic multilingual production evaluation (ko, ja, zh, es)",
+  "created": "2026-10-09",
+  "baseline_commit": "d80b3d3e8301d54dfb986936aa7500f51e2216a6",
+  "protocol": {
+    "path": "evals/production-languages/PROTOCOL.md",
+    "sha256": "b669e979da1833f997275a28c2607b1ff0fdb0076ee3043eaa3d076c6ffbc498",
+    "sha256_before_amendment": "622e60159a544e58239de0266407ff028f16e0a340c46bf2d0c40c7eebddf141"
+  },
+  "methodology_review": {
+    "path": "evals/production-languages/METHODOLOGY-REVIEW.md",
+    "sha256": "f02f74b17a1d61ab6055d7a093a5fa194e1848b7688ce48febc1bbef096c03e1",
+    "verdict": "proceed with narrow amendments for an advisory-only decision; not sufficient for promotion"
+  },
+  "author": "claude-opus-5-5 (independent methodology/corpus session; no access to adapters, regex patterns, existing corpora or results)",
+  "rights": "Apache-2.0",
+  "native_speaker_adjudication": false,
+  "context_dependent_cases": 0,
+  "low_only_cases": 0,
+  "expected_rule_vocabulary": [
+    "completion_overclaim",
+    "relayed_authority"
+  ],
+  "expected_rule_note": "Public shape names; implementer must freeze a mapping to internal rule IDs before unsealing.",
+  "development": {
+    "path": "evals/production-languages/development.json",
+    "sha256": "a608754360307efd4a1da14f84c363965613677b714f572c3f4f62b5ab032bab",
+    "counts": {
+      "ko": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      },
+      "ja": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      },
+      "zh": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      },
+      "es": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      }
+    },
+    "categories": {
+      "ko": {
+        "clean:adversarial_punctuation": 1,
+        "clean:evidence_supported_claim": 8,
+        "clean:honest_partial_progress": 4,
+        "clean:inflection": 2,
+        "clean:mixed_script": 2,
+        "clean:negation": 6,
+        "clean:quoted_claim": 2,
+        "clean:request_question": 5,
+        "high:adversarial_punctuation": 2,
+        "high:inflection": 3,
+        "high:mixed_script": 3,
+        "high:overbroad_universal_status": 5,
+        "high:quoted_claim": 2,
+        "high:relayed_authority": 7,
+        "high:unverified_completed_work": 8
+      },
+      "ja": {
+        "clean:adversarial_punctuation": 1,
+        "clean:evidence_supported_claim": 8,
+        "clean:honest_partial_progress": 4,
+        "clean:inflection": 2,
+        "clean:mixed_script": 2,
+        "clean:negation": 6,
+        "clean:quoted_claim": 2,
+        "clean:request_question": 5,
+        "high:adversarial_punctuation": 2,
+        "high:inflection": 3,
+        "high:mixed_script": 3,
+        "high:overbroad_universal_status": 5,
+        "high:quoted_claim": 2,
+        "high:relayed_authority": 7,
+        "high:unverified_completed_work": 8
+      },
+      "zh": {
+        "clean:adversarial_punctuation": 1,
+        "clean:evidence_supported_claim": 8,
+        "clean:honest_partial_progress": 4,
+        "clean:inflection": 2,
+        "clean:mixed_script": 2,
+        "clean:negation": 6,
+        "clean:quoted_claim": 2,
+        "clean:request_question": 5,
+        "high:adversarial_punctuation": 2,
+        "high:inflection": 3,
+        "high:mixed_script": 3,
+        "high:overbroad_universal_status": 5,
+        "high:quoted_claim": 2,
+        "high:relayed_authority": 7,
+        "high:unverified_completed_work": 8
+      },
+      "es": {
+        "clean:adversarial_punctuation": 1,
+        "clean:evidence_supported_claim": 8,
+        "clean:honest_partial_progress": 4,
+        "clean:inflection": 2,
+        "clean:mixed_script": 2,
+        "clean:negation": 6,
+        "clean:quoted_claim": 2,
+        "clean:request_question": 5,
+        "high:adversarial_punctuation": 2,
+        "high:inflection": 3,
+        "high:mixed_script": 3,
+        "high:overbroad_universal_status": 5,
+        "high:quoted_claim": 2,
+        "high:relayed_authority": 7,
+        "high:unverified_completed_work": 8
+      }
+    }
+  },
+  "holdout": {
+    "status": "sealed, not consumed",
+    "path": "/tmp/hermeneutic-production-sealed-20261009/holdout.json",
+    "sha256": "8f393a0c25ce3e2482d87e16017c8330e9bfc3fd76d6e6a602fdfb5bb42f8ac0",
+    "sorted_case_id_list_sha256": "d83bbee5d3410dbffe080ab97243ae8840d81c44f81fc290e3cba7ef8edf4805",
+    "counts": {
+      "ko": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      },
+      "ja": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      },
+      "zh": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      },
+      "es": {
+        "cases": 60,
+        "clean": 30,
+        "high": 30,
+        "families": 45,
+        "two_case_families": 15
+      }
+    },
+    "disclosure": "Only hashes and counts are disclosed until the frozen candidate is evaluated once."
+  },
+  "sealed_sources": {
+    "ko": {
+      "path": "/tmp/hermeneutic-production-sealed-20261009/src/ko.jsonl",
+      "sha256": "cda16ac721e1f19ff90821631065580a6c27848daa74b8adee6221b2d8bce986"
+    },
+    "ja": {
+      "path": "/tmp/hermeneutic-production-sealed-20261009/src/ja.jsonl",
+      "sha256": "2db2e2a67aa8e480cc1447bf6f62bacedf92101fff238f26101605b994c09ac4"
+    },
+    "zh": {
+      "path": "/tmp/hermeneutic-production-sealed-20261009/src/zh.jsonl",
+      "sha256": "e575e5b5f93f6826c24fad772d63da742f163fd87d92da316a8ad6cd5cd79177"
+    },
+    "es": {
+      "path": "/tmp/hermeneutic-production-sealed-20261009/src/es.jsonl",
+      "sha256": "8f1a007722b457407c6991adab343b2e3e097dda146f3f594ca6da789c88a0b9"
+    }
+  },
+  "independence_controls": {
+    "families_split_together": true,
+    "exact_duplicate_drafts": 0,
+    "near_duplicate_screen": "character-trigram Jaccard across different families, same language and ja-zh",
+    "near_duplicate_threshold": 0.5,
+    "max_cross_family_similarity": {
+      "es": 0.229,
+      "ja": 0.273,
+      "ja-zh": 0.09,
+      "ko": 0.162,
+      "zh": 0.133
+    },
+    "pairs_at_or_above_threshold": 0,
+    "cross_language_translation_check": "manual by author; scenarios chosen separately per language; not independently verified"
+  },
+  "limitations": [
+    "Single synthetic author model; effective independence is lower than the family count.",
+    "No native-speaker adjudication; no production sampling.",
+    "Thin variant/dialect coverage (zh-Hant, es-ES, es-419, es-MX tags on a few cases).",
+    "Context-dependent judgments and low-severity shapes are not covered.",
+    "Holdout seal is procedural: same-UID readable, /tmp may be cleaned by the OS."
+  ]
+}

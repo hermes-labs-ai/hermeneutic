@@ -1,5 +1,38 @@
 # Hermeneutic × Codex
 
+## Incoming lesson context in 0.1.16a2
+
+Install `hermeneutic==0.1.16a2` in an environment accessible to Codex's shell
+tools. Derive, inspect, and confirm a source-correction candidate with the
+[dishes walkthrough](../docs/correction-memory-demo.md). The correction does not
+need a second manually authored rule. Then use the [shared context recipe](lesson-context.md) in the project's
+`AGENTS.md` or as a fresh-session instruction. It asks the host to run:
+
+```sh
+hermeneutic context '<current instruction>' --scope my-project \
+  --memory /private/path/lessons.json
+```
+
+The host must inspect attributed evidence, decide applicability, and change the
+relevant action under the current instruction. The standing instruction must
+not repeat the lesson itself. This is explicit CLI use, not a newly installed
+prompt hook. Shell access, host authentication/provider access, and permission
+to read the lesson file are required. A successful CLI response alone does not
+prove fresh-agent action transfer.
+
+This is a preview workflow. Fresh native Codex action-plan trials received
+explicit CLI-produced context. The [initial frozen comparison](../evals/lesson-transfer/fresh-agent-results.json)
+and [public interpreted dishes trial](../evals/lesson-transfer/public-dishes-agent-results.json)
+were correct in both conditions, with no uplift. A separate
+[source-default counterfactual](../evals/lesson-transfer/counterfactual-agent-results.json)
+changed a positive action plan while its controls remained correct. These
+synthetic trials do not certify automatic project-instruction loading or the
+Stop hook below; see the [evaluation boundary](../evals/lesson-transfer/README.md).
+
+For outgoing reporting, use `hermeneutic gate --draft response.txt --json` when
+you control the draft. Its findings inspect wording, not whether the action
+occurred. Existing host adapters below have separate evidence boundaries.
+
 No Codex host process was exercised in the v0.1.7 release gate. The labels below
 describe local mechanics, not live integration certification.
 
@@ -32,7 +65,7 @@ release displays the warning.
 - A POSIX shell for the copy commands below. Windows hook setup was not
   exercised for v0.1.7.
 
-Before PyPI publication is verified, run from the exact source checkout:
+From the exact v0.1.16a2 source checkout or unpacked source archive:
 
 ```bash
 python3 -m pip install .
@@ -42,7 +75,7 @@ chmod 755 "$HOME/.codex/hooks/hermeneutic-gate.py"
 ```
 
 After a verified PyPI release, `python3 -m pip install
-'hermeneutic==0.1.7'` is an equivalent package-install step. The regex gate
+'hermeneutic==0.1.16a2'` is an equivalent package-install step. The regex gate
 uses no Ollama model or network access.
 
 Add this matcher group to `~/.codex/hooks.json`, preserving any existing hooks:
@@ -95,7 +128,7 @@ installation was exercised in the ChatGPT desktop app. Therefore v0.1.7 does
 not provide an executable plugin-install recipe or claim that the bundle is an
 installable published plugin.
 
-A future distributor must add a valid marketplace catalog, pin the 0.1.7 source,
+A future distributor must add a valid marketplace catalog, pin the selected release source,
 verify installation in the supported desktop surface, review/trust the bundled
 hook, verify the Python dependency, and provide matching uninstall instructions.
 The Codex CLI can add, list, upgrade, and remove marketplace sources; current

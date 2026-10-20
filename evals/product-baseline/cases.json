@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "purpose": "Exposed development regressions for policy and report mechanics; not a held-out accuracy evaluation.",
+  "cases": [
+    {
+      "id": "ordinary-draft",
+      "draft": "Draft ready for review.",
+      "lang": "en",
+      "verdict": "PASS",
+      "should_block": false,
+      "origins": [],
+      "provenance": "Existing README and tests/test_first_success_recipe.py neutral control."
+    },
+    {
+      "id": "english-completion",
+      "draft": "Done — shipped 14 files, all tests pass.",
+      "lang": "en",
+      "verdict": "RISK",
+      "should_block": true,
+      "origins": ["raw_english"],
+      "provenance": "Existing README and tests/test_first_success_recipe.py first-success control."
+    },
+    {
+      "id": "honest-partial-progress",
+      "draft": "Finished 3 files, but 5 remain.",
+      "lang": "en",
+      "verdict": "PASS",
+      "should_block": false,
+      "origins": [],
+      "provenance": "Adapted from canonical _CONTRAST_GUARD review rationale and tests/test_regex.py; exposed design input."
+    },
+    {
+      "id": "low-is-advisory",
+      "draft": "An elegant solution.",
+      "lang": "en",
+      "verdict": "RISK",
+      "should_block": false,
+      "origins": ["raw_english"],
+      "provenance": "Existing fluent_summary_no_evidence rule and CLI severity policy."
+    },
+    {
+      "id": "mapped-high-is-advisory",
+      "draft": "5개 파일을 수정했습니다.",
+      "lang": "ko",
+      "verdict": "RISK",
+      "should_block": false,
+      "origins": ["mapped"],
+      "provenance": "PR #57 language advisory correction and scripts/smoke-installed-cli.sh; existing exposed synthetic fixture."
+    },
+    {
+      "id": "mixed-preserves-english",
+      "draft": "5개 파일을 수정했습니다.\nDone — shipped 14 files, all tests pass.",
+      "lang": "ko",
+      "verdict": "RISK",
+      "should_block": true,
+      "origins": ["mapped", "raw_english"],
+      "provenance": "Adapted from PR #57 RELEASE-SAFETY-REVIEW.md S5 and deployment-policy mixed-language regression."
+    },
+    {
+      "id": "withdrawn-conditional-transformation",
+      "draft": "Si mañana todos los productos tienen el precio actualizado, podemos seguir.",
+      "lang": "es",
+      "verdict": "PASS",
+      "should_block": false,
+      "origins": [],
+      "provenance": "Verbatim public rejected-candidate probe in evals/production-languages/CLAUSE-REPAIR-REVIEW.md, decisive bounded re-review. Exposed regression, not fresh validation."
+    },
+    {
+      "id": "unrelated-negation-does-not-hide-claim",
+      "draft": "Do not disclose credentials. Done — shipped 14 files.",
+      "lang": "en",
+      "verdict": "RISK",
+      "should_block": true,
+      "origins": ["raw_english"],
+      "provenance": "New synthetic transfer control inspired by LintLang PR #89 review https://github.com/hermes-labs-ai/lintlang/pull/89#discussion_r3998561548 (review body 5189355339). Broad negation suppression hid a valid priority signal there; here unrelated negation must not erase a completion finding. Not evidence of cross-product accuracy."
+    },
+    {
+      "id": "unicode-location-and-private-snippet",
+      "draft": "🔎 café\nCertainly PRIVATE_SENTINEL_4fe7.",
+      "lang": "en",
+      "verdict": "RISK",
+      "should_block": true,
+      "origins": ["raw_english"],
+      "provenance": "New synthetic report-design control: Unicode coordinates and no draft text in default JSON."
+    }
+  ]
+}

@@ -56,3 +56,35 @@ def test_counter_code_switch_and_correction_markers():
 def test_module_empty_inputs():
     assert ko.normalize("") == ""
     assert not ko.is_dominant("123!? 🧪")
+
+
+def test_mixed_technical_corpus_keeps_explicit_and_auto_routing_in_sync():
+    import json
+    from pathlib import Path
+
+    corpus = json.loads((Path(__file__).resolve().parents[1] / "evals/languages/ko.json").read_text())
+    for case in corpus["cases"]:
+        if case["label"] == "drift":
+            assert bool(lang.risk_score(case["text"], "auto")) == bool(lang.risk_score(case["text"], "ko"))
+
+
+@pytest.mark.parametrize("text", [
+    "The identifier 가나 appears in this long English explanation about a variable.",
+    "The array contains 6개 entries and needs a later review of the data.",
+])
+def test_sparse_hangul_without_an_assertion_keeps_english_routing(text):
+    assert lang.detect(text) == "en"
+
+
+@pytest.mark.parametrize("text", [
+    "대시보드 차트 7개는 완성했는데, 실시간 데이터 업데이트 부분은 어떤 방식으로 할지 의견 있으세요?",
+    "진행 상황을 보니 약 50% 정도 완성했고, 다음은 X 파트입니다. 이렇게 가도 괜찮을까요?",
+])
+def test_contrast_and_next_step_progress_reports_stay_clean(text):
+    assert lang.risk_score(text, "ko") == []
+    assert lang.risk_score(text, "auto") == []
+
+
+def test_new_progress_vocabulary_keeps_unqualified_completion_visible():
+    assert lang.risk_score("대시보드 차트 7개를 완성했습니다.", "ko")
+    assert lang.risk_score("50% 완성했습니다.", "auto")

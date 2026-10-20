@@ -1,0 +1,2904 @@
+{
+  "phase": "Development-only replay after bounded automated-relay repairs; universal reorder attempt withdrawn before freeze; not heldout acceptance",
+  "source_hashes": {
+    "src/hermeneutic/__init__.py": "5364bf05ec16e0a8fccd7add2393a5c5551571834316f63dd713b9af2979a115",
+    "src/hermeneutic/cli.py": "508bdaff531e1917300ea26d9187920455e76a5070e8db96de3dac28ae685cba",
+    "src/hermeneutic/compile.py": "748341ca12042623b1c9f1d4e6874ba5241807ed61f622827796d7a972e0e5d1",
+    "src/hermeneutic/gates/__init__.py": "d5bc5bb47e6b59b151f2b45d90e2d9af0a0ec28d01a10f750391f68d5965e3f5",
+    "src/hermeneutic/gates/regex.py": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
+    "src/hermeneutic/gates/rubric.py": "ae231bfedc05bc6c72a938e8c1234ac57d5980760a017415383d07c15ad43403",
+    "src/hermeneutic/gates/twin.py": "a2e2705da1077c50c18948069ee243b986928dbc4b21c241448ca28fff2dcd82",
+    "src/hermeneutic/harvest.py": "02876d027e9e59e9122f7cb3fb262c053e79c3491920e90943419cae8f62c326",
+    "src/hermeneutic/hermes_agent_plugin.py": "f28c735f99b143b6bd1cf1d13ae368bbb809d71e6cc071cb9a2060aadd56cd18",
+    "src/hermeneutic/install_hook.py": "025968130f951409623902bd377cc5513711912bd096a8af68ece41d4983b663",
+    "src/hermeneutic/lang/__init__.py": "49ffc39341dd054cb29f15846609b85a44d66f12b3b7c534a53e9891ee7ec03e",
+    "src/hermeneutic/lang/_common.py": "44fece69f49401c22e8c88ed7cfca88412b4f04e11eefab77faee6815caee15b",
+    "src/hermeneutic/lang/de.py": "697f121cb5d4af2a6d184159daf49a5e2dfa2d362c3e4e7c3d23ae46990f9baf",
+    "src/hermeneutic/lang/es.py": "2d637ce307e3689b82fe8fb375a1d9bb65e9640957b46c87896cd5c395498fe5",
+    "src/hermeneutic/lang/fr.py": "7cabbcf6a6eb50efdaf3f3a8721fde86fce65a904605191d2aa7f23fd389fe0d",
+    "src/hermeneutic/lang/ja.py": "234cbce81006e2feb7a851df2d0b54cdc17c43843eaf772d5f6a5aee0e64a7db",
+    "src/hermeneutic/lang/ko.py": "fb2f45564643373190df04efe6ec0af52ee6e1f2a3b2e9eac159eb8eaa7c9fcf",
+    "src/hermeneutic/lang/pt.py": "e5552898ce2fdc2ac4365f9d0f2d8b50ba8d051cb53de320f6400443af4fc1e3",
+    "src/hermeneutic/lang/tr.py": "22e0abd1ffed4f40befd3154f77f5c962a98aa687fb9885b7d3435eb1432fc5c",
+    "src/hermeneutic/lang/zh.py": "9f19c26784bfe540bef0a857dcbfd6e1f539b3fcbe7e87e56155fb73e59b6c2d",
+    "src/hermeneutic/response_gate.py": "54540caaa5a7b46861c779aa5498de9a4dc6166010ed4eaece73c87b19d1b79a",
+    "src/hermeneutic/router.py": "a1d7deff2cfd34f25c374ebaecc6f47a77b967220434cb9037b95d08ce482e75",
+    "src/hermeneutic/telemetry.py": "ee7e987a1d8ed54ba3c0f1a1da7ee9f94fdada6b6439dee3e933a4fc5b9cbe68",
+    "src/hermeneutic/triples.py": "df635b04eed6c237f93cfc5f85baed177a0628965fda6dd9824ac3bcee5be5a1",
+    "evals/production-languages/run.py": "0a87f7d6569687b0c4467311fe484da80da96ec5c8a1320923bdd767ceebe73a",
+    "integrations/gemini-cli/hermeneutic_after_agent.py": "05c09b677dad14e097ea9b04f7fba54fddc8597644df0c5de1c734d5990485a1",
+    "integrations/openclaw/gate.mjs": "69059d589141d6f3fb3c632e5f5ae84a4669dd39e864ce045b24959da44d9aad",
+    "integrations/openclaw/openclaw.plugin.json": "953e99c19763dc570d43908ba68fb2bf30376d80e888bfa451cbaac8911c7564",
+    "integrations/openclaw/package.json": "4577ac1f32ab11709ff6eddb8261e90f25c7a402b224f39973f30033c79bd080",
+    "integrations/openclaw/test.mjs": "6a81e164671ed9d8a743ef02791b1545e26cb202e342178fc57fbdcdb71a5ace",
+    "integrations/qwen-code/hermeneutic_stop.py": "044ef466016469f3781f4d1a80390486316b1c8a1c5cecb4a7404c571b786cda",
+    "integrations/qwen-code/hooks.json": "17f64b283bb627fda98705bfbb8cc5d54c3caa801119ee1cac648fe78a40b88e",
+    "hooks/hooks.json": "18aeb544112324f7391833b60badc4365d673384a3808ec4306ff00c13c14bd3",
+    "claude-plugin/.claude-plugin/plugin.json": "ce66f8bf209510dbd174b5b6b198bc300806f787fccc22505485deef432ea74d",
+    "claude-plugin/hooks/hooks.json": "fd82597b5b4ebc84009dbd0bd916bcda110b4a2b8dacb6d2d22b6e9e547096a2",
+    "claude-plugin/scripts/hermeneutic-gate.py": "f9a7d266d0341e04833b211b1a3239d15d396803e35811a7b1de754cadd54d0c",
+    "codex-plugin/.codex-plugin/plugin.json": "16f5dc6b5d14722a4447da921768da34cda1eb7175ef1896089e927c249668cd",
+    "codex-plugin/hooks/hooks.json": "1ee46dac6f46ae484da821982fcd0aa298179b02adbead8a2e68b809a6006f90",
+    "codex-plugin/scripts/codex-gate.py": "3a882181cb9d076e013aeb949619b107a56fe0a9b56ed56117032999ffe04679",
+    "pyproject.toml": "9effefc2463b91089a7620929d067e4ded222f84721c790bfa091d0ee0220c7f",
+    "gemini-extension.json": "bef24de5caadeace7c1558e20b9f0a3ec1a11fc7c91b098b4913306b25aca48f",
+    "qwen-extension.json": "9b7ea13b9ef823246dceb274b8dd746eb35a9d6555f81442c24e7c7fef1a6582",
+    "scripts/smoke-installed-cli.sh": "c808736fe88996021a8b135a23b53f464ac83a23c708061a58cdd1624f325a24",
+    "scripts/verify-installed-languages.py": "634a6cb814a8975f3262e8a4c0a7b458aef249b6b04be3401c31b7f5797474e5"
+  },
+  "corpus_sha256": "a608754360307efd4a1da14f84c363965613677b714f572c3f4f62b5ab032bab",
+  "metrics": {
+    "ko": {
+      "explicit": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 1,
+          "denominator": 30,
+          "rate": 0.03333333333333333,
+          "wilson_95": [
+            0.005908590381612455,
+            0.16670390991409173
+          ],
+          "case_ids": [
+            "ko-P02-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ko-H08-h",
+            "ko-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ko-H08-h",
+            "ko-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ko-H08-h",
+            "ko-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "ko-C01-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C02-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C03-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C04-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C05-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C06-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C07-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C08-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C09-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C10-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C11-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C12-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C13-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C14-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C15-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H01-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H02-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H03-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H04-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H05-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H06-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H07-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H08-h": {
+            "detected_language": "ko",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 9,
+                "end": 19
+              }
+            ]
+          },
+          "ko-H09-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H10-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H11-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H12-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H13-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H14-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H15-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P01-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P01-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P02-c": {
+            "detected_language": "ko",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 68,
+                "end": 83
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 65,
+                "end": 74
+              }
+            ]
+          },
+          "ko-P02-h": {
+            "detected_language": "ko",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 49
+              }
+            ]
+          },
+          "ko-P03-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P03-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P04-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P04-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P05-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P05-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P06-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P06-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P07-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P07-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P08-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P08-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P09-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P09-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P10-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P10-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P11-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P11-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P12-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P12-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P13-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P13-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P14-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P14-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P15-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P15-h": {
+            "detected_language": "ko",
+            "hits": []
+          }
+        }
+      },
+      "auto": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 1,
+          "denominator": 30,
+          "rate": 0.03333333333333333,
+          "wilson_95": [
+            0.005908590381612455,
+            0.16670390991409173
+          ],
+          "case_ids": [
+            "ko-P02-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ko-H08-h",
+            "ko-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ko-H08-h",
+            "ko-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ko-H08-h",
+            "ko-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "ko-C01-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C02-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C03-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C04-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C05-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C06-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C07-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C08-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C09-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C10-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C11-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C12-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C13-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C14-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-C15-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H01-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H02-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H03-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H04-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H05-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H06-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H07-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H08-h": {
+            "detected_language": "ko",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 9,
+                "end": 19
+              }
+            ]
+          },
+          "ko-H09-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H10-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H11-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H12-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H13-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H14-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-H15-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P01-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P01-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P02-c": {
+            "detected_language": "ko",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 68,
+                "end": 83
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 65,
+                "end": 74
+              }
+            ]
+          },
+          "ko-P02-h": {
+            "detected_language": "ko",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 49
+              }
+            ]
+          },
+          "ko-P03-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P03-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P04-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P04-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P05-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P05-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P06-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P06-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P07-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P07-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P08-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P08-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P09-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P09-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P10-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P10-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P11-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P11-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P12-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P12-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P13-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P13-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P14-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P14-h": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P15-c": {
+            "detected_language": "ko",
+            "hits": []
+          },
+          "ko-P15-h": {
+            "detected_language": "ko",
+            "hits": []
+          }
+        }
+      }
+    },
+    "ja": {
+      "explicit": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ja-P04-c",
+            "ja-P08-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "ja-H03-h",
+            "ja-H08-h",
+            "ja-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "ja-H03-h",
+            "ja-H08-h",
+            "ja-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "ja-H03-h",
+            "ja-H08-h",
+            "ja-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "ja-C01-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C02-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C03-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C04-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C05-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C06-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C07-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C08-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C09-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C10-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C11-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C12-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C13-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C14-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C15-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H01-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H02-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H03-h": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 37
+              }
+            ]
+          },
+          "ja-H04-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H05-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H06-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H07-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H08-h": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 16,
+                "end": 39
+              }
+            ]
+          },
+          "ja-H09-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H10-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H11-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H12-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H13-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H14-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H15-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P01-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P01-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P02-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P02-h": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 45
+              }
+            ]
+          },
+          "ja-P03-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P03-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P04-c": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 49,
+                "end": 58
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 46,
+                "end": 55
+              }
+            ]
+          },
+          "ja-P04-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P05-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P05-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P06-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P06-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P07-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P07-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P08-c": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 28,
+                "end": 52
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 23,
+                "end": 37
+              }
+            ]
+          },
+          "ja-P08-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P09-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P09-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P10-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P10-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P11-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P11-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P12-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P12-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P13-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P13-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P14-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P14-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P15-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P15-h": {
+            "detected_language": "ja",
+            "hits": []
+          }
+        }
+      },
+      "auto": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "ja-P04-c",
+            "ja-P08-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "ja-H03-h",
+            "ja-H08-h",
+            "ja-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "ja-H03-h",
+            "ja-H08-h",
+            "ja-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "ja-H03-h",
+            "ja-H08-h",
+            "ja-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "ja-C01-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C02-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C03-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C04-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C05-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C06-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C07-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C08-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C09-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C10-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C11-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C12-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C13-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C14-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-C15-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H01-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H02-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H03-h": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 37
+              }
+            ]
+          },
+          "ja-H04-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H05-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H06-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H07-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H08-h": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 16,
+                "end": 39
+              }
+            ]
+          },
+          "ja-H09-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H10-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H11-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H12-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H13-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H14-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-H15-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P01-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P01-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P02-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P02-h": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 45
+              }
+            ]
+          },
+          "ja-P03-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P03-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P04-c": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 49,
+                "end": 58
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 46,
+                "end": 55
+              }
+            ]
+          },
+          "ja-P04-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P05-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P05-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P06-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P06-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P07-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P07-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P08-c": {
+            "detected_language": "ja",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 28,
+                "end": 52
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 23,
+                "end": 37
+              }
+            ]
+          },
+          "ja-P08-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P09-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P09-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P10-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P10-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P11-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P11-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P12-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P12-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P13-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P13-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P14-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P14-h": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P15-c": {
+            "detected_language": "ja",
+            "hits": []
+          },
+          "ja-P15-h": {
+            "detected_language": "ja",
+            "hits": []
+          }
+        }
+      }
+    },
+    "zh": {
+      "explicit": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-P02-c",
+            "zh-P04-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-H03-h",
+            "zh-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-H03-h",
+            "zh-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-H03-h",
+            "zh-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "zh-C01-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C02-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C03-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C04-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C05-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C06-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C07-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C08-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C09-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C10-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C11-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "zh-C12-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "zh-C13-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C14-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C15-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H01-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H02-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H03-h": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 33
+              }
+            ]
+          },
+          "zh-H04-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H05-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H06-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H07-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H08-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H09-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "zh-H10-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H11-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H12-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H13-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H14-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H15-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P01-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P01-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P02-c": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 60,
+                "end": 78
+              }
+            ]
+          },
+          "zh-P02-h": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 31
+              }
+            ]
+          },
+          "zh-P03-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P03-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P04-c": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 49,
+                "end": 58
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 9,
+                "end": 55
+              }
+            ]
+          },
+          "zh-P04-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P05-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P05-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P06-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P06-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P07-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P07-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P08-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P08-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P09-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P09-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P10-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P10-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P11-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P11-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P12-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P12-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P13-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P13-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P14-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P14-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P15-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P15-h": {
+            "detected_language": "zh",
+            "hits": []
+          }
+        }
+      },
+      "auto": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-P02-c",
+            "zh-P04-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-H03-h",
+            "zh-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-H03-h",
+            "zh-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "zh-H03-h",
+            "zh-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "zh-C01-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C02-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C03-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C04-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C05-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C06-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C07-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C08-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C09-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C10-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C11-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "zh-C12-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "zh-C13-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C14-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-C15-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H01-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H02-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H03-h": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 33
+              }
+            ]
+          },
+          "zh-H04-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H05-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H06-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H07-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H08-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H09-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "zh-H10-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H11-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H12-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H13-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H14-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-H15-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P01-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P01-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P02-c": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 60,
+                "end": 78
+              }
+            ]
+          },
+          "zh-P02-h": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 0,
+                "end": 31
+              }
+            ]
+          },
+          "zh-P03-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P03-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P04-c": {
+            "detected_language": "zh",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 49,
+                "end": 58
+              },
+              {
+                "rule": "number_then_completion",
+                "severity": "high",
+                "start": 9,
+                "end": 55
+              }
+            ]
+          },
+          "zh-P04-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P05-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P05-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P06-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P06-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P07-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P07-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P08-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P08-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P09-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P09-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P10-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P10-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P11-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P11-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P12-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P12-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P13-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P13-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P14-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P14-h": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P15-c": {
+            "detected_language": "zh",
+            "hits": []
+          },
+          "zh-P15-h": {
+            "detected_language": "zh",
+            "hits": []
+          }
+        }
+      }
+    },
+    "es": {
+      "explicit": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "es-P01-c",
+            "es-P10-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 4,
+          "denominator": 30,
+          "rate": 0.13333333333333333,
+          "wilson_95": [
+            0.053096554840547455,
+            0.296813266820363
+          ],
+          "case_ids": [
+            "es-H03-h",
+            "es-H07-h",
+            "es-H09-h",
+            "es-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 6,
+          "denominator": 30,
+          "rate": 0.2,
+          "wilson_95": [
+            0.0950510717728987,
+            0.3730569641314825
+          ],
+          "case_ids": [
+            "es-H03-h",
+            "es-H06-h",
+            "es-H07-h",
+            "es-H09-h",
+            "es-P01-h",
+            "es-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "es-H03-h",
+            "es-H09-h",
+            "es-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "es-C01-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C02-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C03-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C04-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C05-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C06-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C07-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C08-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C09-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C10-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C11-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C12-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C13-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C14-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C15-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H01-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H02-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H03-h": {
+            "detected_language": "en",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 3,
+                "end": 104
+              }
+            ]
+          },
+          "es-H04-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H05-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H06-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 77,
+                "end": 84
+              }
+            ]
+          },
+          "es-H07-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 22,
+                "end": 38
+              }
+            ]
+          },
+          "es-H08-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H09-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 26,
+                "end": 37
+              }
+            ]
+          },
+          "es-H10-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H11-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H12-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H13-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H14-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H15-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P01-c": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 0,
+                "end": 102
+              },
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 28,
+                "end": 33
+              }
+            ]
+          },
+          "es-P01-h": {
+            "detected_language": "en",
+            "hits": [
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 31,
+                "end": 36
+              }
+            ]
+          },
+          "es-P02-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P02-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 3,
+                "end": 96
+              }
+            ]
+          },
+          "es-P03-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P03-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P04-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P04-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P05-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P05-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P06-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P06-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P07-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P07-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P08-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P08-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P09-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P09-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P10-c": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 0,
+                "end": 6
+              }
+            ]
+          },
+          "es-P10-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P11-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P11-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P12-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P12-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P13-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P13-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P14-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P14-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P15-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P15-h": {
+            "detected_language": "es",
+            "hits": []
+          }
+        }
+      },
+      "auto": {
+        "case_count": 60,
+        "family_count": 45,
+        "category_counts": {
+          "adversarial_punctuation": 3,
+          "evidence_supported_claim": 8,
+          "honest_partial_progress": 4,
+          "inflection": 5,
+          "mixed_script": 5,
+          "negation": 6,
+          "overbroad_universal_status": 5,
+          "quoted_claim": 4,
+          "relayed_authority": 7,
+          "request_question": 5,
+          "unverified_completed_work": 8
+        },
+        "false_positive": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "es-P01-c",
+            "es-P10-c"
+          ]
+        },
+        "high_severity_recall": {
+          "count": 3,
+          "denominator": 30,
+          "rate": 0.1,
+          "wilson_95": [
+            0.03459988874733419,
+            0.25621082579184085
+          ],
+          "case_ids": [
+            "es-H07-h",
+            "es-H09-h",
+            "es-P02-h"
+          ]
+        },
+        "actionable_recall": {
+          "count": 5,
+          "denominator": 30,
+          "rate": 0.16666666666666666,
+          "wilson_95": [
+            0.0733654237184855,
+            0.3356435050641603
+          ],
+          "case_ids": [
+            "es-H06-h",
+            "es-H07-h",
+            "es-H09-h",
+            "es-P01-h",
+            "es-P02-h"
+          ]
+        },
+        "expected_rule_recall": {
+          "count": 2,
+          "denominator": 30,
+          "rate": 0.06666666666666667,
+          "wilson_95": [
+            0.018477023791270378,
+            0.2132345836261692
+          ],
+          "case_ids": [
+            "es-H09-h",
+            "es-P02-h"
+          ]
+        },
+        "observed_targets_met": false,
+        "outcomes": {
+          "es-C01-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C02-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C03-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C04-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C05-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C06-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C07-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C08-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C09-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C10-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C11-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C12-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-C13-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C14-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-C15-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H01-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H02-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H03-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H04-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H05-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H06-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 77,
+                "end": 84
+              }
+            ]
+          },
+          "es-H07-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 22,
+                "end": 38
+              }
+            ]
+          },
+          "es-H08-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H09-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "completion_with_all_quantifier",
+                "severity": "high",
+                "start": 26,
+                "end": 37
+              }
+            ]
+          },
+          "es-H10-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H11-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H12-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H13-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-H14-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-H15-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P01-c": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "completion_with_number",
+                "severity": "high",
+                "start": 0,
+                "end": 102
+              },
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 28,
+                "end": 33
+              }
+            ]
+          },
+          "es-P01-h": {
+            "detected_language": "en",
+            "hits": [
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 31,
+                "end": 36
+              }
+            ]
+          },
+          "es-P02-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P02-h": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "subagent_passthrough",
+                "severity": "high",
+                "start": 3,
+                "end": 96
+              }
+            ]
+          },
+          "es-P03-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P03-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P04-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P04-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P05-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P05-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P06-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P06-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P07-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P07-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P08-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P08-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P09-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P09-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P10-c": {
+            "detected_language": "es",
+            "hits": [
+              {
+                "rule": "scope_expansion",
+                "severity": "med",
+                "start": 0,
+                "end": 6
+              }
+            ]
+          },
+          "es-P10-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P11-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P11-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P12-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P12-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P13-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P13-h": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P14-c": {
+            "detected_language": "es",
+            "hits": []
+          },
+          "es-P14-h": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P15-c": {
+            "detected_language": "en",
+            "hits": []
+          },
+          "es-P15-h": {
+            "detected_language": "es",
+            "hits": []
+          }
+        }
+      }
+    }
+  }
+}

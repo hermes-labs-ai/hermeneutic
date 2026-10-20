@@ -2,12 +2,23 @@
 
 from hermeneutic.gates.regex import RiskHit, risk_score
 from hermeneutic.gates.twin import LLMJudge, PressureProbe, TwinVerdict
+from hermeneutic.lessons import (
+    confirm_lesson,
+    inspect_lessons,
+    learn_lesson,
+    recall_lessons,
+    render_context,
+    revoke_lesson,
+)
+from hermeneutic.report import DraftFinding, DraftReport, check_draft
 from hermeneutic.router import GateResult, Router
 from hermeneutic.triples import Triple, mine_dir, mine_file
 
-__version__ = "0.1.15"
+__version__ = "0.1.16a2"
 
 __all__ = [
+    "DraftFinding",
+    "DraftReport",
     "GateResult",
     "LLMJudge",
     "PressureProbe",
@@ -15,7 +26,14 @@ __all__ = [
     "Router",
     "Triple",
     "TwinVerdict",
+    "check_draft",
+    "confirm_lesson",
+    "inspect_lessons",
+    "learn_lesson",
     "mine_dir",
     "mine_file",
+    "recall_lessons",
+    "render_context",
+    "revoke_lesson",
     "risk_score",
 ]

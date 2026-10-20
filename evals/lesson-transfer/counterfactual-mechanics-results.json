@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "stage": "final_counterfactual_mechanics",
+  "package_identity": {
+    "version": "0.1.16",
+    "package_path": "/private/tmp/hermeneutic-product.Ooc7vN/wheel-env/lib/python3.14/site-packages/hermeneutic/__init__.py",
+    "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+  },
+  "package_mode": "installed",
+  "fixture_sha256": {
+    "counterfactual-cases.json": "584910cd0a04b11a9a505e1fa1f2d33277e36a494083304106ec2d3368657a0a"
+  },
+  "checks": {
+    "source_verbatim_candidate": true,
+    "unconfirmed_not_supplied": true,
+    "confirmed_active": true,
+    "attributed_correction": true,
+    "retrieval:counterfactual-nook-reset": true,
+    "retrieval:counterfactual-narrower-blanket-only": true,
+    "retrieval:counterfactual-unrelated-entryway-keys": true,
+    "core_unchanged": true
+  },
+  "passed": true,
+  "retrieval": [
+    {
+      "case_id": "counterfactual-nook-reset",
+      "kind": "transfer",
+      "candidate_retrieved": true,
+      "candidate_expected": true,
+      "matches_count": 1
+    },
+    {
+      "case_id": "counterfactual-narrower-blanket-only",
+      "kind": "misleading_neighbor",
+      "candidate_retrieved": true,
+      "candidate_expected": true,
+      "matches_count": 1
+    },
+    {
+      "case_id": "counterfactual-unrelated-entryway-keys",
+      "kind": "unrelated_control",
+      "candidate_retrieved": false,
+      "candidate_expected": false,
+      "matches_count": 0
+    }
+  ],
+  "lesson_path": "source_default_confirmed",
+  "separate_from_original_denominators": true
+}

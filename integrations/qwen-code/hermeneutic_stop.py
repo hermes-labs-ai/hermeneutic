@@ -11,8 +11,11 @@ instead: one response gets at most one repair request.
 The marker records no response text, no prompt, and no session identifier — the
 file name is a Hermeneutic-owned prefix plus a SHA-256 digest of the session id,
 and the body is a schema tag plus the host-supplied event timestamp. A marker is
-always consumed by the next ``Stop`` of the same session, regardless of age, so
-a long repair cannot cause a second block. Old markers belonging to other
+consumed by the next applicable English/enforceable ``Stop`` of the same
+session, regardless of age, so a long repair cannot cause a second block.
+Non-English advisory responses do not touch markers. An intervening advisory
+can therefore leave a later applicable response with a spent repair opportunity;
+the host payload has no turn identifier to resolve that association. Old markers belonging to other
 sessions are swept on later runs, so abandoned state does not accumulate or
 carry between sessions. Sweeping only ever matches that owned name shape, so a
 shared state directory keeps its unrelated files.
@@ -39,7 +42,7 @@ sys.path.insert(0, str(_REPOSITORY_ROOT / "src"))
 try:
     # Nested in ``try`` these are no longer top-level statements, so E402 does
     # not apply and no suppression comment is needed.
-    from hermeneutic.lang import risk_score
+    from hermeneutic.lang import deployment_findings, detect
     from hermeneutic.response_gate import (
         repair_reason,
         retry_warning,
@@ -189,6 +192,11 @@ def evaluate(payload: object) -> dict[str, Any]:
     if not isinstance(response, str):
         return _allow(system_message="Hermeneutic skipped: last_assistant_message was missing.")
 
+    hits, blocking = deployment_findings(response)
+    if not blocking and detect(response) != "en":
+        # A mapped-language advisory must not spend an English repair marker.
+        return _allow(system_message=f"Hermeneutic language advisory: {summarize_hits(hits)}") if hits else _allow()
+
     # Marker age is measured against the same filesystem clock that stamps it.
     now = time.time()
     marker = _resolve_marker(payload.get("session_id"), now)
@@ -196,13 +204,12 @@ def evaluate(payload: object) -> dict[str, Any]:
     # marker, or the next turn would inherit a spent repair request.
     marker_state = _take_repair_marker(marker) if marker is not None else False
 
-    hits = risk_score(response)
     if not hits:
         if marker_state is None:
             return _allow(system_message="Hermeneutic skipped: could not clear bounded repair state.")
         return _allow()
 
-    summary = summarize_hits(hits)
+    summary = summarize_hits(blocking or hits)
     if marker_state is True:
         return _allow(system_message=retry_warning(summary))
     if marker_state is None:

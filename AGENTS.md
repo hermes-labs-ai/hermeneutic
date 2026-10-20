@@ -16,10 +16,23 @@ Apply these priorities in order when using or extending the package:
 
 ## What this tool does
 
-A fixed deterministic English drift check for assistant-generated drafts. It
+Hermeneutic preserves correction episodes and scoped lessons for later agent
+tasks. By default, `learn` derives a source-verbatim candidate and task cue from
+the original episode; inspect it with `lessons` and activate it with `confirm`.
+An explicit user/host interpretation is optional. `context` retrieves bounded,
+attributed candidate context from task cues and an exact scope. Check
+applicability and current instructions before acting. `revoke` disables a lesson. These commands
+do not infer a lesson with a hidden model, install a hook, or rewrite a prompt
+automatically. Keep stores private and paths explicit.
+
+The separate output plane is a fixed deterministic English draft check. It
 flags eight surface shapes including completion overclaiming, relayed authority,
 unhedged certainty, scope expansion, and unsupported quality adjectives. It
 does not read the personal correction corpus or run the optional Router.
+
+The host-neutral workflow is: retrieve attributed context, check its scope,
+perform the task, then optionally check the output with `gate --json` or
+`check_draft`. A clean gate result is not evidence of successful lesson transfer.
 
 ## When to invoke it
 
@@ -33,7 +46,8 @@ when:
 - You want a cheap second-opinion gate that doesn't require an LLM call.
 
 Inspect the printed verdict as well as the exit code: low-severity `RISK` is
-advisory and exits 0; medium/high `RISK` exits 1. A caller that chooses to hold a
+advisory and exits 0; raw English medium/high `RISK` exits 1.
+Mapped-language findings remain advisory even at medium/high severity and exit 0. A caller that chooses to hold a
 draft should either:
 1. Add the missing evidence (run the verification commands, paste the output).
 2. Hedge the claim ("appears to" / "based on N samples").
@@ -93,7 +107,10 @@ release. The personal corpus can affect optional compile retrieval after
 - Not a replacement for human review. It's a floor-raiser.
 - Multilingual support is experimental trigger mapping into the fixed English
   rules. Use `hermeneutic gate --lang auto` or an explicit language code;
-  synthetic fixture results do not establish real-language coverage.
+  mapped findings are advisory in shipped consumers; raw English findings keep
+  their existing enforcement even in mixed-language drafts. Diagnostic severity
+  does not imply automatic rejection. Synthetic fixture results do not establish
+  real-language coverage. See `evals/production-languages/` for deployment evidence.
 - Not proof that a caller's external Router backends or repair behavior are safe.
 
 ## Working on this repository

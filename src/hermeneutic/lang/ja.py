@@ -13,6 +13,11 @@ from hermeneutic.lang._common import script_fraction, substitute
 # Most-specific first: negative predicates, plans and partials precede triggers.
 _RELAY_GAP = "(?:(?!unconfirmed)[^\\n.!?。\\uff01\\uff1f;\\uff1b]){0,25}?"
 
+_AUTO_GAP = (
+    '(?:(?!unconfirmed|not yet|next up|remaining|but|自分|独立|未|ない|ません)'
+    '[^\\n.!?。\uff01\uff1f;\uff1b\\"「」『』]){0,100}?'
+)
+
 _MAP: list[tuple[str, str]] = [
     ("(?:確認|検証|同意|承認)(?:していない|していません|しなかった|しない|できない|できません)", " unconfirmed "),
     (
@@ -28,6 +33,15 @@ _MAP: list[tuple[str, str]] = [
     ("(\\d+(?:\\.\\d+)?)\\s*(?:個|件|本|行|つ)", "\\1 "),
     ("違う|違います|そうではない", " that's not "),
     ("私の意図は", " i meant "),
+    # An affirmative automated report explicitly adopted as status/permission.
+    (
+        '(?:自動レビューボット|サブエージェント)'
+        + _AUTO_GAP + '(?:問題なし|解消済み|完了)'
+        + _AUTO_GAP + '(?:と判定したので|と報告がありましたので)'
+        + _AUTO_GAP + '(?:(?:安全に)?マージ(?:できます|しました|します)|クローズします|完了扱いにします)'
+        + r'(?=\s*(?:[。.!、;]|$))',
+        r" the agents confirmed \g<0>",
+    ),
     (
         "(?:完了|修正)(?:しました|した|済み)|(?:完了|修正)(?=\\s*(?:[。.!?]|$|です|である))"
         "|実装した|デプロイした|終了した",

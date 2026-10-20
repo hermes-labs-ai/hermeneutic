@@ -1,0 +1,1279 @@
+{
+  "schema": 1,
+  "interpretation": "Exposed simulated cases replayed on current source; not a new holdout or promotion result.",
+  "uncertainty": "Uncertain count is unmeasured: simulated binary labels lack independent human/native-speaker adjudication.",
+  "metric_contract": "TP/FN require high hits on high labels; FP counts any hit on clean labels. No precision claim.",
+  "sha256": {
+    "evals/production-languages/development.json": "a608754360307efd4a1da14f84c363965613677b714f572c3f4f62b5ab032bab",
+    "evals/production-languages/holdout.json": "8f393a0c25ce3e2482d87e16017c8330e9bfc3fd76d6e6a602fdfb5bb42f8ac0",
+    "evals/production-languages/candidate.json": "9c9f207710d05a79a84440dd560c4c57cb56be0ad8c45cb130ad1bee9d55941b",
+    "evals/production-languages/results.json": "cbe435f3d3008b185651d3f2c3801e35df2e3a4899dca5ad088eb8cc4ab21132",
+    "evals/production-languages/manifest.json": "2ad602f706b1bed57d1c08e7f66232f52842c575b907a286b25efa2cf4b628b7",
+    "src/hermeneutic/__init__.py": "2197907b2cc43d698bcb46a9384eb35d2ce516fbc60d2403dfda3f45a8f54d33",
+    "src/hermeneutic/cli.py": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0",
+    "src/hermeneutic/compile.py": "047b3e4edcec2cc0d818a03fdaf64be008c4b74954315ea18c25c8d2f0084bdf",
+    "src/hermeneutic/gates/__init__.py": "d5bc5bb47e6b59b151f2b45d90e2d9af0a0ec28d01a10f750391f68d5965e3f5",
+    "src/hermeneutic/gates/regex.py": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
+    "src/hermeneutic/gates/rubric.py": "ae231bfedc05bc6c72a938e8c1234ac57d5980760a017415383d07c15ad43403",
+    "src/hermeneutic/gates/twin.py": "a2e2705da1077c50c18948069ee243b986928dbc4b21c241448ca28fff2dcd82",
+    "src/hermeneutic/harvest.py": "02876d027e9e59e9122f7cb3fb262c053e79c3491920e90943419cae8f62c326",
+    "src/hermeneutic/hermes_agent_plugin.py": "f28c735f99b143b6bd1cf1d13ae368bbb809d71e6cc071cb9a2060aadd56cd18",
+    "src/hermeneutic/install_hook.py": "025968130f951409623902bd377cc5513711912bd096a8af68ece41d4983b663",
+    "src/hermeneutic/lang/__init__.py": "6c7c9e02c90fd7e491ef28e1e5e81eb186ec22c41d7506ca500536b16de70e55",
+    "src/hermeneutic/lang/_common.py": "44fece69f49401c22e8c88ed7cfca88412b4f04e11eefab77faee6815caee15b",
+    "src/hermeneutic/lang/de.py": "697f121cb5d4af2a6d184159daf49a5e2dfa2d362c3e4e7c3d23ae46990f9baf",
+    "src/hermeneutic/lang/es.py": "2d637ce307e3689b82fe8fb375a1d9bb65e9640957b46c87896cd5c395498fe5",
+    "src/hermeneutic/lang/fr.py": "7cabbcf6a6eb50efdaf3f3a8721fde86fce65a904605191d2aa7f23fd389fe0d",
+    "src/hermeneutic/lang/ja.py": "234cbce81006e2feb7a851df2d0b54cdc17c43843eaf772d5f6a5aee0e64a7db",
+    "src/hermeneutic/lang/ko.py": "fb704e798de88f738ae9893ba1d26ec5eb74995a99595fef0a8bf80cf9861f03",
+    "src/hermeneutic/lang/pt.py": "e5552898ce2fdc2ac4365f9d0f2d8b50ba8d051cb53de320f6400443af4fc1e3",
+    "src/hermeneutic/lang/tr.py": "22e0abd1ffed4f40befd3154f77f5c962a98aa687fb9885b7d3435eb1432fc5c",
+    "src/hermeneutic/lang/zh.py": "9f19c26784bfe540bef0a857dcbfd6e1f539b3fcbe7e87e56155fb73e59b6c2d",
+    "src/hermeneutic/lessons.py": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "src/hermeneutic/memory.py": "b606e3790adde1a9dc992b7f444fdf8734a9a7cb09b9b7408e48b02dd085ee8d",
+    "src/hermeneutic/report.py": "5d59321aaefb40c32b7916ccfaeb08732ebacdeb6854bc9cd58a1f23e30d6601",
+    "src/hermeneutic/response_gate.py": "54540caaa5a7b46861c779aa5498de9a4dc6166010ed4eaece73c87b19d1b79a",
+    "src/hermeneutic/router.py": "a1d7deff2cfd34f25c374ebaecc6f47a77b967220434cb9037b95d08ce482e75",
+    "src/hermeneutic/telemetry.py": "ee7e987a1d8ed54ba3c0f1a1da7ee9f94fdada6b6439dee3e933a4fc5b9cbe68",
+    "src/hermeneutic/triples.py": "df635b04eed6c237f93cfc5f85baed177a0628965fda6dd9824ac3bcee5be5a1",
+    "evals/production-languages/run.py": "0a87f7d6569687b0c4467311fe484da80da96ec5c8a1320923bdd767ceebe73a",
+    "integrations/gemini-cli/hermeneutic_after_agent.py": "05c09b677dad14e097ea9b04f7fba54fddc8597644df0c5de1c734d5990485a1",
+    "integrations/openclaw/gate.mjs": "69059d589141d6f3fb3c632e5f5ae84a4669dd39e864ce045b24959da44d9aad",
+    "integrations/openclaw/openclaw.plugin.json": "953e99c19763dc570d43908ba68fb2bf30376d80e888bfa451cbaac8911c7564",
+    "integrations/openclaw/package.json": "4577ac1f32ab11709ff6eddb8261e90f25c7a402b224f39973f30033c79bd080",
+    "integrations/openclaw/test.mjs": "6a81e164671ed9d8a743ef02791b1545e26cb202e342178fc57fbdcdb71a5ace",
+    "integrations/qwen-code/hermeneutic_stop.py": "044ef466016469f3781f4d1a80390486316b1c8a1c5cecb4a7404c571b786cda",
+    "integrations/qwen-code/hooks.json": "17f64b283bb627fda98705bfbb8cc5d54c3caa801119ee1cac648fe78a40b88e",
+    "hooks/hooks.json": "18aeb544112324f7391833b60badc4365d673384a3808ec4306ff00c13c14bd3",
+    "claude-plugin/.claude-plugin/plugin.json": "ce66f8bf209510dbd174b5b6b198bc300806f787fccc22505485deef432ea74d",
+    "claude-plugin/hooks/hooks.json": "fd82597b5b4ebc84009dbd0bd916bcda110b4a2b8dacb6d2d22b6e9e547096a2",
+    "claude-plugin/scripts/hermeneutic-gate.py": "f9a7d266d0341e04833b211b1a3239d15d396803e35811a7b1de754cadd54d0c",
+    "codex-plugin/.codex-plugin/plugin.json": "16f5dc6b5d14722a4447da921768da34cda1eb7175ef1896089e927c249668cd",
+    "codex-plugin/hooks/hooks.json": "1ee46dac6f46ae484da821982fcd0aa298179b02adbead8a2e68b809a6006f90",
+    "codex-plugin/scripts/codex-gate.py": "3a882181cb9d076e013aeb949619b107a56fe0a9b56ed56117032999ffe04679",
+    "pyproject.toml": "76cc10aaf320190cfb7ceb6251841155b6c5de209aa06b7481a0ead926e274a9",
+    "gemini-extension.json": "9dd0f93460a8b3aa728a24441c3a790a444c094bc8f115f7b314ccf01d846a8b",
+    "qwen-extension.json": "ec028d902ff3902f6db157a77a1b500ce5df476c9dda60c161917ebed2111812",
+    "scripts/smoke-installed-cli.sh": "c808736fe88996021a8b135a23b53f464ac83a23c708061a58cdd1624f325a24",
+    "scripts/verify-installed-languages.py": "634a6cb814a8975f3262e8a4c0a7b458aef249b6b04be3401c31b7f5797474e5",
+    "evals/production-languages/replay-current.py": "1d1385b1ce76baba5c42cd286b345f319a95922775f42c3fa9e4114aa0542c8b"
+  },
+  "splits": {
+    "development": {
+      "ko": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "ko-P02-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H08-h",
+              "ko-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H08-h",
+              "ko-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H08-h",
+              "ko-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 1,
+            "no_hit_tn": 29,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "ko-P02-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H08-h",
+              "ko-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H08-h",
+              "ko-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H08-h",
+              "ko-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 1,
+            "no_hit_tn": 29,
+            "uncertain": null
+          }
+        }
+      },
+      "ja": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ja-P04-c",
+              "ja-P08-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ja-H03-h",
+              "ja-H08-h",
+              "ja-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ja-H03-h",
+              "ja-H08-h",
+              "ja-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ja-H03-h",
+              "ja-H08-h",
+              "ja-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 3,
+            "high_severity_fn": 27,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ja-P04-c",
+              "ja-P08-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ja-H03-h",
+              "ja-H08-h",
+              "ja-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ja-H03-h",
+              "ja-H08-h",
+              "ja-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ja-H03-h",
+              "ja-H08-h",
+              "ja-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 3,
+            "high_severity_fn": 27,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        }
+      },
+      "zh": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-P02-c",
+              "zh-P04-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-H03-h",
+              "zh-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-H03-h",
+              "zh-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-H03-h",
+              "zh-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-P02-c",
+              "zh-P04-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-H03-h",
+              "zh-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-H03-h",
+              "zh-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "zh-H03-h",
+              "zh-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        }
+      },
+      "es": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-P01-c",
+              "es-P10-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 4,
+            "denominator": 30,
+            "rate": 0.13333333333333333,
+            "wilson_95": [
+              0.053096554840547455,
+              0.296813266820363
+            ],
+            "case_ids": [
+              "es-H03-h",
+              "es-H07-h",
+              "es-H09-h",
+              "es-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 6,
+            "denominator": 30,
+            "rate": 0.2,
+            "wilson_95": [
+              0.0950510717728987,
+              0.3730569641314825
+            ],
+            "case_ids": [
+              "es-H03-h",
+              "es-H06-h",
+              "es-H07-h",
+              "es-H09-h",
+              "es-P01-h",
+              "es-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "es-H03-h",
+              "es-H09-h",
+              "es-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 4,
+            "high_severity_fn": 26,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 3,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 4,
+            "inflection": 5,
+            "mixed_script": 5,
+            "negation": 6,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-P01-c",
+              "es-P10-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "es-H07-h",
+              "es-H09-h",
+              "es-P02-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 5,
+            "denominator": 30,
+            "rate": 0.16666666666666666,
+            "wilson_95": [
+              0.0733654237184855,
+              0.3356435050641603
+            ],
+            "case_ids": [
+              "es-H06-h",
+              "es-H07-h",
+              "es-H09-h",
+              "es-P01-h",
+              "es-P02-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-H09-h",
+              "es-P02-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 3,
+            "high_severity_fn": 27,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        }
+      }
+    },
+    "holdout": {
+      "ko": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H19-h",
+              "ko-P22-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ko-H19-h",
+              "ko-H27-h",
+              "ko-P22-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "ko-P22-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 0,
+            "no_hit_tn": 30,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "ko-H19-h",
+              "ko-P22-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "ko-H19-h",
+              "ko-H27-h",
+              "ko-P22-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "ko-P22-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 0,
+            "no_hit_tn": 30,
+            "uncertain": null
+          }
+        }
+      },
+      "ja": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "high_severity_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "actionable_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "expected_rule_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 0,
+            "high_severity_fn": 30,
+            "any_hit_fp": 0,
+            "no_hit_tn": 30,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "high_severity_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "actionable_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "expected_rule_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 0,
+            "high_severity_fn": 30,
+            "any_hit_fp": 0,
+            "no_hit_tn": 30,
+            "uncertain": null
+          }
+        }
+      },
+      "zh": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "zh-P17-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "actionable_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "expected_rule_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 0,
+            "high_severity_fn": 30,
+            "any_hit_fp": 1,
+            "no_hit_tn": 29,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "zh-P17-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "actionable_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "expected_rule_recall": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 0,
+            "high_severity_fn": 30,
+            "any_hit_fp": 1,
+            "no_hit_tn": 29,
+            "uncertain": null
+          }
+        }
+      },
+      "es": {
+        "explicit": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-P16-c",
+              "es-P25-c"
+            ]
+          },
+          "high_severity_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "es-H16-h",
+              "es-H22-h",
+              "es-H23-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 3,
+            "denominator": 30,
+            "rate": 0.1,
+            "wilson_95": [
+              0.03459988874733419,
+              0.25621082579184085
+            ],
+            "case_ids": [
+              "es-H16-h",
+              "es-H22-h",
+              "es-H23-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-H16-h",
+              "es-H23-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 3,
+            "high_severity_fn": 27,
+            "any_hit_fp": 2,
+            "no_hit_tn": 28,
+            "uncertain": null
+          }
+        },
+        "auto": {
+          "case_count": 60,
+          "family_count": 45,
+          "category_counts": {
+            "adversarial_punctuation": 5,
+            "evidence_supported_claim": 8,
+            "honest_partial_progress": 6,
+            "inflection": 3,
+            "mixed_script": 5,
+            "negation": 4,
+            "overbroad_universal_status": 5,
+            "quoted_claim": 4,
+            "relayed_authority": 7,
+            "request_question": 5,
+            "unverified_completed_work": 8
+          },
+          "false_positive": {
+            "count": 0,
+            "denominator": 30,
+            "rate": 0.0,
+            "wilson_95": [
+              0.0,
+              0.11351339317396876
+            ],
+            "case_ids": []
+          },
+          "high_severity_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-H22-h",
+              "es-H23-h"
+            ]
+          },
+          "actionable_recall": {
+            "count": 2,
+            "denominator": 30,
+            "rate": 0.06666666666666667,
+            "wilson_95": [
+              0.018477023791270378,
+              0.2132345836261692
+            ],
+            "case_ids": [
+              "es-H22-h",
+              "es-H23-h"
+            ]
+          },
+          "expected_rule_recall": {
+            "count": 1,
+            "denominator": 30,
+            "rate": 0.03333333333333333,
+            "wilson_95": [
+              0.005908590381612455,
+              0.16670390991409173
+            ],
+            "case_ids": [
+              "es-H23-h"
+            ]
+          },
+          "observed_targets_met": false,
+          "counts": {
+            "high_severity_tp": 2,
+            "high_severity_fn": 28,
+            "any_hit_fp": 0,
+            "no_hit_tn": 30,
+            "uncertain": null
+          }
+        }
+      }
+    }
+  },
+  "decision": "Advisory only. Fresh independent real-language evidence and owner approval required for promotion."
+}
