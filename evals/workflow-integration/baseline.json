@@ -6,6 +6,8 @@
     "reported_triples": 0,
     "replayed_prefix_parsed_turns": 31,
     "replayed_prefix_triples": 0,
+    "candidate_mined_episodes": 1,
+    "candidate_scope": "Final installed candidate f038081; private seed used for development only, excluded from independent holdout scoring.",
     "continued_source_snapshot_parsed_turns": 36,
     "continued_source_snapshot_triples": 0,
     "scope": "One owner-reported failure, reproduced using the installed CLI. The source continued after the original observation. No general mining recall inference. Raw source, identifiers, text and derived correction memory remain private."

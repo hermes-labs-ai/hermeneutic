@@ -1,0 +1,41 @@
+{
+  "fixture_sha256_unchanged": true,
+  "public_fixture_bytes_match_frozen_private_fixture": true,
+  "valid_transport_cases_checked": 49,
+  "openai_cases": 25,
+  "codex_cases": 24,
+  "malformed_or_nonmessage_cases_intentional": 3,
+  "canonical_corpus_round_trip_equal": true,
+  "candidate_accuracy_exceptions": 0,
+  "baseline_accuracy_exceptions": 0,
+  "public_owner_paths_or_names_found": false,
+  "evaluation_retries": 0,
+  "candidate_or_fixture_edits_after_freeze": 0,
+  "scope": "Transport and receipt checks only; source-level audit and host lifecycle are separate workstreams. Synthetic labels remain human authored and finite.",
+  "public_files": {
+    "fresh-baseline-comparison.json": {
+      "sha256": "959dc1ddc0f444fc08b7e421bd6f885520144f1b67b339b621ccac228a23fb9d",
+      "bytes": 23022
+    },
+    "fresh-cases.json": {
+      "sha256": "408e837c5754d9749ea61e13ff86ee5fea28efe3326f15a6868b516dbae6ca0d",
+      "bytes": 21511
+    },
+    "fresh-fixtures.json": {
+      "sha256": "7138736640dd12b7b9975bf05023146a65edadbd12031b64ef1bab3d8d73ad01",
+      "bytes": 55161
+    },
+    "fresh-latency.json": {
+      "sha256": "d8b195f19e256a87cd032f463fbad9c522bbac4f031f58df8938744932e001a4",
+      "bytes": 6906
+    },
+    "fresh-receipt.json": {
+      "sha256": "8ae9a54c210ea96c2eb870365a6e89e1c24ebc067e16cb009002ca7c82fc120d",
+      "bytes": 2776
+    },
+    "fresh-safety-fixtures.json": {
+      "sha256": "992f43065a3ca5c79141dfcbbe50647b985b83572acdd75cfad04425ea770780",
+      "bytes": 20429
+    }
+  }
+}

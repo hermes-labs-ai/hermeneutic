@@ -6,6 +6,7 @@
   "scope": "Fresh ephemeral read-only sessions. Candidate enabled only in a private staging copy of the existing operational project instruction. Real project configuration was left unchanged.",
   "baseline": {"configured_command_invoked": true, "target_meaning_recovered": false, "host_exit": 0, "seconds": 13.358},
   "candidate": {"configured_command_invoked": true, "target_meaning_recovered": true, "host_exit": 0, "seconds": 13.087},
+  "final_candidate": {"runtime_candidate_commit": "f0380811d1f5a5919ac26e84ac3fb4f6961dc32e", "configured_command_invoked": true, "target_meaning_recovered": true, "host_exit": 0, "seconds": 18.392, "staging_prior_configuration_restored": true},
   "missing_dependency": {"dedicated_package_uninstall_exit": 0, "adapter_exit": 0, "empty_evidence": true, "host_exit": 0, "expected_host_final_observed": true, "host_seconds": 11.671, "package_reinstall_exit": 0},
   "lifecycle": {"staging_install_idempotent": true, "staging_prior_instruction_restored_byte_for_byte": true, "real_prior_configuration_unchanged": true},
   "limits": [

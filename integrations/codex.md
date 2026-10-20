@@ -2,6 +2,12 @@
 
 ## On-demand correction evidence (unreleased)
 
+Maturity: `EXPERIMENTAL — INSTALLATION ACCEPTANCE FAILED`.
+The [evaluation](../evals/workflow-integration/RESULTS.md) demonstrates staged
+native delivery and records the failed mining and repeated-command latency
+criteria. Keep operational activation held; the recipe below is for deliberate
+staging and reproduction.
+
 Codex can call the standalone
 [`codex/recall.py`](codex/recall.py) adapter through a project `AGENTS.md`
 instruction. Use a private, explicitly selected corpus and a Python environment
