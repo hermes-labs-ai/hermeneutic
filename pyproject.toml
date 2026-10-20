@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hermeneutic"
-version = "0.1.16a1"
-description = "Mine reusable correction evidence, retrieve similar past corrections, and run a fixed deterministic English drift check."
+version = "0.1.16a2"
+description = "Carry scoped correction lessons into later agent tasks and check outgoing claims with a deterministic English gate."
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
@@ -28,7 +28,7 @@ keywords = [
     "agent-audit",
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: Apache Software License",
@@ -86,6 +86,7 @@ include = [
     "codex-plugin/",
     ".zenodo.json",
     "AGENTS.md",
+    "release.json",
     "BACKLOG.md",
     "CITATION.cff",
     "CLAUDE.md",

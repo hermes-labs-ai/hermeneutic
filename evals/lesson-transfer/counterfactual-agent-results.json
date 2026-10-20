@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "stage": "fresh_codex_final_counterfactual",
+  "excluded_from_original_denominators": true,
+  "raw_events_retained_outside_git": true,
+  "excluded_from_frozen_denominators": false,
+  "fixture_sha256": {
+    "counterfactual-cases.json": "584910cd0a04b11a9a505e1fa1f2d33277e36a494083304106ec2d3368657a0a"
+  },
+  "codex_version": "codex-cli 0.162.1",
+  "protocol": {
+    "schema_version": 1,
+    "synthetic": true,
+    "final_authorized_evaluation_iteration": true,
+    "reason": "Original ordinary completeness tasks were non-discriminating: baseline already selected the expected artifacts. Preserve those results and test one prospectively frozen household-specific convention.",
+    "frozen_before_first_run": true,
+    "source_tuning_allowed": false,
+    "files_sha256": {
+      "counterfactual-cases.json": "584910cd0a04b11a9a505e1fa1f2d33277e36a494083304106ec2d3368657a0a"
+    },
+    "original_fixture_sha256_unchanged": {
+      "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+      "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+    },
+    "core_source_freeze": {
+      "received_before_first_execution": true,
+      "frozen_cases_not_read_by_core_author": true,
+      "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+      "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+    },
+    "candidate_hash_unchanged": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "pairs": 3,
+    "calls": 6,
+    "timeout_seconds_per_call": 120,
+    "retries": 0,
+    "lesson_path": "Default source-verbatim correction candidate followed by explicit confirm; no manually rewritten lesson or WHEN examples.",
+    "prespecified_expected_delta": "In the positive later paraphrase, with-memory selection adds orange-counter to nook-book and nook-throw; generic baseline plausibly selects only nook objects. Neither narrower nor unrelated task should gain orange-counter.",
+    "scoring": "Same exact object-ID set metric as original. Report actual baseline selections even if baseline already includes the counter; count missing and extra IDs separately.",
+    "controls": {
+      "misleading_neighbor": "Candidate may retrieve but current blanket-only instruction must not expand.",
+      "unrelated_control": "No relevant candidate or behavioral transfer expected."
+    },
+    "conditions": [
+      "without_memory",
+      "with_memory"
+    ],
+    "same_instruction_and_world_per_pair": true,
+    "separate_denominators_from_original": true,
+    "stopping_rule": "No further prospective cases, retries, source changes, lesson changes, or WHEN changes after these results. If no attributable task delta is observed, report the acceptance gap and alpha/preview boundary.",
+    "raw_events_policy": "Keep raw JSONL runtime events outside Git; retain final action JSON, event hashes, tool-use counts, and receipts."
+  },
+  "pairs": [
+    {
+      "case_id": "counterfactual-nook-reset",
+      "kind": "transfer",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "nook-book",
+            "nook-throw"
+          ],
+          "memory_checks": [],
+          "explanation": "Return the book to the nook shelf and fold the throw on the chair arm. The entryway objects are outside the reading nook scope."
+        },
+        "score": {
+          "exact_completion": false,
+          "missing_ids": [
+            "orange-counter"
+          ],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "b790265b1f0a2a67080452ef124454b34f2e78fd1b1b1fb6c05bfa85bce822f1",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "nook-book",
+            "nook-throw",
+            "orange-counter"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-2c460a7e13b4ed8964325b07",
+              "applies": true,
+              "reason": "The correction matches this reading-nook reset and explicitly identifies the orange wooden counter as its ready marker. It does not conflict with current constraints."
+            }
+          ],
+          "explanation": "Return the book to the nook shelf, fold the throw on the chair arm, and bring the orange counter to the nook shelf. Leave the entryway keys alone."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "979955572055494a081eecd7f679d634f1d13da961f343ac77b092a0af4d01ef",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "counterfactual-narrower-blanket-only",
+      "kind": "misleading_neighbor",
+      "retrieved_candidates": 1,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "nook-throw"
+          ],
+          "memory_checks": [],
+          "explanation": "Only nook-throw is a blanket in the reading nook. The instruction limits today's operation to the blanket."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "a7ac36e75d99ff2a0b899602d619d3b010c7a7d5e4c7224b41f40d5cc7bac583",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "nook-throw"
+          ],
+          "memory_checks": [
+            {
+              "source_id": "lesson-2c460a7e13b4ed8964325b07",
+              "applies": false,
+              "reason": "The historical lesson concerns a full nook reset. Today's explicit blanket-only constraint overrides its broader selection."
+            }
+          ],
+          "explanation": "Select only the blanket to fold onto the chair arm; leave all other objects unchanged."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "64b2b9fccac577bf24ecee68ab44150be4233e52e5e0c15d76c83da67809f093",
+        "tool_items": 0
+      }
+    },
+    {
+      "case_id": "counterfactual-unrelated-entryway-keys",
+      "kind": "unrelated_control",
+      "retrieved_candidates": 0,
+      "without_memory": {
+        "output": {
+          "selected_ids": [
+            "hall-keys"
+          ],
+          "memory_checks": [],
+          "explanation": "The hall-keys are the entryway keys out of their tray. The other objects are unrelated to gathering the keys."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "c13c293f799aa8fb7c1f939796713b1c81cc11e7d1367be434c095b35e3fce0b",
+        "tool_items": 0
+      },
+      "with_memory": {
+        "output": {
+          "selected_ids": [
+            "hall-keys"
+          ],
+          "memory_checks": [],
+          "explanation": "Only hall-keys matches the instruction to gather entryway keys into their tray. No recalled corrections were supplied."
+        },
+        "score": {
+          "exact_completion": true,
+          "missing_ids": [],
+          "extra_ids": [],
+          "applicability_reasoning_written": true
+        },
+        "exit_code": 0,
+        "events_sha256": "d99daddf029e80e8a831f86df0c06937fe500384f3c242337691f4587f027d84",
+        "tool_items": 0
+      }
+    }
+  ],
+  "limitations": [
+    "Synthetic object-selection action plans, not effects in a real repository or household.",
+    "One fresh invocation per condition; stochastic results do not establish general effectiveness.",
+    "No retries, lesson changes, WHEN changes, or fixture tuning after results.",
+    "Applicability explanations are recorded for inspection; exact action sets are scored independently."
+  ],
+  "metrics": {
+    "transfer_denominator": 1,
+    "baseline_transfer_completed": 0,
+    "memory_transfer_completed": 1,
+    "improved_pairs": 1,
+    "regressed_pairs": 0,
+    "negative_control_denominator": 2,
+    "negative_controls_with_retrieved_candidate": 1,
+    "strict_negative_recall_denominator": 1,
+    "strict_negative_false_recalls": 0,
+    "behavioral_overgeneralizations_with_memory": 0,
+    "baseline_control_completed": 2,
+    "memory_control_completed": 2,
+    "execution_errors": 0
+  }
+}

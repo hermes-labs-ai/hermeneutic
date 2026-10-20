@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "frozen_before_first_run": true,
+  "files_sha256": {
+    "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+    "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+  },
+  "design_excluded_from_validation": true,
+  "source_freeze_required_before_execution": true,
+  "fresh_agent_protocol": {
+    "runner": "codex exec --ignore-user-config --ignore-rules --ephemeral --sandbox read-only --skip-git-repo-check --output-schema schema.json",
+    "pairs": 6,
+    "jobs": 12,
+    "timeout_seconds_per_job": 120,
+    "conditions": [
+      "without_memory",
+      "with_memory"
+    ],
+    "same_instruction_and_world_per_pair": true,
+    "host_supplies_interpreted_lesson_and_scope": true,
+    "agent_action": "Select object IDs for the requested operation in a synthetic world; structured final action plan.",
+    "completion_metric": "Exact selected object-ID set equals expected selected object-ID set.",
+    "applicability_metric": "Record attributed memory applicability reasoning; source ID alone is not task completion.",
+    "retrieval_metric": "Positive cases retrieve attributed correction; unrelated and other-scope controls retrieve none; misleading narrow-task candidate retrieval is recorded separately from whether the host wrongly expands scope.",
+    "false_transfer_denominator": "Three frozen negative controls. Report lexical candidate retrieval, unwanted control recall, and behavioral overgeneralization separately; the narrower task intentionally resembles a learned WHEN and must not be expanded.",
+    "no_retry_or_tuning_after_results": true,
+    "no_real_user_effect_claim": true
+  },
+  "deterministic_contract_checks": [
+    "public table-dishes demonstration",
+    "provenance attribution",
+    "inspect preserves source evidence",
+    "revoke removes context",
+    "disabled supplies no context",
+    "uncorrected empty memory",
+    "unrelated query",
+    "scope exclusion"
+  ],
+  "implementation_tuning_excluded": "Frozen cases and labels are withheld from core author until source freeze. No source/lesson/WHEN changes in response to evaluation results.",
+  "freeze_history": [
+    {
+      "revision": 1,
+      "frozen_cases_sha256": "f0f81b601851e40280e18e8e137c1bfe19aa560c2718e43ebb78b6e2186c12a9",
+      "execution_occurred": false,
+      "reason": "Parent requested more paraphrases and explicit misleading-neighbor applicability control before execution."
+    }
+  ],
+  "freeze_revision": 2,
+  "core_source_freeze": {
+    "received_before_first_execution": true,
+    "frozen_cases_not_read_by_core_author": true,
+    "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+  },
+  "source_freeze_history": [
+    {
+      "received_before_first_execution": true,
+      "frozen_cases_not_read_by_core_author": true,
+      "lessons_sha256": "a3fa9c1392c1127f904aa4705b219bb7f3e02eb3d725ec23959ecdb7de89a58a",
+      "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0",
+      "superseded_before_execution": true,
+      "reason": "Public sparse-cue and truncated source-candidate safeguards; no frozen fixture results observed."
+    }
+  ],
+  "public_extra_agent_protocol": {
+    "jobs": 2,
+    "case": "Public table-dishes design example",
+    "conditions": [
+      "without_memory",
+      "with_memory"
+    ],
+    "context_mode": "host_interpreted",
+    "excluded_from_frozen_denominators": true,
+    "no_retries": true,
+    "documented_before_execution": true
+  }
+}

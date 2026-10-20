@@ -16,10 +16,23 @@ Apply these priorities in order when using or extending the package:
 
 ## What this tool does
 
-A fixed deterministic English drift check for assistant-generated drafts. It
+Hermeneutic preserves correction episodes and scoped lessons for later agent
+tasks. By default, `learn` derives a source-verbatim candidate and task cue from
+the original episode; inspect it with `lessons` and activate it with `confirm`.
+An explicit user/host interpretation is optional. `context` retrieves bounded,
+attributed candidate context from task cues and an exact scope. Check
+applicability and current instructions before acting. `revoke` disables a lesson. These commands
+do not infer a lesson with a hidden model, install a hook, or rewrite a prompt
+automatically. Keep stores private and paths explicit.
+
+The separate output plane is a fixed deterministic English draft check. It
 flags eight surface shapes including completion overclaiming, relayed authority,
 unhedged certainty, scope expansion, and unsupported quality adjectives. It
 does not read the personal correction corpus or run the optional Router.
+
+The host-neutral workflow is: retrieve attributed context, check its scope,
+perform the task, then optionally check the output with `gate --json` or
+`check_draft`. A clean gate result is not evidence of successful lesson transfer.
 
 ## When to invoke it
 

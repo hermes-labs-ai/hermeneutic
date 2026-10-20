@@ -1,0 +1,1 @@
+{"selected_ids":["parser-result","parser-manifest","parser-environment"],"memory_checks":[],"explanation":"Archive the parser run’s result, manifest, and environment snapshot. Shared resources and the tokenizer manifest are outside this run’s scope."}

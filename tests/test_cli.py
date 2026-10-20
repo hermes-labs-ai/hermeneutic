@@ -24,7 +24,7 @@ def test_cli_version(capsys):
         main(["--version"])
 
     assert exc_info.value.code == 0
-    assert capsys.readouterr().out == "hermeneutic 0.1.16a1\n"
+    assert capsys.readouterr().out == "hermeneutic 0.1.16a2\n"
 
 
 def test_cli_mine_writes_jsonl(tmp_path):

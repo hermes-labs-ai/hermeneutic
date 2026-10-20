@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "classification": "Synthetic correlated preference lenses, not user research or product correctness evidence.",
+  "prerequisite": "Record deterministic installed teach/context/inspect/revoke outcomes and fresh-host action outcomes first.",
+  "purpose": "Surface avoidable confusion in the bounded teach-and-transfer workflow and its separate output report.",
+  "live_request_budget": 2,
+  "lenses": {
+    "convenience_first": "A developer values low setup effort, repeatable instructions and quick recovery from missing memory.",
+    "evidence_first": "A reviewer values attribution, explicit applicability, no silent conditioning and easy revocation."
+  },
+  "definitions": {
+    "usable": "A developer can tell how to teach once, retrieve later, inspect provenance and disable a lesson using the documented commands.",
+    "friction": "Avoidable setup steps or ambiguous output that obscures the next action; not proof of incorrect language understanding.",
+    "transfer": "The observed host action changes appropriately when supplied attributed lesson context. Retrieval alone is insufficient.",
+    "ready": "Not asked: release authorization and correctness are decided independently from direct checks and source review."
+  },
+  "method": "Two logged Jev batches over the same selected public evidence. Reverse lens question order, evidence order and choice option order on the second call. Treat disagreement, missing answers and low confidence as uncertainty.",
+  "repair_boundary": "One bounded integrated usability repair if a concrete confusion is reproducible; no roadmap expansion or tuning to raise persona scores."
+}

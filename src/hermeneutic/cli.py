@@ -169,13 +169,48 @@ def _cmd_demo(args: argparse.Namespace) -> int:
         print(f"ERROR: demo needs a new writable directory: {destination}", file=sys.stderr)
         return 2
     try:
-        fixture = files("hermeneutic").joinpath("data/synthetic-corrections.json").read_bytes()
-        (destination / "synthetic-corrections.json").write_bytes(fixture)
+        name = "dishes-session.json" if args.scenario == "dishes" else "synthetic-corrections.json"
+        fixture = files("hermeneutic").joinpath("data", name).read_bytes()
+        (destination / name).write_bytes(fixture)
     except OSError:
         print(f"ERROR: cannot write synthetic demo to {destination}", file=sys.stderr)
         return 2
-    print(f"Synthetic scripted agent session: {destination / 'synthetic-corrections.json'}")
+    print(f"Synthetic scripted agent session: {destination / name}")
     print("No personal logs read; no inference performed. See docs/correction-memory-demo.md.")
+    return 0
+
+
+def _cmd_lesson_memory(args: argparse.Namespace) -> int:
+    from hermeneutic.lessons import (
+        LessonMemoryError,
+        confirm_lesson,
+        inspect_lessons,
+        learn_lesson,
+        render_context,
+        revoke_lesson,
+    )
+
+    try:
+        if args.cmd == "learn":
+            record = learn_lesson(triples=args.triples, evidence=args.evidence, lesson=args.lesson,
+                                  scope=args.scope, when=args.when, memory=args.memory)
+            result = {"schema_version": 1, "lesson": record}
+        elif args.cmd == "context":
+            result = render_context(args.instruction, scope=args.scope, memory=args.memory,
+                                    limit=args.limit, disabled=args.disabled)
+        elif args.cmd == "lessons":
+            result = inspect_lessons(memory=args.memory, limit=args.limit)
+        elif args.cmd == "confirm":
+            result = {"schema_version": 1, "lesson": confirm_lesson(args.lesson_id, memory=args.memory)}
+        else:
+            result = {"schema_version": 1, "lesson": revoke_lesson(args.lesson_id, memory=args.memory)}
+    except LessonMemoryError as error:
+        print(f"ERROR: lesson memory unavailable: {error}", file=sys.stderr)
+        return 2
+    except (OSError, UnicodeError):
+        print("ERROR: lesson memory unavailable; check explicit paths, permissions, and symlinks.", file=sys.stderr)
+        return 2
+    print(json.dumps(result, ensure_ascii=True))
     return 0
 
 
@@ -258,23 +293,57 @@ def _cmd_inspect(args: argparse.Namespace) -> int:
     return 0
 
 
+def _gate_input_error(args: argparse.Namespace, code: str, message: str, human_message: str) -> int:
+    if args.json:
+        print(json.dumps({
+            "schema_version": 1,
+            "package_version": __version__,
+            "requested_language": args.lang,
+            "resolved_language": None,
+            "verdict": "ERROR",
+            "highest_severity": None,
+            "should_block": None,
+            "findings": [],
+            "error": {"code": code, "message": message},
+        }, ensure_ascii=True))
+    else:
+        print(human_message, file=sys.stderr)
+    return 2
+
+
 def _cmd_gate(args: argparse.Namespace) -> int:
     from hermeneutic import telemetry
     from hermeneutic.lang import deployment_findings, detect
     try:
         draft = Path(args.draft).read_text(encoding="utf-8") if args.draft else sys.stdin.read()
+        if args.json:
+            # Python's stdin may use surrogateescape for undecodable bytes.
+            # JSON reports must reject those as invalid UTF-8 too.
+            draft.encode("utf-8")
     except FileNotFoundError:
-        print(f"ERROR: draft file not found: {args.draft}", file=sys.stderr)
-        return 2
+        return _gate_input_error(args, "input_not_found", "Draft file not found.",
+                                 f"ERROR: draft file not found: {args.draft}")
     except IsADirectoryError:
-        print(f"ERROR: --draft is a directory, not a file: {args.draft}", file=sys.stderr)
-        return 2
-    except UnicodeDecodeError:
-        print(
-            "ERROR: input is not valid UTF-8 text — the gate reads text drafts only.",
-            file=sys.stderr,
+        return _gate_input_error(args, "input_is_directory", "Draft input is a directory.",
+                                 f"ERROR: --draft is a directory, not a file: {args.draft}")
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        message = "Input is not valid UTF-8 text — the gate reads text drafts only."
+        return _gate_input_error(args, "input_not_utf8", message, f"ERROR: {message[0].lower()}{message[1:]}")
+    except OSError:
+        return _gate_input_error(args, "input_unreadable", "Cannot read draft input.",
+                                 "ERROR: cannot read draft input.")
+    if args.json:
+        from hermeneutic.report import check_draft
+        report = check_draft(draft, lang=args.lang)
+        telemetry.record_gate(
+            verdict=report.verdict,
+            severity=report.highest_severity,
+            rule_ids=[finding.rule_id for finding in report.findings],
+            draft=draft,
+            hits=list(report.findings),
         )
-        return 2
+        print(json.dumps(report.to_dict(include_text=args.include_text), ensure_ascii=True))
+        return int(report.should_block)
     hits, blocking = deployment_findings(draft, lang=args.lang)
     sev = highest_severity(hits)
     telemetry.record_gate(
@@ -650,6 +719,8 @@ def main(argv: list[str] | None = None) -> int:
 
     p_demo = sub.add_parser("demo", help="Export a packaged synthetic correction session; no inference.")
     p_demo.add_argument("--out", required=True, help="New directory for the fictional OpenAI-format session.")
+    p_demo.add_argument("--scenario", choices=("corrections", "dishes"), default="corrections",
+                        help="Packaged fictional example (default: corrections).")
     p_demo.set_defaults(func=_cmd_demo)
 
     p_bucket = sub.add_parser("bucket", help="Bucket a triples.jsonl by surface pattern.")
@@ -666,12 +737,46 @@ def main(argv: list[str] | None = None) -> int:
 
     p_gate = sub.add_parser("gate", help="Run the regex-only risk gate on a draft.")
     p_gate.add_argument("--draft", help="Path to draft file (default: read stdin).")
+    p_gate.add_argument("--json", action="store_true", help="Emit one structured JSON report without draft text.")
+    p_gate.add_argument("--include-text", action="store_true", help="Include matched text in JSON (requires --json).")
     from hermeneutic.lang import LANGS
     p_gate.add_argument(
         "--lang", choices=("auto", *LANGS), default="en",
         help="Experimental trigger mapping (default: en; auto uses conservative language hints).",
     )
     p_gate.set_defaults(func=_cmd_gate)
+
+    p_learn = sub.add_parser("learn", help="Store a host-interpreted scoped lesson with original correction evidence.")
+    p_learn.add_argument("--triples", required=True, help="Explicit original UTF-8 correction JSONL corpus.")
+    p_learn.add_argument("--evidence", required=True, help="Original episode identifier, such as triple-id-1.")
+    p_learn.add_argument("--lesson", help="Host interpretation; omitted preserves a source correction candidate for confirmation.")
+    p_learn.add_argument("--scope", required=True, help="Explicit opaque project or task scope label.")
+    p_learn.add_argument("--when", action="append", help="Representative task example; omitted uses the source original prompt.")
+    p_learn.add_argument("--memory", required=True, help="Explicit lesson JSON file; its parent must exist.")
+    p_learn.set_defaults(func=_cmd_lesson_memory)
+
+    p_context = sub.add_parser("context", help="Retrieve bounded scoped interpretations for explicit host insertion.")
+    p_context.add_argument("instruction", help="Fresh later instruction; this is not added to memory.")
+    p_context.add_argument("--scope", required=True, help="Exact scope label of applicable lesson memory.")
+    p_context.add_argument("--memory", required=True, help="Explicit lesson JSON file.")
+    p_context.add_argument("--limit", type=_positive_int, default=3, help="Maximum matches (default: 3; maximum: 5).")
+    p_context.add_argument("--disabled", action="store_true", help="Return empty context without reading lesson memory.")
+    p_context.set_defaults(func=_cmd_lesson_memory)
+
+    p_lessons = sub.add_parser("lessons", help="Inspect bounded interpreted lessons and original evidence snapshots.")
+    p_lessons.add_argument("--memory", required=True, help="Explicit lesson JSON file.")
+    p_lessons.add_argument("--limit", type=_positive_int, default=20, help="Maximum lessons shown (default: 20; maximum: 100).")
+    p_lessons.set_defaults(func=_cmd_lesson_memory)
+
+    p_confirm = sub.add_parser("confirm", help="Activate an inspected source-derived lesson candidate.")
+    p_confirm.add_argument("lesson_id", help="Candidate identifier returned by learn.")
+    p_confirm.add_argument("--memory", required=True, help="Explicit lesson JSON file.")
+    p_confirm.set_defaults(func=_cmd_lesson_memory)
+
+    p_revoke = sub.add_parser("revoke", help="Disable a lesson while preserving its original interpretation and evidence.")
+    p_revoke.add_argument("lesson_id", help="Stable lesson identifier returned by learn.")
+    p_revoke.add_argument("--memory", required=True, help="Explicit lesson JSON file.")
+    p_revoke.set_defaults(func=_cmd_lesson_memory)
 
     p_harvest = sub.add_parser(
         "harvest",
@@ -759,6 +864,8 @@ def main(argv: list[str] | None = None) -> int:
     p_uch.set_defaults(func=_cmd_uninstall_compile_hook)
 
     args = p.parse_args(argv)
+    if args.cmd == "gate" and args.include_text and not args.json:
+        p_gate.error("--include-text requires --json")
     return args.func(args)
 
 

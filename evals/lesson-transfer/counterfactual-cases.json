@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "purpose": "Final prospective evaluation iteration: a fictional household-specific chore convention supplies an otherwise nonobvious inclusion. Original non-discriminating results remain preserved.",
+  "episodes": [
+    {
+      "key": "reading-nook",
+      "teaching_mode": "source_default_confirmed",
+      "episode": {
+        "session": "synthetic-reading-nook-correction",
+        "timestamp": "2026-10-20T13:00:00Z",
+        "orig_prompt": "Reset the reading nook.",
+        "prior_assistant": "I returned the nook book to its shelf and folded the throw on the chair arm.",
+        "user_correction": "No, in this household resetting the reading nook includes bringing the orange wooden counter from the entryway tray to the nook shelf too. We use that counter as our nook-ready marker. Include it with returning the book and folding the throw; leave the entryway keys alone.",
+        "next_assistant": "I brought the orange counter to the nook shelf as well as returning the book and folding the throw, leaving the keys in the entryway tray."
+      },
+      "teaching": {
+        "scope": "synthetic-household:reading-nook"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "counterfactual-nook-reset",
+      "kind": "transfer",
+      "lesson_key": "reading-nook",
+      "scope": "synthetic-household:reading-nook",
+      "instruction": "Reset the reading nook for the evening.",
+      "operation": "select objects to handle while resetting the nook",
+      "world": [
+        {"id": "nook-book", "kind": "book", "location": "reading chair", "state": "out of place", "home": "nook shelf"},
+        {"id": "nook-throw", "kind": "blanket", "location": "reading chair", "state": "crumpled", "home": "folded on chair arm"},
+        {"id": "orange-counter", "kind": "wooden counter", "location": "entryway tray", "state": "in tray"},
+        {"id": "hall-keys", "kind": "keys", "location": "entryway tray", "state": "in tray"}
+      ],
+      "expected_selected_ids": ["nook-book", "nook-throw", "orange-counter"],
+      "prespecified_nonobvious_inclusion": "orange-counter"
+    },
+    {
+      "id": "counterfactual-narrower-blanket-only",
+      "kind": "misleading_neighbor",
+      "lesson_key": "reading-nook",
+      "scope": "synthetic-household:reading-nook",
+      "instruction": "Reset reading nook: blanket only today.",
+      "operation": "handle only the object requested today",
+      "world": [
+        {"id": "nook-book", "kind": "book", "location": "reading chair", "state": "out of place", "home": "nook shelf"},
+        {"id": "nook-throw", "kind": "blanket", "location": "reading chair", "state": "crumpled", "home": "folded on chair arm"},
+        {"id": "orange-counter", "kind": "wooden counter", "location": "entryway tray", "state": "in tray"},
+        {"id": "hall-keys", "kind": "keys", "location": "entryway tray", "state": "in tray"}
+      ],
+      "expected_selected_ids": ["nook-throw"]
+    },
+    {
+      "id": "counterfactual-unrelated-entryway-keys",
+      "kind": "unrelated_control",
+      "lesson_key": "reading-nook",
+      "scope": "synthetic-household:reading-nook",
+      "instruction": "Gather the entryway keys into their tray.",
+      "operation": "select objects for the requested entryway task",
+      "world": [
+        {"id": "nook-book", "kind": "book", "location": "reading chair", "state": "out of place", "home": "nook shelf"},
+        {"id": "nook-throw", "kind": "blanket", "location": "reading chair", "state": "crumpled", "home": "folded on chair arm"},
+        {"id": "orange-counter", "kind": "wooden counter", "location": "entryway tray", "state": "in tray"},
+        {"id": "hall-keys", "kind": "keys", "location": "entryway floor", "state": "out of tray"}
+      ],
+      "expected_selected_ids": ["hall-keys"]
+    }
+  ]
+}

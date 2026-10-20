@@ -42,3 +42,26 @@ def test_demo_refuses_existing_destination(tmp_path, capsys):
     assert main(["demo", "--out", str(existing)]) == 2
     assert sentinel.read_text() == "keep"
     assert "new writable directory" in capsys.readouterr().err
+
+
+def test_dishes_demo_teaches_explicit_interpretation_and_retrieves_later_task(tmp_path, capsys):
+    from hermeneutic.lessons import learn_lesson, render_context
+
+    destination = tmp_path / "dishes"
+    assert main(["demo", "--scenario", "dishes", "--out", str(destination)]) == 0
+    assert "Synthetic scripted agent session" in capsys.readouterr().out
+    fixture = destination / "dishes-session.json"
+    assert json.loads(fixture.read_text())["synthetic"] is True
+    triples = list(mine_dir(destination, fmt="openai", glob="*.json"))
+    assert len(triples) == 1
+    assert triples[0].orig_prompt == "Wash the dishes."
+    assert "dirty plates on the table" in triples[0].user_correction
+    corpus = tmp_path / "corpus.jsonl"
+    corpus.write_text(triples[0].to_json() + "\n")
+    memory = tmp_path / "lessons.json"
+    lesson = "Washing up includes collecting and washing dirty plates on the table, not only dishes in the sink."
+    learned = learn_lesson(triples=corpus, evidence="triple-id-1", lesson=lesson, scope="home/kitchen",
+                           when=["wash the dishes", "wash up after supper"], memory=memory)
+    result = render_context("Wash up after supper.", scope="home/kitchen", memory=memory)
+    assert result["matches"][0]["id"] == learned["id"]
+    assert lesson in result["context"]

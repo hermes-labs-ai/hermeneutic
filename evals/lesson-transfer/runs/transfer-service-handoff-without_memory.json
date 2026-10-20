@@ -1,0 +1,1 @@
+{"selected_ids":["maple-patch","maple-test-receipt","maple-rollback"],"memory_checks":[],"explanation":"Include the ready maple-worker patch, focused-test evidence, and rollback note for deployment handoff. Exclude scratch notes, credentials, and the unrelated cedar-api patch. No recalled corrections were supplied."}

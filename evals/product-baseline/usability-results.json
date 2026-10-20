@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "classification": "Synthetic correlated advisory lenses; not correctness, user research, authorization or population evidence.",
+  "state": {
+    "evidence_kind": "Public synthetic product trial, correlated model hosts. This is neither user research nor correctness or authorization evidence.",
+    "definitions": {
+      "usable": "Operator can teach from source once, inspect and confirm, retrieve later, check applicability, and revoke using documented commands.",
+      "friction": "Avoidable confusion about setup, next action or candidate versus applicable lesson. Not language accuracy or release permission.",
+      "transfer": "Observed action changes appropriately; retrieval or citations alone are insufficient."
+    },
+    "facts": [
+      "New installed CLI learn derives a candidate verbatim from a mined correction and original task cues; user need not retype rule. Candidate is withheld until confirm. Host may optionally supply interpreted lesson and representative cues.",
+      "context requires exact scope; uses transparent lexical cues and weak-match warning for sparse terms; current explicit restrictions take priority. It does not synthesize meaning or install hooks. Source-default 'Do the dishes' misses 'Take care of tonight's supper dishes'; overlapping README task works.",
+      "Installed inspection, confirmation, revocation, disabled and scope-exclusion mechanics passed. Default JSON includes attributed lesson candidates and explanatory usage. Optional gate --json checks outgoing wording separately.",
+      "Frozen positive synthetic tasks were correctly completed by Codex both without and with context, showing no measured uplift. Narrower control retrieved a candidate but agent declined applying it; unrelated and other-scope controls did not retrieve.",
+      "Public source-derived dishes trial: Claude selected sink bowl and table plate in both conditions. Hermes selected an extra office mug without context and excluded it with context. Both selected table plate already without context. These public design observations do not prove correction transfer generally.",
+      "Documentation presents incoming lesson context, host applicability/action, and outgoing epistemic report separately. First use has demo, mine, learn, inspect, confirm, context; later tasks need only context. No Action release."
+    ],
+    "lenses": {
+      "convenience_first": "Maintainer values low setup effort and predictable later invocations.",
+      "evidence_first": "Reviewer values attribution, applicability limits, no silent conditioning and revocation."
+    },
+    "required_evidence": "Use only observed command behavior and outputs above. Missing or ambiguous evidence remains unknown. Do not infer that tests establish understanding."
+  },
+  "counterbalance": "Evidence, lens question order and choice option order reversed on second request.",
+  "results": [
+    {
+      "status": "ok",
+      "call_id": "c7c0b96e-d9a0-4b6a-86cc-ae0a40e0fb72",
+      "model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1109,
+        "output_tokens": 130
+      },
+      "latency_s": 0.218,
+      "verdicts": {
+        "convenience": {
+          "type": "choice",
+          "choice": "applicability_limits",
+          "confidence": 0.4,
+          "probabilities": {
+            "candidate_confirmation": 0.43,
+            "applicability_limits": 0.52,
+            "planes": 0.04,
+            "sufficient": 0.01,
+            "unknown": 0
+          },
+          "escalate": true
+        },
+        "evidence": {
+          "type": "choice",
+          "choice": "applicability_limits",
+          "confidence": 0.84,
+          "probabilities": {
+            "candidate_confirmation": 0.08,
+            "applicability_limits": 0.87,
+            "planes": 0.05,
+            "sufficient": 0,
+            "unknown": 0
+          },
+          "escalate": false
+        }
+      },
+      "missing_answers": [],
+      "invalid_answers": {},
+      "unexpected_answers": [],
+      "escalate": true,
+      "advisory_only": true
+    },
+    {
+      "status": "ok",
+      "call_id": "513c9b7b-834e-4c69-9929-937749741afd",
+      "model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1109,
+        "output_tokens": 130
+      },
+      "latency_s": 0.186,
+      "verdicts": {
+        "evidence": {
+          "type": "choice",
+          "choice": "applicability_limits",
+          "confidence": 0.95,
+          "probabilities": {
+            "unknown": 0,
+            "sufficient": 0,
+            "planes": 0.03,
+            "applicability_limits": 0.96,
+            "candidate_confirmation": 0.01
+          },
+          "escalate": false
+        },
+        "convenience": {
+          "type": "choice",
+          "choice": "applicability_limits",
+          "confidence": 0.81,
+          "probabilities": {
+            "unknown": 0,
+            "sufficient": 0,
+            "planes": 0.04,
+            "applicability_limits": 0.85,
+            "candidate_confirmation": 0.11
+          },
+          "escalate": false
+        }
+      },
+      "missing_answers": [],
+      "invalid_answers": {},
+      "unexpected_answers": [],
+      "escalate": false,
+      "advisory_only": true
+    }
+  ],
+  "interpretation": "Both presentations selected applicability limits as the priority. Confidence changed materially, with escalation on the first convenience judgment; this remains uncertainty, not a preference estimate. Existing explicit lexical/semantic boundary warnings are retained. No product tuning or release authorization follows.",
+  "estimated_input_cost_usd": 0.000093156,
+  "boundary": "Shared logged Jev client and existing Mac accounting state; no separate ledger. A prior unsupported-purpose tool input was rejected before the provider call.",
+  "next": "Stop this usability experiment; judge release readiness from direct tests and independent source review."
+}

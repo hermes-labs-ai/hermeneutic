@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "version": "0.1.16a2",
+  "channel": "alpha",
+  "python": ">=3.10",
+  "runtime_dependencies": [],
+  "gate": {
+    "kind": "deterministic_surface_patterns",
+    "canonical_language": "en",
+    "blocking_severities": [
+      "med",
+      "high"
+    ],
+    "json_schema_version": 1,
+    "matched_text_default": false,
+    "factuality_guarantee": false
+  },
+  "language_mapping": {
+    "status": "experimental_advisory",
+    "codes": [
+      "ko",
+      "zh",
+      "ja",
+      "tr",
+      "de",
+      "fr",
+      "es",
+      "pt"
+    ],
+    "raw_english_enforcement_preserved": true,
+    "real_language_coverage": "unvalidated",
+    "evidence": "evals/production-languages/README.md"
+  },
+  "correction_memory": {
+    "default_retrieval": "offline_keyword",
+    "embeddings": "optional_local_ollama",
+    "improved_agent_outcomes": "unmeasured",
+    "evidence": "evals/correction-memory/public/README.md"
+  },
+  "release_contract": "evals/product-baseline/README.md",
+  "roadmap": "docs/ROADMAP.md",
+  "lesson_memory": {
+    "status": "scoped_correction_context_preview",
+    "default_capture": "source_verbatim_candidate_requires_confirmation",
+    "interpretation": "optional_explicit_user_or_host_interpretation",
+    "matching": "conservative_keyword_cues_with_exact_scope",
+    "delivery": "on_demand_bounded_context",
+    "application": "host_checks_applicability_and_current_instructions",
+    "revocation": "explicit_tombstone",
+    "hidden_conditioning": false,
+    "downstream_evidence": "evals/lesson-transfer/",
+    "downstream_effectiveness": "limited_synthetic_evidence_only"
+  }
+}

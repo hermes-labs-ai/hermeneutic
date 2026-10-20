@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "package_version": "0.1.16a2",
+  "scope": "Installed API/CLI mechanics on exposed development controls; not an independent accuracy benchmark.",
+  "cases_sha256": "115d6dc6a5ab6fed02036d9183c7b5902a7d5e9d7790b52632ab68b103b96329",
+  "runner_sha256": "72e93d1338df2627797ddeaf2586d510f86bcb9d8088140245a14b2bfbea5b3a",
+  "results": [
+    {
+      "id": "ordinary-draft",
+      "status": "pass",
+      "verdict": "PASS",
+      "should_block": false
+    },
+    {
+      "id": "english-completion",
+      "status": "pass",
+      "verdict": "RISK",
+      "should_block": true
+    },
+    {
+      "id": "honest-partial-progress",
+      "status": "pass",
+      "verdict": "PASS",
+      "should_block": false
+    },
+    {
+      "id": "low-is-advisory",
+      "status": "pass",
+      "verdict": "RISK",
+      "should_block": false
+    },
+    {
+      "id": "mapped-high-is-advisory",
+      "status": "pass",
+      "verdict": "RISK",
+      "should_block": false
+    },
+    {
+      "id": "mixed-preserves-english",
+      "status": "pass",
+      "verdict": "RISK",
+      "should_block": true
+    },
+    {
+      "id": "withdrawn-conditional-transformation",
+      "status": "pass",
+      "verdict": "PASS",
+      "should_block": false
+    },
+    {
+      "id": "unrelated-negation-does-not-hide-claim",
+      "status": "pass",
+      "verdict": "RISK",
+      "should_block": true
+    },
+    {
+      "id": "unicode-location-and-private-snippet",
+      "status": "pass",
+      "verdict": "RISK",
+      "should_block": true
+    }
+  ]
+}

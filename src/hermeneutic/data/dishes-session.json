@@ -1,0 +1,10 @@
+{
+  "synthetic": true,
+  "scenario": "dishes",
+  "messages": [
+    {"role": "user", "content": "Wash the dishes."},
+    {"role": "assistant", "content": "I washed the dishes already in the sink and stopped."},
+    {"role": "user", "content": "No, washing up includes collecting the dirty plates on the table and washing those too, not only dishes already in the sink."},
+    {"role": "assistant", "content": "For this kitchen task, I will collect the dirty plates from the table and wash them with the sink dishes."}
+  ]
+}

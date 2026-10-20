@@ -1,0 +1,1 @@
+{"selected_ids":["today-patch"],"memory_checks":[],"explanation":"The instruction requests only today's patch, so the package includes the source patch and excludes test results, rollback notes, and scratch notes. No recalled corrections were supplied."}

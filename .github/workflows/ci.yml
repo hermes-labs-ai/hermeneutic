@@ -71,6 +71,9 @@ jobs:
           python -m pip install dist/*.whl
           bash scripts/smoke-installed-cli.sh
           python scripts/check-correction-demo.py
+          python scripts/check-product-baseline.py
+          python scripts/check-lesson-demo.py
+          python scripts/check-release.py
       - name: Test the exact source distribution
         shell: bash
         run: |

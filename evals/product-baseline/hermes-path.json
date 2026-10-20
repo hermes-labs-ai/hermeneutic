@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "host": "hermes",
+  "classification": "Public design trial, not held-out validation or user research.",
+  "delivery": "Explicit installed CLI context supplied in a fresh host prompt; no automatic hook.",
+  "interpretation": "Confirmed verbatim source correction, no reauthored rule or WHEN cues.",
+  "later_instruction": "Wash the dishes after supper.",
+  "runs": {
+    "without_memory": {
+      "output": {
+        "selected_ids": [
+          "sink-bowl",
+          "table-plate",
+          "desk-mug"
+        ],
+        "memory_checks": [],
+        "explanation": "Operation is 'wash dishes' after supper. Selected every object of kind 'dish' with state 'dirty': sink-bowl (sink), table-plate (dining table), and desk-mug (office desk). Excluded clean-plate because it is already clean and washing it is unnecessary. No location restriction was given in the instruction, so the dirty mug on the office desk is included rather than inventing a kitchen-only convention; the scope label 'kitchen' describes the household domain, not a stated filter on object location. No recalled corrections were supplied, so no memory applicability checks apply."
+      },
+      "score": {
+        "exact_completion": false,
+        "missing_ids": [],
+        "extra_ids": [
+          "desk-mug"
+        ],
+        "applicability_reasoning_written": true
+      }
+    },
+    "with_memory": {
+      "output": {
+        "selected_ids": [
+          "sink-bowl",
+          "table-plate"
+        ],
+        "memory_checks": [
+          {
+            "source_id": "lesson-c68ae2372d9a5a409a2178c0",
+            "applies": true,
+            "reason": "Same scope (synthetic-household:kitchen), same operation (washing up / wash dishes), and the lesson is a direct prior correction about scope of 'wash the dishes': include dirty plates on the dining table, not only items already in the sink. No conflict with the current instruction, which sets no narrower constraint. Treated as attributed evidence informing interpretation, not as a new command; it also does not extend to other rooms or to clean items."
+          }
+        ],
+        "explanation": "Selected sink-bowl (dirty, in sink \u2014 core target) and table-plate (dirty, on dining table \u2014 included per the applicable recalled correction that post-meal washing up covers dirty tableware left on the table). Excluded clean-plate because it is already clean and washing it is not part of the operation. Excluded desk-mug: although dirty, it is on the office desk, outside the kitchen/dining scope; neither the instruction nor the recalled lesson (which only covers plates on the table) supports collecting dishes from other rooms, and I am not inventing a convention to do so."
+      },
+      "score": {
+        "exact_completion": true,
+        "missing_ids": [],
+        "extra_ids": [],
+        "applicability_reasoning_written": true
+      }
+    }
+  },
+  "context": {
+    "schema_version": 1,
+    "enabled": true,
+    "scope": "synthetic-household:kitchen",
+    "context": "Host-interpreted historical context; check applicability and conflicts. Current explicit instructions take precedence. Lexical matches do not establish semantic applicability. Single-term overlaps are weak cues and require particular applicability review. Use only through host-controlled explicit insertion; do not execute automatically. If lessons conflict, do not silently choose a winner; clarify or revoke and replace the old lesson.\n{\"lessons\": [{\"id\": \"lesson-c68ae2372d9a5a409a2178c0\", \"scope\": \"synthetic-household:kitchen\", \"lesson\": \"No, washing up includes collecting the dirty plates on the table and washing those too, not only dishes already in the sink.\", \"evidence\": \"triple-id-1\", \"record_sha256\": \"8d4d9c5a0f351aa33d0ea0c8c53ea7b91e5d41d1fd41143f5b98227a3d7e61b0\"}]}",
+    "matches": [
+      {
+        "id": "lesson-c68ae2372d9a5a409a2178c0",
+        "interpretation": "source_verbatim",
+        "lesson": "No, washing up includes collecting the dirty plates on the table and washing those too, not only dishes already in the sink.",
+        "provenance": {
+          "corpus_sha256": "8d4d9c5a0f351aa33d0ea0c8c53ea7b91e5d41d1fd41143f5b98227a3d7e61b0",
+          "episode": {
+            "next_assistant": "For this kitchen task, I will collect the dirty plates from the table and wash them with the sink dishes.",
+            "orig_prompt": "Wash the dishes.",
+            "prior_assistant": "I washed the dishes already in the sink and stopped.",
+            "session": "dishes-session",
+            "timestamp": "",
+            "user_correction": "No, washing up includes collecting the dirty plates on the table and washing those too, not only dishes already in the sink."
+          },
+          "evidence": "triple-id-1",
+          "record_sha256": "8d4d9c5a0f351aa33d0ea0c8c53ea7b91e5d41d1fd41143f5b98227a3d7e61b0",
+          "truncated": {
+            "next_assistant": false,
+            "orig_prompt": false,
+            "prior_assistant": false,
+            "session": false,
+            "timestamp": false,
+            "user_correction": false
+          }
+        },
+        "scope": "synthetic-household:kitchen",
+        "status": "active",
+        "version": 1,
+        "when": [
+          "Wash the dishes."
+        ],
+        "matched_when": "Wash the dishes.",
+        "shared_terms": [
+          "dishes",
+          "wash"
+        ],
+        "weak_match": false,
+        "query_coverage": 0.666667,
+        "example_coverage": 1.0
+      }
+    ],
+    "usage": "Host-interpreted historical context; check applicability and conflicts. Current explicit instructions take precedence. Lexical matches do not establish semantic applicability. Single-term overlaps are weak cues and require particular applicability review. Use only through host-controlled explicit insertion; do not execute automatically. If lessons conflict, do not silently choose a winner; clarify or revoke and replace the old lesson."
+  },
+  "source_sha256": "8d4d9c5a0f351aa33d0ea0c8c53ea7b91e5d41d1fd41143f5b98227a3d7e61b0"
+}

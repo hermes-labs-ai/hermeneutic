@@ -2,6 +2,35 @@
 
 All notable changes to Hermeneutic are documented here. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.16a2] — 2026-10-20
+
+### Added
+
+- Scoped lesson memory preview: derive a source-verbatim candidate from an
+  attributed correction episode, inspect and confirm it, then retrieve bounded
+  context for later instructions. Optional host interpretation is explicit;
+  default operation uses no model or hidden learning. Revocation retains the
+  original episode.
+- Teach-and-transfer onboarding and a separate synthetic transfer evaluation.
+  Applicability and downstream action remain the host agent's responsibility.
+- Optional structured draft checks: `hermeneutic gate --json` and Python
+  `check_draft` expose source locations and blocking policy. Reports omit matched
+  text by default. This lateral check does not learn or apply correction lessons.
+- Machine-readable release metadata and provenance-labeled regression controls.
+
+### Fixed
+
+- Integrate the advisory-language correction from PR #57 while retaining its
+  review history and original frozen evaluation. Mapped findings cannot block
+  or invoke automatic repair; raw English enforcement survives mixed drafts.
+  Experimental mappings remain unvalidated for general-language coverage.
+
+### Documentation
+
+- Lead with interpreted correction transfer and publish an evidence-ordered
+  roadmap. The separate recall experiment in PR #63 and GitHub Action expansion
+  remain outside this release.
+
 ## [Unreleased]
 
 ## [0.1.16a1] — Candidate, unreleased

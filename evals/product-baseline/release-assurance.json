@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "stage": "pre_review_local_assurance",
+  "version": "0.1.16a2",
+  "python": "3.14.7",
+  "platform": "Darwin",
+  "scope": "Native and installed-artifact assurance before independent review. Exact committed-head CI and published artifact readback are separate release requirements. This receipt is added after these local builds; hashes identify those pre-review artifacts, not the later published sdist.",
+  "source_sha256": {
+    "src/hermeneutic/__init__.py": "2197907b2cc43d698bcb46a9384eb35d2ce516fbc60d2403dfda3f45a8f54d33",
+    "src/hermeneutic/cli.py": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0",
+    "src/hermeneutic/compile.py": "047b3e4edcec2cc0d818a03fdaf64be008c4b74954315ea18c25c8d2f0084bdf",
+    "src/hermeneutic/gates/__init__.py": "d5bc5bb47e6b59b151f2b45d90e2d9af0a0ec28d01a10f750391f68d5965e3f5",
+    "src/hermeneutic/gates/regex.py": "24a70e1239e36922f0fa5093dcd43b9a07f1bc18d23157b18e4aacea09072276",
+    "src/hermeneutic/gates/rubric.py": "ae231bfedc05bc6c72a938e8c1234ac57d5980760a017415383d07c15ad43403",
+    "src/hermeneutic/gates/twin.py": "a2e2705da1077c50c18948069ee243b986928dbc4b21c241448ca28fff2dcd82",
+    "src/hermeneutic/harvest.py": "02876d027e9e59e9122f7cb3fb262c053e79c3491920e90943419cae8f62c326",
+    "src/hermeneutic/hermes_agent_plugin.py": "f28c735f99b143b6bd1cf1d13ae368bbb809d71e6cc071cb9a2060aadd56cd18",
+    "src/hermeneutic/install_hook.py": "025968130f951409623902bd377cc5513711912bd096a8af68ece41d4983b663",
+    "src/hermeneutic/lang/__init__.py": "6c7c9e02c90fd7e491ef28e1e5e81eb186ec22c41d7506ca500536b16de70e55",
+    "src/hermeneutic/lang/_common.py": "44fece69f49401c22e8c88ed7cfca88412b4f04e11eefab77faee6815caee15b",
+    "src/hermeneutic/lang/de.py": "697f121cb5d4af2a6d184159daf49a5e2dfa2d362c3e4e7c3d23ae46990f9baf",
+    "src/hermeneutic/lang/es.py": "2d637ce307e3689b82fe8fb375a1d9bb65e9640957b46c87896cd5c395498fe5",
+    "src/hermeneutic/lang/fr.py": "7cabbcf6a6eb50efdaf3f3a8721fde86fce65a904605191d2aa7f23fd389fe0d",
+    "src/hermeneutic/lang/ja.py": "234cbce81006e2feb7a851df2d0b54cdc17c43843eaf772d5f6a5aee0e64a7db",
+    "src/hermeneutic/lang/ko.py": "fb704e798de88f738ae9893ba1d26ec5eb74995a99595fef0a8bf80cf9861f03",
+    "src/hermeneutic/lang/pt.py": "e5552898ce2fdc2ac4365f9d0f2d8b50ba8d051cb53de320f6400443af4fc1e3",
+    "src/hermeneutic/lang/tr.py": "22e0abd1ffed4f40befd3154f77f5c962a98aa687fb9885b7d3435eb1432fc5c",
+    "src/hermeneutic/lang/zh.py": "9f19c26784bfe540bef0a857dcbfd6e1f539b3fcbe7e87e56155fb73e59b6c2d",
+    "src/hermeneutic/lessons.py": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+    "src/hermeneutic/memory.py": "b606e3790adde1a9dc992b7f444fdf8734a9a7cb09b9b7408e48b02dd085ee8d",
+    "src/hermeneutic/report.py": "5d59321aaefb40c32b7916ccfaeb08732ebacdeb6854bc9cd58a1f23e30d6601",
+    "src/hermeneutic/response_gate.py": "54540caaa5a7b46861c779aa5498de9a4dc6166010ed4eaece73c87b19d1b79a",
+    "src/hermeneutic/router.py": "a1d7deff2cfd34f25c374ebaecc6f47a77b967220434cb9037b95d08ce482e75",
+    "src/hermeneutic/telemetry.py": "ee7e987a1d8ed54ba3c0f1a1da7ee9f94fdada6b6439dee3e933a4fc5b9cbe68",
+    "src/hermeneutic/triples.py": "df635b04eed6c237f93cfc5f85baed177a0628965fda6dd9824ac3bcee5be5a1"
+  },
+  "checks": {
+    "source_pytest": {
+      "command": ".venv/bin/python -m pytest -ra",
+      "passed": 633,
+      "skipped": 1,
+      "skip_reason": "Latest changelog does not claim a test count."
+    },
+    "source_lint": {
+      "command": "ruff check src tests scripts/check-host-paths.py scripts/check-release.py scripts/check-product-baseline.py scripts/check-lesson-demo.py",
+      "status": "pass"
+    },
+    "openclaw_adapter": {
+      "command": "node --test integrations/openclaw/test.mjs",
+      "passed": 4
+    },
+    "build_and_twine": {
+      "command": "python -m build --installer uv; python -m twine check ARTIFACTS",
+      "status": "pass"
+    },
+    "exact_pre_review_sdist": {
+      "command": "Extract alpha sdist; uv pip install extracted-project[dev] in a fresh venv; ruff check src tests; python -m pytest -ra",
+      "passed": 629,
+      "skipped": 5,
+      "skip_reason": "Four repository-only workflow assertions are omitted from sdist; one changelog test-count assertion is opt-in."
+    },
+    "installed_wheel_smoke": {
+      "command": "bash scripts/smoke-installed-cli.sh",
+      "status": "pass",
+      "boundary": "Exposed synthetic gate controls, not language accuracy."
+    },
+    "offline_correction_demo": {
+      "command": "python scripts/check-correction-demo.py",
+      "status": "pass"
+    },
+    "structured_report_regression": {
+      "command": "python scripts/check-product-baseline.py",
+      "receipt": "results.json",
+      "status": "pass"
+    },
+    "version_consistency": {
+      "command": "python scripts/check-release.py",
+      "status": "pass"
+    },
+    "installed_language_policy": {
+      "version": "0.1.16a2",
+      "wheel_source_python_files_equal": 27,
+      "languages": {
+        "ko": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass",
+        "ja": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass",
+        "zh": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass",
+        "es": "CLI explicit/auto advisory, raw English enforcement, Router and response-hook mechanics pass"
+      },
+      "boundary": "Installed artifact and simulated hook payloads; no running third-party host delivery claim."
+    }
+  },
+  "trial_to_preview_binding": {
+    "trial_package_version": "0.1.16",
+    "trial_version_was_unpublished": true,
+    "preview_package_version": "0.1.16a2",
+    "package_files_compared": 30,
+    "different_package_files": [
+      "hermeneutic/__init__.py"
+    ],
+    "difference": "Only __version__ changed from 0.1.16 to 0.1.16a2; every other package file is byte-identical. Distribution metadata and docs also changed to label the preview.",
+    "trial_wheel_sha256": "3a026a5be27c7dd8ca1f2089911dc5c1d5a387ecab91469a4164e329227bef01",
+    "pre_review_preview_wheel_sha256": "3dda3883a7f774c272816e9920aee93d42e5739c9f52097f79c4a204d74a9ca8",
+    "method": "Compare exact package member sets and bytes from both wheel ZIP files, then normalize only the __version__ assignment in __init__.py."
+  },
+  "preview_installed_lesson_mechanics": {
+    "original": {
+      "package_identity": {
+        "version": "0.1.16a2",
+        "package_path": "/private/tmp/hermeneutic-product.Ooc7vN/alpha-env/lib/python3.14/site-packages/hermeneutic/__init__.py",
+        "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+        "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+      },
+      "fixture_sha256": {
+        "design-demo.json": "e48202dbac6ae1abce02649fe5f1b7e6abf50418dc1a7eaa957768e5cdbb93e1",
+        "frozen-cases.json": "46ff6ac506129f771e26acc7f66f9b28fde78243cc2dcc779d35a1eb36704ed2"
+      },
+      "checks": {
+        "default_capture_is_source_verbatim_candidate": true,
+        "unconfirmed_candidate_is_not_supplied": true,
+        "confirmation_activates_source_candidate": true,
+        "inspect_contains_explicit_interpretation": true,
+        "provenance_matches_source_episode": true,
+        "source_correction_preserved": true,
+        "disabled_has_no_matches_or_context": true,
+        "uncorrected_memory_has_no_context": true,
+        "uncorrected_episode_mines_no_evidence": true,
+        "uncorrected_episode_cannot_teach_attributed_lesson": true,
+        "revoke_removes_context": true,
+        "inspect_retains_revoked_tombstone": true,
+        "frozen_retrieval:transfer-service-handoff": true,
+        "frozen_retrieval:transfer-experiment-archive": true,
+        "frozen_retrieval:transfer-handoff-second-paraphrase": true,
+        "frozen_retrieval:control-unrelated-same-scope": true,
+        "frozen_retrieval:control-matching-words-other-scope": true,
+        "frozen_retrieval:control-misleading-narrower-request": true,
+        "evaluated_core_matches_source_freeze": true
+      },
+      "passed": true
+    },
+    "counterfactual": {
+      "package_identity": {
+        "version": "0.1.16a2",
+        "package_path": "/private/tmp/hermeneutic-product.Ooc7vN/alpha-env/lib/python3.14/site-packages/hermeneutic/__init__.py",
+        "lessons_sha256": "a50a567d47bb848028a2e54469cb64fa9e7f6128d448f3e671b785c331da1b0a",
+        "cli_sha256": "c0f963ed85d23d009b358dfba423b4c803b80aa572098fa50cd42d4310f166d0"
+      },
+      "fixture_sha256": {
+        "counterfactual-cases.json": "584910cd0a04b11a9a505e1fa1f2d33277e36a494083304106ec2d3368657a0a"
+      },
+      "checks": {
+        "source_verbatim_candidate": true,
+        "unconfirmed_not_supplied": true,
+        "confirmed_active": true,
+        "attributed_correction": true,
+        "retrieval:counterfactual-nook-reset": true,
+        "retrieval:counterfactual-narrower-blanket-only": true,
+        "retrieval:counterfactual-unrelated-entryway-keys": true,
+        "core_unchanged": true
+      },
+      "passed": true
+    }
+  },
+  "live_trials": "Original live trials are preserved unchanged at their original package identity. Only deterministic mechanics were repeated on the preview; no live retry or re-scoring occurred."
+}

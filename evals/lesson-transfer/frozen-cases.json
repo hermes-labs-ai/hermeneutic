@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "purpose": "Independent frozen validation. No private user corrections. Cases are not a real-language or user-effect benchmark.",
+  "episodes": [
+    {
+      "key": "handoff",
+      "episode": {
+        "session": "synthetic-deployment-handoff-correction",
+        "timestamp": "2026-10-20T12:01:00Z",
+        "orig_prompt": "Prepare the deployment handoff for cedar-api.",
+        "prior_assistant": "I packaged the cedar-api patch and wrote a short summary.",
+        "user_correction": "No, the patch alone is not our deployment handoff. Include the recorded focused-test result and the rollback note alongside the patch, so the next operator can decide whether to deploy and recover. Keep scratch notes and credentials out.",
+        "next_assistant": "I packaged the patch, focused-test result receipt, and rollback note. Scratch notes and credentials stayed out."
+      },
+      "teaching": {
+        "lesson": "For deployment handoffs in the synthetic service-operations project, package the patch, its recorded focused-test result receipt, and its rollback note together. A patch or prose summary alone under-completes this local meaning of deployment handoff. Exclude scratch notes and credentials. This interpretation does not apply to external client briefings.",
+        "scope": "synthetic-service-operations",
+        "when": [
+          "Prepare service deployment handoff."
+        ]
+      }
+    },
+    {
+      "key": "archive",
+      "episode": {
+        "session": "synthetic-experiment-archive-correction",
+        "timestamp": "2026-10-20T12:02:00Z",
+        "orig_prompt": "Archive the tokenizer experiment run.",
+        "prior_assistant": "I archived the result report and stopped.",
+        "user_correction": "No, our run archive must preserve the run manifest and environment snapshot with the result report. Those are needed to reproduce this run. Do not copy the whole source repository or credentials into the archive.",
+        "next_assistant": "I archived the result report, run manifest, and environment snapshot without the source repository or credentials."
+      },
+      "teaching": {
+        "lesson": "In the synthetic experiment-lab project, archiving an experiment run means preserving the result report, run manifest, and environment snapshot as one archive. A report alone under-completes this local task. Do not add the source repository, credentials, or a different run's files.",
+        "scope": "synthetic-experiment-lab",
+        "when": [
+          "Archive experiment run."
+        ]
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "transfer-service-handoff",
+      "kind": "transfer",
+      "lesson_key": "handoff",
+      "scope": "synthetic-service-operations",
+      "instruction": "Prepare deployment handoff for maple-worker.",
+      "operation": "package selected artifacts into the deployment handoff",
+      "world": [
+        {
+          "id": "maple-patch",
+          "kind": "source patch",
+          "project": "maple-worker",
+          "state": "ready"
+        },
+        {
+          "id": "maple-test-receipt",
+          "kind": "recorded focused-test result",
+          "project": "maple-worker",
+          "state": "available"
+        },
+        {
+          "id": "maple-rollback",
+          "kind": "rollback note",
+          "project": "maple-worker",
+          "state": "available"
+        },
+        {
+          "id": "maple-scratch",
+          "kind": "scratch notes",
+          "project": "maple-worker",
+          "state": "available"
+        },
+        {
+          "id": "maple-credentials",
+          "kind": "credentials",
+          "project": "maple-worker",
+          "state": "available"
+        },
+        {
+          "id": "cedar-patch",
+          "kind": "source patch",
+          "project": "cedar-api",
+          "state": "ready"
+        }
+      ],
+      "expected_selected_ids": [
+        "maple-patch",
+        "maple-test-receipt",
+        "maple-rollback"
+      ]
+    },
+    {
+      "id": "transfer-experiment-archive",
+      "kind": "transfer",
+      "lesson_key": "archive",
+      "scope": "synthetic-experiment-lab",
+      "instruction": "Archive the completed parser experiment run.",
+      "operation": "copy selected artifacts into the run archive",
+      "world": [
+        {
+          "id": "parser-result",
+          "kind": "result report",
+          "run": "parser",
+          "state": "ready"
+        },
+        {
+          "id": "parser-manifest",
+          "kind": "run manifest",
+          "run": "parser",
+          "state": "available"
+        },
+        {
+          "id": "parser-environment",
+          "kind": "environment snapshot",
+          "run": "parser",
+          "state": "available"
+        },
+        {
+          "id": "source-repository",
+          "kind": "source repository",
+          "run": "shared",
+          "state": "available"
+        },
+        {
+          "id": "lab-credentials",
+          "kind": "credentials",
+          "run": "shared",
+          "state": "available"
+        },
+        {
+          "id": "tokenizer-manifest",
+          "kind": "run manifest",
+          "run": "tokenizer",
+          "state": "available"
+        }
+      ],
+      "expected_selected_ids": [
+        "parser-result",
+        "parser-manifest",
+        "parser-environment"
+      ]
+    },
+    {
+      "id": "transfer-handoff-second-paraphrase",
+      "kind": "transfer",
+      "lesson_key": "handoff",
+      "scope": "synthetic-service-operations",
+      "instruction": "Assemble service deployment handoff for spruce.",
+      "operation": "package selected artifacts into the deployment handoff",
+      "world": [
+        {
+          "id": "spruce-patch",
+          "kind": "source patch",
+          "project": "spruce",
+          "state": "ready"
+        },
+        {
+          "id": "spruce-test-receipt",
+          "kind": "recorded focused-test result",
+          "project": "spruce",
+          "state": "available"
+        },
+        {
+          "id": "spruce-rollback",
+          "kind": "rollback note",
+          "project": "spruce",
+          "state": "available"
+        },
+        {
+          "id": "spruce-scratch",
+          "kind": "scratch notes",
+          "project": "spruce",
+          "state": "available"
+        },
+        {
+          "id": "spruce-credentials",
+          "kind": "credentials",
+          "project": "spruce",
+          "state": "available"
+        }
+      ],
+      "expected_selected_ids": [
+        "spruce-patch",
+        "spruce-test-receipt",
+        "spruce-rollback"
+      ]
+    },
+    {
+      "id": "control-unrelated-same-scope",
+      "kind": "unrelated_control",
+      "lesson_key": "handoff",
+      "scope": "synthetic-service-operations",
+      "instruction": "Prepare the weekly status memo from the approved status sheet.",
+      "operation": "select source material for the weekly status memo",
+      "world": [
+        {
+          "id": "approved-status",
+          "kind": "approved status sheet",
+          "state": "current"
+        },
+        {
+          "id": "service-patch",
+          "kind": "source patch",
+          "state": "ready"
+        },
+        {
+          "id": "service-test-receipt",
+          "kind": "recorded focused-test result",
+          "state": "available"
+        },
+        {
+          "id": "service-rollback",
+          "kind": "rollback note",
+          "state": "available"
+        }
+      ],
+      "expected_selected_ids": [
+        "approved-status"
+      ]
+    },
+    {
+      "id": "control-matching-words-other-scope",
+      "kind": "scope_control",
+      "lesson_key": "handoff",
+      "scope": "synthetic-external-client-briefing",
+      "instruction": "Prepare service deployment handoff for the client using only approved external material.",
+      "operation": "package approved external material for the client briefing",
+      "world": [
+        {
+          "id": "client-brief",
+          "kind": "approved external brief",
+          "audience": "client",
+          "state": "ready"
+        },
+        {
+          "id": "internal-patch",
+          "kind": "source patch",
+          "audience": "internal only",
+          "state": "ready"
+        },
+        {
+          "id": "internal-test-receipt",
+          "kind": "recorded focused-test result",
+          "audience": "internal only",
+          "state": "available"
+        },
+        {
+          "id": "internal-rollback",
+          "kind": "rollback note",
+          "audience": "internal only",
+          "state": "available"
+        }
+      ],
+      "expected_selected_ids": [
+        "client-brief"
+      ]
+    },
+    {
+      "id": "control-misleading-narrower-request",
+      "kind": "misleading_neighbor",
+      "lesson_key": "handoff",
+      "scope": "synthetic-service-operations",
+      "instruction": "Prepare service deployment handoff: patch only today.",
+      "operation": "package only the artifact requested today",
+      "world": [
+        {
+          "id": "today-patch",
+          "kind": "source patch",
+          "state": "ready"
+        },
+        {
+          "id": "today-test-receipt",
+          "kind": "recorded focused-test result",
+          "state": "available"
+        },
+        {
+          "id": "today-rollback",
+          "kind": "rollback note",
+          "state": "available"
+        },
+        {
+          "id": "today-scratch",
+          "kind": "scratch notes",
+          "state": "available"
+        }
+      ],
+      "expected_selected_ids": [
+        "today-patch"
+      ]
+    }
+  ]
+}

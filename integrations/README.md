@@ -1,9 +1,35 @@
 # Integrations
 
-The current repository has live-verified ingestion and Qwen response-hook paths,
-several adapters whose local mechanics are tested, and several ideas that are
-intentionally not presented as runnable integrations. Release-specific claims
-remain bound to their cited release or receipt.
+Hermeneutic has two distinct planes: **incoming lesson context** helps a host
+interpret the current task, and the **outgoing gate** inspects claims about what
+it did. The host must connect the incoming context to an action. An outgoing
+warning or successful context lookup does not establish correction transfer.
+
+## Preview host paths
+
+The scoped lesson workflow is explicit CLI use. Derive a source candidate with
+`learn`, inspect it, and `confirm` it for the integration-owned scope. The fresh
+host then calls `context`, judges applicability, and acts. The correction need
+not be rewritten into a second rule. No new automatic incoming hook is shipped.
+See the [shared recipe](lesson-context.md) for a generic host instruction that
+does not repeat the lesson.
+
+| Host | Incoming confirmed correction | Optional outgoing check | Evidence and dependencies |
+| --- | --- | --- | --- |
+| [Codex](codex.md) | A project AGENTS.md instruction or session instruction requests `context` before acting. | Explicit `gate --json`; the copied Stop adapter has locally tested advisory mechanics. | Fresh synthetic comparisons are [recorded](../evals/lesson-transfer/README.md): the initial frozen set had no uplift; a separate source-default counterfactual changed a positive action plan. Needs CLI access, memory, shell tools, and a configured provider. |
+| [Claude Code](claude-code.md) | A project CLAUDE.md instruction or session instruction requests the same CLI context. | Explicit `gate --json`. Retained Claude Stop adapters are unsupported. | The [public source-default trial](../evals/product-baseline/claude-path.json) was correct in both conditions. Needs CLI/memory access, shell permission, and a configured provider. The older compile hook requires Ollama and returns category advice, not lesson context. |
+| [Hermes Agent](hermes-agent.md) | A session instruction requests the same CLI context before acting. | The opt-in final-output plugin appends an advisory for medium/high findings. | The [public source-default trial](../evals/product-baseline/hermes-path.json) excluded an unrelated desk mug with context. Needs CLI/memory access, shell tools, and a configured provider. The outgoing plugin remains mechanically tested separately. |
+
+Host installation, authentication, provider access, and tool permissions remain
+external dependencies. A local CLI test does not certify a host's context
+loading, later action, or visible delivery. Release-specific live results must
+name their exact host, version, task, and receipt.
+
+The host trials supplied context produced by the installed CLI in fresh native
+host prompts. They do not certify automatic incoming hooks, autonomous loading
+of project instructions, or outgoing warning delivery. Public object-selection
+trials and frozen comparisons have separate denominators; these are synthetic
+action plans rather than physical actions or changes to a real repository.
 
 ## Maturity vocabulary
 
@@ -40,7 +66,7 @@ remain bound to their cited release or receipt.
 | Windsurf / Cascade response hook | `REMOVE` | The former recipe referenced an absent helper and relied on `show_output` where current Windsurf docs say it does not apply. See [Windsurf](windsurf.md). |
 | Cline completion hook | `REMOVE` | The former recipe used obsolete payload keys, an obsolete global path, and a non-visible advisory result. See [Cline](cline.md). |
 | OpenHands prompt preamble | `DESIGN_SKETCH` | The host hook direction is plausible, but the helper is absent and the claimed no-corpus fallback does not exist. See [OpenHands](openhands.md). |
-| Generic stdin / Python API adapter | `SELF_CONTAINED_RECIPE` | Pipe text to `hermeneutic gate` or call the library directly; no host-owned assets are required. |
+| Generic stdin / Python API adapter | `SELF_CONTAINED_RECIPE` | Pipe text to `hermeneutic gate --json` or call `check_draft(text).to_dict()`; no host-owned assets are required. Structured reports omit matched text by default. See [report contract](../docs/gate-json.md). |
 | Forward-deployed harness | `MECHANICALLY_TESTED_INTEGRATION` | The repository/sdist kit's state machine, boot checks, report linter, final gate, and sentinel mechanics are tested. A real adopter receipt is still required for any deployment claim. See [`FORWARD-DEPLOYED-HARNESS.md`](../FORWARD-DEPLOYED-HARNESS.md). |
 
 The forward-deployed harness is not a wheel workflow. It assumes a writable
@@ -52,8 +78,8 @@ package-controlled checks still complete, so MISSION COMPLETE is not evidence
 that real log harvesting ran. Native Windows execution was not exercised, and
 the kit has no single reset/cleanup command.
 
-The generic CLI verdict contract is not binary by exit status alone. In the
-unreleased 0.1.16a1 candidate, map-only findings are advisory (exit 0); raw
+The generic CLI verdict contract is not binary by exit status alone. In preview
+0.1.16a2, experimental map-only findings are advisory (exit 0); raw
 English findings retain the existing enforcement even in mixed-language drafts:
 
 ```bash
@@ -62,9 +88,18 @@ printf '%s\n' "$response" | hermeneutic gate
 
 The command prints `PASS` or `RISK`. Exit 1 means a raw English high- or medium-severity
 RISK; exit 0 means PASS, a raw-English low-severity RISK, or mapping-only RISK
-at any severity; exit 2 means an
-input error. A caller that must observe every RISK must inspect the printed
-verdict or use the Python result, not only `$?`.
+at any severity; exit 2 means an input error. To observe advisory findings as
+well as blocking ones, inspect the verdict or use the structured report:
+
+```bash
+hermeneutic gate --draft response.txt --json
+```
+
+The JSON report includes `should_block` and a `blocking` decision for each
+finding. Matched text is omitted unless `--include-text` is requested. Python
+callers can use `check_draft(text, lang="auto")` and
+`report.to_dict(include_text=False)`. See the
+[report contract](../docs/gate-json.md) for positions, origin, and error behavior.
 
 ## Ingestion surfaces
 
@@ -81,6 +116,8 @@ Log readers are a separate axis from outgoing-response hooks.
 
 | Surface | Maturity | Current repository state |
 |---|---|---|
+| Automatic scoped-lesson context hooks | `PLANNED` | The release uses explicit `learn` and `context` calls; existing compile hooks do not call the new lesson API. |
+| GitHub Actions draft-file check | `PLANNED` | No Action is included in this scoped-lesson release; additional CI packaging is [roadmap work](../docs/ROADMAP.md). |
 | MCP server, including Goose/Zed/Warp/Kiro/Copilot/Antigravity hosts | `PLANNED` | No `hermeneutic mcp-serve` command, server implementation, or manifest ships. |
 | GitHub Copilot CLI plugin | `PLANNED` | No plugin assets ship. |
 | Antigravity plugin | `PLANNED` | No plugin assets ship. |

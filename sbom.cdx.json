@@ -13,10 +13,10 @@
     ],
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.16a1",
+      "bom-ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.16a2",
       "name": "hermeneutic",
-      "version": "0.1.16a1",
-      "description": "Mine reusable correction evidence, retrieve similar past corrections, and run a fixed deterministic English drift check.",
+      "version": "0.1.16a2",
+      "description": "Carry scoped correction lessons into later agent tasks and check outgoing claims with a deterministic English gate.",
       "licenses": [
         {
           "license": {
@@ -24,7 +24,7 @@
           }
         }
       ],
-      "purl": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.16a1",
+      "purl": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.16a2",
       "externalReferences": [
         {
           "type": "vcs",
@@ -41,7 +41,7 @@
   "components": [],
   "dependencies": [
     {
-      "ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.16a1",
+      "ref": "pkg:github/hermes-labs-ai/hermeneutic@v0.1.16a2",
       "dependsOn": []
     }
   ]
