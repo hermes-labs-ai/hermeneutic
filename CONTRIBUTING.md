@@ -4,7 +4,7 @@ Thanks for your interest in `hermeneutic`. This document describes how to propos
 
 ## Scope
 
-`hermeneutic` is a focused tool: it mines correction triples, optionally retrieves similar prior corrections, and runs a fixed English check over outgoing drafts. It is **not** a general-purpose evaluation framework, model benchmarker, or default LLM router for production traffic.
+`hermeneutic` is a focused tool: it mines correction triples, retrieves original correction evidence with offline keyword search or optional local embeddings, and runs a fixed English check over outgoing drafts. It is **not** a general-purpose evaluation framework, model benchmarker, or default LLM router for production traffic.
 
 **In-scope:** new chat-log readers, new evidence-based risk patterns, calibration recipes for `PressureProbe`, bug fixes, docs, test coverage.
 
@@ -37,7 +37,13 @@ python3 -m pip install --force-reinstall dist/*.whl
 bash scripts/smoke-installed-cli.sh
 ```
 
-CI runs the same commands on Python 3.10–3.13.
+CI runs the same commands on Python 3.10–3.13. The offline public retrieval
+cases run as part of pytest. To inspect query-level results without private
+logs or model credentials, use the command in
+[the public correction-memory check](evals/correction-memory/public/README.md).
+Contributions can add a small synthetic episode/query reproducer for a missed
+correction or irrelevant candidate. Report both outcomes; do not tune against
+reported cases and then call the results held out.
 
 ## Adding a new risk pattern
 

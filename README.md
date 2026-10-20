@@ -2,19 +2,55 @@
 
 # Hermeneutic
 
-<img src="assets/hermeneutic-banner.jpg" alt="Hermeneutic — understanding in between" width="900" />
+<img src="https://raw.githubusercontent.com/hermes-labs-ai/hermeneutic/v0.1.15/assets/hermeneutic-banner.jpg" alt="Hermeneutic — understanding in between" width="900" />
 
-**Stop correcting the same agent mistake twice.**
+**Correction evidence your next agent session can inspect.**
 
-Mine corrections from your AI work logs, bring relevant lessons into the next task, and check outgoing claims before they ship.
+Save agent correction episodes, retrieve their original evidence in a later task, and check outgoing claims before they ship.
 
 by [Hermes Labs](https://hermes-labs.ai)
 
-[PyPI](https://pypi.org/project/hermeneutic/) · [Try the gate](#try-the-gate) · [Use your corrections](#use-your-corrections) · [Integrations](integrations/README.md)
+[PyPI](https://pypi.org/project/hermeneutic/) · [Try correction memory](#try-correction-memory) · [Try the gate](#try-the-gate) · [Use your corrections](#use-your-corrections) · [Integrations](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md)
 
 </div>
 
 Your agent says a feature is done before it has checked the work. You correct it. A week later, another session makes the same claim. Hermeneutic gives you two ways to close that loop: a **fixed, fast draft gate** for risky wording, and **personal correction memory** that retrieves past guidance when a similar task comes up. Either part can be used on its own.
+
+## Try correction memory
+
+For developers whose agents need evidence from earlier corrections across sessions.
+Python 3.10+ is sufficient; this replay needs no account, logs, model or server:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install hermeneutic==0.1.15
+demo_dir="$(mktemp -d)"
+hermeneutic demo --out "$demo_dir/sessions"
+hermeneutic mine "$demo_dir/sessions" --format openai --glob '*.json' \
+  --out "$demo_dir/triples.jsonl"
+hermeneutic recall 'Prepare a widget service release and summarize the verification results.' \
+  --triples "$demo_dir/triples.jsonl" --limit 1
+```
+
+The scripted agent initially claims release verification. The user corrects it
+and the agent acknowledges checks have not run. The later task retrieves
+`triple-id-1`: the original correction, its prompt and session/timestamp
+provenance. The [five-minute guide](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/docs/correction-memory-demo.md) shows inspection,
+optional embeddings and the real internal example separately.
+
+The default is transparent keyword search over saved prompts and corrections.
+It can miss paraphrases and return irrelevant evidence; the agent must check the
+original scope. For one standing rule, a maintained AGENTS.md instruction is
+simpler. Hermeneutic helps when you want to retain and search the episode behind
+the rule. It does not establish that the agent will obey it.
+
+The [public retrieval check](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/correction-memory/public/README.md) can be rerun
+without private data: offline keyword search found its target in 15/18 tasks and
+returned no evidence for 4/8 unrelated questions. Optional embeddings recovered
+more paraphrases and returned more unrelated candidates. These are small,
+synthetic regression cases; [real internal use and its narrower evidence](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/correction-memory/RESULTS.md)
+are reported separately.
 
 ## Try the gate
 
@@ -23,7 +59,7 @@ Requires Python 3.10+. This first check needs no account, model, logs, or config
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install hermeneutic==0.1.14
+python -m pip install hermeneutic==0.1.15
 printf '%s\n' 'Done — shipped 14 files, all tests pass.' | hermeneutic gate
 ```
 
@@ -33,15 +69,13 @@ The check highlights English wording that needs a closer look. It cannot tell wh
 
 ## Experimental language support
 
-From this source branch, the draft gate supports Korean (`ko`), Chinese (`zh`),
+The published package supports Korean (`ko`), Chinese (`zh`),
 Japanese (`ja`), Turkish (`tr`), German (`de`), French (`fr`), Spanish (`es`), and
 Portuguese (`pt`) through **trigger mapping**. Local phrases map to the triggers
 the same English gate already checks. This is not translation or a separate
 set of risk rules, and it adds no model calls or runtime dependencies.
-The pinned PyPI release above does not include these adapters yet.
 
 ```bash
-python -m pip install -e .
 printf '%s\n' '5개 파일을 수정했습니다.' | hermeneutic gate --lang auto
 hermeneutic gate --draft response.txt --lang zh
 ```
@@ -77,30 +111,52 @@ A catch means any gate hit, including a low-severity advisory. These are small
 synthetic development sets, not held-out measurements or real-use coverage
 estimates. Automatic Korean routing catches 111/180 (61.7%) with 4/135 (3.0%)
 false fires; the other fixture results match explicit routing. See the
-[validation methodology](evals/languages/README.md) and
-[replayable receipt](evals/languages/results.json) for misses and limitations.
+[validation methodology](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/languages/README.md) and
+[replayable receipt](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/languages/results.json) for misses and limitations.
 
 ## Use your corrections
 
-For a fictional agent correction → saved episode → later evidence replay, start with
-the [five-minute developer demo](docs/correction-memory-demo.md). It needs no personal
-logs; retrieval explicitly requires local Ollama. The demo ships with `inspect` and offline `recall` in this release.
+Use logs you own and keep the resulting corpus private. For Codex:
 
-If you have Claude Code session logs, mine correction episodes, group the recurring types, and build a local retrieval index:
-
-```bash
-hermeneutic mine ~/.claude/projects --format claude-code \
-  --glob '**/*.jsonl' --out ~/.hermeneutic/triples.jsonl
-hermeneutic bucket ~/.hermeneutic/triples.jsonl
-hermeneutic inspect ~/.hermeneutic/triples.jsonl --limit 3
-ollama pull nomic-embed-text
-hermeneutic compile-index --triples ~/.hermeneutic/triples.jsonl
-hermeneutic compile 'Finish the release and report what passed.'
+```sh
+umask 077
+memory_dir="$(mktemp -d)"
+hermeneutic mine "$HOME/.codex/sessions" --format codex --glob '**/*.jsonl' \
+  --out "$memory_dir/triples.jsonl"
+hermeneutic inspect "$memory_dir/triples.jsonl" --limit 3
+hermeneutic recall 'Finish the release and report what passed.' \
+  --triples "$memory_dir/triples.jsonl"
 ```
 
-The last two commands need [Ollama](https://ollama.com/) running locally. If your logs contain a relevant correction, `compile` can return a short advisory preamble grounded in those past episodes. An empty result is possible when no match clears the threshold. The [worked example](evals/compile-walkthrough.md) shows the full path from a real correction to retrieved guidance. Codex and OpenAI message logs are also supported; see `hermeneutic mine --help` for the input formats.
+Claude Code (`--format claude-code`) and OpenAI message files (`--format openai`)
+are also supported; see `hermeneutic mine --help`. Mining reads only supplied
+paths and preserves local JSONL episodes. It uses explicit correction markers,
+so it does not capture every disagreement or change the fixed gate.
 
-Mining reads the paths you supply and stores local JSONL records. It does not silently teach new rules to the fixed gate. Retrieval uses local embeddings; it does not use Ollama to generate the guidance text.
+For subsequent agent sessions, put an instruction in the owning project's
+AGENTS.md to run `hermeneutic recall '<current task>' --triples /private/triples.jsonl`,
+cite relevant episode IDs, and check their original task scope. This explicit
+tool workflow was [verified in a fresh Codex session](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/correction-memory/fresh-session-0.1.15.json).
+It does not install a global host hook.
+
+Keyword recall needs no index or inference. Optional semantic/hybrid recall and
+the older advice compiler use local [Ollama](https://ollama.com/) embeddings:
+
+```sh
+export HERMENEUTIC_HOME="$memory_dir"
+ollama pull nomic-embed-text
+hermeneutic compile-index --triples "$memory_dir/triples.jsonl"
+hermeneutic recall 'Finish the release and report what passed.' \
+  --triples "$memory_dir/triples.jsonl" --method semantic
+hermeneutic compile 'Finish the release and report what passed.' \
+  --triples "$memory_dir/triples.jsonl"
+```
+
+Ollama runs at `http://127.0.0.1:11434`; model download is a separate setup step.
+The compiler emits fixed category advice with episode references; it does not
+use Ollama to generate guidance. On the [small real-log development set](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/evals/correction-memory/RESULTS.md),
+keyword retrieval performed better than the embedding modes. Those results are
+not held out and do not establish improved agent behavior.
 
 Inspection rejects records larger than 1 MiB and non-standard JSON constants,
 escapes diagnostic paths, and rejects file changes observed during reading.
@@ -123,10 +179,10 @@ them before sharing.
 | Correction memory | Before or during a similar future task | Advisory context from prior corrections |
 | Draft gate | Before an agent sends its response | `PASS` or `RISK` with matched patterns |
 
-Use the standalone CLI in any workflow you control. The [integration guides](integrations/README.md) cover optional Claude Code, Codex, Gemini CLI, Qwen Code, OpenClaw, Hermes Agent, and other host paths. Integration capabilities vary by host; check the individual guide before expecting automatic gating or blocking. The [Python Router](docs/THEORY.md) is available if you want to compose your own review stages.
+Use the standalone CLI in any workflow you control. The [integration guides](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md) cover optional Claude Code, Codex, Gemini CLI, Qwen Code, OpenClaw, Hermes Agent, and other host paths. Integration capabilities vary by host; check the individual guide before expecting automatic gating or blocking. The [Python Router](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/docs/THEORY.md) is available if you want to compose your own review stages.
 
 Hermeneutic's gate matches fixed English surface patterns and can miss a mistake or flag an innocent phrase. Correction retrieval depends on the history you supply and has not been shown to improve downstream outcomes across users. It is a way to surface previous guidance and scrutinize a draft, not a security boundary or a factuality guarantee.
 
-[Worked example](examples/before_after.md) · [Integration guides](integrations/README.md) · [Evaluation results](evals/) · [Privacy and security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
+[Worked example](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/examples/before_after.md) · [Integration guides](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/integrations/README.md) · [Evaluation results](https://github.com/hermes-labs-ai/hermeneutic/tree/v0.1.15/evals) · [Privacy and security](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/SECURITY.md) · [Contributing](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CONTRIBUTING.md) · [Changelog](https://github.com/hermes-labs-ai/hermeneutic/blob/v0.1.15/CHANGELOG.md)
 
 Apache-2.0. [Hermes Labs](https://hermes-labs.ai) builds agentic infrastructure for autonomous systems.

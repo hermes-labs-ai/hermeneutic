@@ -1,0 +1,17 @@
+{
+  "package_version": "0.1.15",
+  "native_pytest": {
+    "passed": 464,
+    "skipped": 1
+  },
+  "ruff": "passed",
+  "openclaw_adapter_tests": 4,
+  "installed_wheel_demo": "passed",
+  "installed_sdist_demo": "passed",
+  "local_ollama_demo": "passed",
+  "installed_cli_smoke": "passed",
+  "runtime_retrieval_source_unchanged_from_0_1_14": true,
+  "public_retrieval_receipt": "public/results.json",
+  "fresh_session_receipt": "fresh-session-0.1.15.json",
+  "raw_conversation_text_published": false
+}

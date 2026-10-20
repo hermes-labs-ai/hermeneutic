@@ -1,0 +1,1083 @@
+{
+  "measurement": "exploratory_annotated_target_retrieval",
+  "limit": 3,
+  "package_version": "0.1.15",
+  "memory_source_sha256": "b606e3790adde1a9dc992b7f444fdf8734a9a7cb09b9b7408e48b02dd085ee8d",
+  "corpus_sha256": "c28be55e49c1fd6d94d32832da9493a4754435730c0cb8e76d530ec8d10df3e8",
+  "cases_sha256": "3df0c2f69294e79ed45f40019143d48c3f17535d7c2b6e5c1d71b9ca5b0a0d3a",
+  "episodes": 12,
+  "private_text_emitted": false,
+  "always_include_baseline": {
+    "positive_target_coverage": "all targets included by construction",
+    "correction_chars_per_task": 850
+  },
+  "results": {
+    "keyword": {
+      "positive_hits": 15,
+      "positive_trials": 18,
+      "negative_empty": 4,
+      "negative_trials": 8,
+      "mean_evidence_chars": 82.8,
+      "median_seconds": 0.0001,
+      "trials": [
+        {
+          "id": "release-evidence",
+          "expected": [
+            1
+          ],
+          "retrieved": [
+            1,
+            10
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 174,
+          "seconds": 0.0003
+        },
+        {
+          "id": "timeout-scope",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            2,
+            11
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 137,
+          "seconds": 0.0001
+        },
+        {
+          "id": "owning-repository",
+          "expected": [
+            3
+          ],
+          "retrieved": [
+            3
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 64,
+          "seconds": 0.0001
+        },
+        {
+          "id": "stdlib-http",
+          "expected": [
+            4
+          ],
+          "retrieved": [
+            4
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 79,
+          "seconds": 0.0001
+        },
+        {
+          "id": "csv-order",
+          "expected": [
+            5
+          ],
+          "retrieved": [
+            5,
+            2,
+            4
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 204,
+          "seconds": 0.0001
+        },
+        {
+          "id": "spanish-summary",
+          "expected": [
+            6
+          ],
+          "retrieved": [
+            6
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 42,
+          "seconds": 0.0001
+        },
+        {
+          "id": "secret-existence",
+          "expected": [
+            7
+          ],
+          "retrieved": [
+            7
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 75,
+          "seconds": 0.0001
+        },
+        {
+          "id": "dialog-keyboard",
+          "expected": [
+            8
+          ],
+          "retrieved": [
+            8
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 76,
+          "seconds": 0.0001
+        },
+        {
+          "id": "utc-events",
+          "expected": [
+            9
+          ],
+          "retrieved": [
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 65,
+          "seconds": 0.0001
+        },
+        {
+          "id": "transport-checks",
+          "expected": [
+            10
+          ],
+          "retrieved": [
+            10,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 174,
+          "seconds": 0.0001
+        },
+        {
+          "id": "pagination-api",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            11
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 67,
+          "seconds": 0.0001
+        },
+        {
+          "id": "migration-restore",
+          "expected": [
+            12
+          ],
+          "retrieved": [
+            12
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 83,
+          "seconds": 0.0001
+        },
+        {
+          "id": "release-paraphrase",
+          "expected": [
+            1
+          ],
+          "retrieved": [
+            1,
+            7
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 152,
+          "seconds": 0.0001
+        },
+        {
+          "id": "scope-paraphrase",
+          "expected": [
+            2
+          ],
+          "retrieved": [],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 0,
+          "seconds": 0.0001
+        },
+        {
+          "id": "dependency-paraphrase",
+          "expected": [
+            4
+          ],
+          "retrieved": [
+            4,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 149,
+          "seconds": 0.0001
+        },
+        {
+          "id": "language-paraphrase",
+          "expected": [
+            6
+          ],
+          "retrieved": [
+            6,
+            9,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 184,
+          "seconds": 0.0001
+        },
+        {
+          "id": "ui-paraphrase",
+          "expected": [
+            8
+          ],
+          "retrieved": [],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 0,
+          "seconds": 0.0001
+        },
+        {
+          "id": "api-paraphrase",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            2,
+            4
+          ],
+          "target_hit": false,
+          "negative_empty": null,
+          "evidence_chars": 149,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-cooking",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-astronomy",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-gardening",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-arithmetic",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-csv-definition",
+          "expected": [],
+          "retrieved": [
+            5
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 55,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-timezone-definition",
+          "expected": [],
+          "retrieved": [
+            9
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 65,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-database-definition",
+          "expected": [],
+          "retrieved": [
+            12
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 83,
+          "seconds": 0.0001
+        },
+        {
+          "id": "negative-keyboard-history",
+          "expected": [],
+          "retrieved": [
+            8
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 76,
+          "seconds": 0.0001
+        }
+      ]
+    },
+    "semantic": {
+      "positive_hits": 18,
+      "positive_trials": 18,
+      "negative_empty": 2,
+      "negative_trials": 8,
+      "mean_evidence_chars": 172.2,
+      "median_seconds": 0.0118,
+      "trials": [
+        {
+          "id": "release-evidence",
+          "expected": [
+            1
+          ],
+          "retrieved": [
+            1,
+            10,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 239,
+          "seconds": 0.0491
+        },
+        {
+          "id": "timeout-scope",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            2,
+            9,
+            7
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 210,
+          "seconds": 0.0116
+        },
+        {
+          "id": "owning-repository",
+          "expected": [
+            3
+          ],
+          "retrieved": [
+            3,
+            5,
+            7
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 194,
+          "seconds": 0.0118
+        },
+        {
+          "id": "stdlib-http",
+          "expected": [
+            4
+          ],
+          "retrieved": [
+            4,
+            11,
+            3
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 210,
+          "seconds": 0.0188
+        },
+        {
+          "id": "csv-order",
+          "expected": [
+            5
+          ],
+          "retrieved": [
+            5,
+            12,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 203,
+          "seconds": 0.0111
+        },
+        {
+          "id": "spanish-summary",
+          "expected": [
+            6
+          ],
+          "retrieved": [
+            6,
+            9,
+            11
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 174,
+          "seconds": 0.0125
+        },
+        {
+          "id": "secret-existence",
+          "expected": [
+            7
+          ],
+          "retrieved": [
+            7,
+            1,
+            12
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 235,
+          "seconds": 0.0104
+        },
+        {
+          "id": "dialog-keyboard",
+          "expected": [
+            8
+          ],
+          "retrieved": [
+            8,
+            2,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 223,
+          "seconds": 0.012
+        },
+        {
+          "id": "utc-events",
+          "expected": [
+            9
+          ],
+          "retrieved": [
+            9,
+            2,
+            5
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 190,
+          "seconds": 0.0169
+        },
+        {
+          "id": "transport-checks",
+          "expected": [
+            10
+          ],
+          "retrieved": [
+            10,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 174,
+          "seconds": 0.0111
+        },
+        {
+          "id": "pagination-api",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            11,
+            3,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 201,
+          "seconds": 0.0104
+        },
+        {
+          "id": "migration-restore",
+          "expected": [
+            12
+          ],
+          "retrieved": [
+            12,
+            7,
+            10
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 255,
+          "seconds": 0.0118
+        },
+        {
+          "id": "release-paraphrase",
+          "expected": [
+            1
+          ],
+          "retrieved": [
+            1,
+            7,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 222,
+          "seconds": 0.0114
+        },
+        {
+          "id": "scope-paraphrase",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            2,
+            3,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 199,
+          "seconds": 0.0103
+        },
+        {
+          "id": "dependency-paraphrase",
+          "expected": [
+            4
+          ],
+          "retrieved": [
+            4,
+            3,
+            11
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 210,
+          "seconds": 0.0122
+        },
+        {
+          "id": "language-paraphrase",
+          "expected": [
+            6
+          ],
+          "retrieved": [
+            6,
+            1,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 184,
+          "seconds": 0.0118
+        },
+        {
+          "id": "ui-paraphrase",
+          "expected": [
+            8
+          ],
+          "retrieved": [
+            8,
+            1,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 223,
+          "seconds": 0.0118
+        },
+        {
+          "id": "api-paraphrase",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            11,
+            2,
+            3
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 201,
+          "seconds": 0.0132
+        },
+        {
+          "id": "negative-cooking",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.012
+        },
+        {
+          "id": "negative-astronomy",
+          "expected": [],
+          "retrieved": [
+            12
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 83,
+          "seconds": 0.0145
+        },
+        {
+          "id": "negative-gardening",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.012
+        },
+        {
+          "id": "negative-arithmetic",
+          "expected": [],
+          "retrieved": [
+            6
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 42,
+          "seconds": 0.0101
+        },
+        {
+          "id": "negative-csv-definition",
+          "expected": [],
+          "retrieved": [
+            5,
+            3
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 119,
+          "seconds": 0.0095
+        },
+        {
+          "id": "negative-timezone-definition",
+          "expected": [],
+          "retrieved": [
+            2,
+            10
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 167,
+          "seconds": 0.0098
+        },
+        {
+          "id": "negative-database-definition",
+          "expected": [],
+          "retrieved": [
+            12,
+            7,
+            6
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 200,
+          "seconds": 0.0095
+        },
+        {
+          "id": "negative-keyboard-history",
+          "expected": [],
+          "retrieved": [
+            8,
+            6
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 118,
+          "seconds": 0.0099
+        }
+      ]
+    },
+    "hybrid": {
+      "positive_hits": 18,
+      "positive_trials": 18,
+      "negative_empty": 2,
+      "negative_trials": 8,
+      "mean_evidence_chars": 175.2,
+      "median_seconds": 0.0097,
+      "trials": [
+        {
+          "id": "release-evidence",
+          "expected": [
+            1
+          ],
+          "retrieved": [
+            1,
+            10,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 239,
+          "seconds": 0.0102
+        },
+        {
+          "id": "timeout-scope",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            2,
+            11,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 202,
+          "seconds": 0.0098
+        },
+        {
+          "id": "owning-repository",
+          "expected": [
+            3
+          ],
+          "retrieved": [
+            3,
+            5,
+            7
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 194,
+          "seconds": 0.0108
+        },
+        {
+          "id": "stdlib-http",
+          "expected": [
+            4
+          ],
+          "retrieved": [
+            4,
+            11,
+            3
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 210,
+          "seconds": 0.015
+        },
+        {
+          "id": "csv-order",
+          "expected": [
+            5
+          ],
+          "retrieved": [
+            5,
+            2,
+            12
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 208,
+          "seconds": 0.0094
+        },
+        {
+          "id": "spanish-summary",
+          "expected": [
+            6
+          ],
+          "retrieved": [
+            6,
+            9,
+            11
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 174,
+          "seconds": 0.0096
+        },
+        {
+          "id": "secret-existence",
+          "expected": [
+            7
+          ],
+          "retrieved": [
+            7,
+            1,
+            12
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 235,
+          "seconds": 0.0097
+        },
+        {
+          "id": "dialog-keyboard",
+          "expected": [
+            8
+          ],
+          "retrieved": [
+            8,
+            2,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 223,
+          "seconds": 0.0093
+        },
+        {
+          "id": "utc-events",
+          "expected": [
+            9
+          ],
+          "retrieved": [
+            9,
+            2,
+            5
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 190,
+          "seconds": 0.0126
+        },
+        {
+          "id": "transport-checks",
+          "expected": [
+            10
+          ],
+          "retrieved": [
+            10,
+            1
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 174,
+          "seconds": 0.0086
+        },
+        {
+          "id": "pagination-api",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            11,
+            3,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 201,
+          "seconds": 0.0096
+        },
+        {
+          "id": "migration-restore",
+          "expected": [
+            12
+          ],
+          "retrieved": [
+            12,
+            7,
+            10
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 255,
+          "seconds": 0.0097
+        },
+        {
+          "id": "release-paraphrase",
+          "expected": [
+            1
+          ],
+          "retrieved": [
+            1,
+            7,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 222,
+          "seconds": 0.0093
+        },
+        {
+          "id": "scope-paraphrase",
+          "expected": [
+            2
+          ],
+          "retrieved": [
+            2,
+            3,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 199,
+          "seconds": 0.0094
+        },
+        {
+          "id": "dependency-paraphrase",
+          "expected": [
+            4
+          ],
+          "retrieved": [
+            4,
+            2,
+            3
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 213,
+          "seconds": 0.0091
+        },
+        {
+          "id": "language-paraphrase",
+          "expected": [
+            6
+          ],
+          "retrieved": [
+            6,
+            1,
+            9
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 184,
+          "seconds": 0.0091
+        },
+        {
+          "id": "ui-paraphrase",
+          "expected": [
+            8
+          ],
+          "retrieved": [
+            8,
+            1,
+            2
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 223,
+          "seconds": 0.009
+        },
+        {
+          "id": "api-paraphrase",
+          "expected": [
+            11
+          ],
+          "retrieved": [
+            2,
+            4,
+            11
+          ],
+          "target_hit": true,
+          "negative_empty": null,
+          "evidence_chars": 216,
+          "seconds": 0.0096
+        },
+        {
+          "id": "negative-cooking",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0096
+        },
+        {
+          "id": "negative-astronomy",
+          "expected": [],
+          "retrieved": [
+            12
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 83,
+          "seconds": 0.0097
+        },
+        {
+          "id": "negative-gardening",
+          "expected": [],
+          "retrieved": [],
+          "target_hit": null,
+          "negative_empty": true,
+          "evidence_chars": 0,
+          "seconds": 0.0107
+        },
+        {
+          "id": "negative-arithmetic",
+          "expected": [],
+          "retrieved": [
+            6
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 42,
+          "seconds": 0.0105
+        },
+        {
+          "id": "negative-csv-definition",
+          "expected": [],
+          "retrieved": [
+            5,
+            3
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 119,
+          "seconds": 0.0101
+        },
+        {
+          "id": "negative-timezone-definition",
+          "expected": [],
+          "retrieved": [
+            2,
+            9,
+            10
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 232,
+          "seconds": 0.0106
+        },
+        {
+          "id": "negative-database-definition",
+          "expected": [],
+          "retrieved": [
+            12,
+            7,
+            6
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 200,
+          "seconds": 0.0105
+        },
+        {
+          "id": "negative-keyboard-history",
+          "expected": [],
+          "retrieved": [
+            8,
+            6
+          ],
+          "target_hit": null,
+          "negative_empty": false,
+          "evidence_chars": 118,
+          "seconds": 0.0108
+        }
+      ]
+    }
+  }
+}

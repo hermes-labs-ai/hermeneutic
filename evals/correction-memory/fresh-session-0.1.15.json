@@ -1,0 +1,12 @@
+{
+  "validation": "fresh_codex_session_installed_tool_use",
+  "package_version": "0.1.15",
+  "codex_version": "0.162.1",
+  "context": "ephemeral read-only session with local project instructions; no conversation history supplied",
+  "expected_real_episode_cited": "triple-id-2",
+  "tool_exit": 0,
+  "global_pre_hook_installed": false,
+  "private_text_published": false,
+  "private_events_sha256": "4c8b6e4449bf569eddc28871731195e6a36e32042d1b677d6338d0f495957ec9",
+  "limits": "One task; no agent-behavior comparison or productivity estimate."
+}

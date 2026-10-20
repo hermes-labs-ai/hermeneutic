@@ -4,6 +4,18 @@ All notable changes to Hermeneutic are documented here. The project follows [Kee
 
 ## [Unreleased]
 
+## [0.1.15] — 2026-10-20
+
+### Changed
+
+- Lead onboarding with installed offline correction recall; correct stale claims
+  about Ollama requirements and shipped language adapters. Clarify the audience,
+  native alternatives and evidence boundary.
+- Add a public synthetic retrieval set with frozen labels, published misses and
+  optional local embedding comparisons. Keep the retrieval algorithm unchanged.
+- Validate evaluation labels, query IDs and corpus row references before scoring;
+  run the offline public retrieval regression floor in pytest.
+
 ## [0.1.14] — 2026-10-20
 
 ### Added
