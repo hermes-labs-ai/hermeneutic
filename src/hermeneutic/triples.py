@@ -45,6 +45,17 @@ DEFAULT_PATTERNS = [
     r"if i (?:say|type|write|mention|use) [^\n.!?=]{1,100}\s*=\s*"
     r"[^\n.!?=]{1,100},\s*(?:(?:please\s+)?remember (?:that|this) (?:meaning|mapping)\b|"
     r"that should be (?:remembered\b|part of (?:the |this )?[^\n.!?]{0,80}\blesson\b))",
+    r"^\s*by [^\n.!?]{1,120}?\s+i meant\s+\S",
+    # Retrospective requests need an explicit scope restriction, rather than
+    # treating polite new requests ("I wanted to ask...") as correction events.
+    r"^\s*i wanted (?!to (?:ask|request|know|discuss)\b)[^\n.!?]{1,180}"
+    r"(?:[.;]\s*do not\b|[,;]\s*not\b|\s+rather than\b)",
+    r"^\s*i requested [^\n.!?]{1,180}[.;]\s*i (?:did not|never) authori[sz]e\b",
+    r"^\s*i already asked you\b",
+    # A scoped definition is a steer only with an explicit disambiguating
+    # contrast. Unqualified factual definitions are not correction signals.
+    r"^\s*here [^\n.!?]{1,100} means (?:use|invoke|run|mark|select|treat)\b"
+    r"[^\n.!?]{1,180}[;,]\s*it does not mean\b",
 ]
 
 # Substrings that mark a "user" turn as actually subagent / system input — skip these.

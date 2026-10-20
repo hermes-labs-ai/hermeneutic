@@ -151,6 +151,12 @@ def test_codex_reader_parses_rollout_schema(tmp_path):
     "that should be remembered for future requests.",
     "The cedar build means the existing task. If I say cedar biuld = cedar build, "
     "that should be part of this clarification lesson.",
+    "By branch I meant the local Git branch, not a release deployment.",
+    "I wanted the exit status. Do not print the process environment.",
+    "I wanted a local draft, not a published update.",
+    "I requested an estimate. I did not authorize a subscription.",
+    "I already asked you to apply the local fix. Continue with verification.",
+    "Here scratch means use the disposable experiment directory; it does not mean edit shared configuration.",
 ])
 def test_mine_explicit_self_referential_clarification(tmp_path, clarification):
     log = tmp_path / "clarification.json"
@@ -179,6 +185,19 @@ def test_mine_explicit_self_referential_clarification(tmp_path, clarification):
     '"cargo-scan means invoke the skill. if i say cargo scna = cargo-scan, that should be remembered."',
     "Example: cargo-scan means invoke the skill. if i say cargo scna = cargo-scan, that should be remembered.",
     "When I type cargo scan, what do you think I mean?",
+    "By sunset I want the report ready.",
+    "I wanted to ask you to add a download button.",
+    "I wanted to ask for a recipe, not a restaurant recommendation.",
+    "I wanted a recipe for lunch.",
+    "I requested the meeting room yesterday.",
+    "Here voltage means electric potential difference.",
+    "Here archive means a historical collection.",
+    "Here scratch means the disposable experiment directory; it does not mean shared configuration.",
+    "Here voltage means electric potential difference; it does not mean electric current.",
+    "Here archive means a historical collection; it does not mean a compressed file.",
+    'Explain this quotation: "By branch I meant the local Git branch, not deployment."',
+    '"I wanted a local draft, not a published update."',
+    "> I requested an estimate. I did not authorize a subscription.",
 ])
 def test_mine_does_not_infer_clarification_from_ordinary_or_quoted_text(tmp_path, ordinary):
     log = tmp_path / "ordinary.json"

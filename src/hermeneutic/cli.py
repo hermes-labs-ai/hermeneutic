@@ -724,7 +724,7 @@ def main(argv: list[str] | None = None) -> int:
                           help="Hybrid/semantic require local Ollama; keyword needs no inference.")
     p_recall.add_argument("--threshold", type=float, default=0.4, help="Existing CLI cosine floor (default: 0.4).")
     p_recall.add_argument("--min-shared-terms", type=int, default=0,
-                          help="Keyword-only distinct term floor; 2 opts into stricter abstention (default: 0).")
+                          help="Keyword correction-term floor; positive values ignore quoted query spans (default: 0).")
     p_recall.set_defaults(func=_cmd_recall)
 
     p_idx = sub.add_parser("compile-index", help="Build/refresh the embedding index from a triples.jsonl.")

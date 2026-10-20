@@ -9,6 +9,10 @@ containing the matching Hermeneutic candidate. The adapter uses offline keyword
 retrieval with a conservative shared-term floor; it does not mine sessions during
 requests or require an embedding service.
 
+Strict recall ignores quoted examples and requires overlap with the correction
+text itself. A subject supplied entirely inside quotation marks can return empty
+evidence; use a plain subject query when deliberately searching for that evidence.
+
 ```bash
 python3 integrations/codex/recall.py \
   --python /absolute/path/to/venv/bin/python \

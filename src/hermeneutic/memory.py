@@ -11,6 +11,18 @@ from pathlib import Path
 from hermeneutic import compile as compiler
 from hermeneutic.triples import Triple
 
+# Only complete delimiters count as quotations. Word-internal apostrophes stay
+# in the query; single-quoted prose may itself contain ordinary contractions.
+_QUOTED_QUERY_SPANS = re.compile(
+    r"(?<!`)(?P<ticks>`+)(?!`).*?(?<!`)(?P=ticks)(?!`)"
+    r"|(?<!~)(?P<tildes>~{3,})(?!~).*?(?<!~)(?P=tildes)(?!~)"
+    r'|"(?:\\.|[^"\\])*"'
+    r"|(?<![\w'])'(?:\\.|(?<=\w)'(?=\w)|[^'\\])*'(?![\w'])"
+    r"|“[^”]*”"
+    r"|(?<!\w)\u2018(?:[^\u2019]|(?<=\w)\u2019(?=\w))*\u2019(?!\w)",
+    re.DOTALL,
+)
+
 
 def keyword_scores(query: str, documents: list[str], *, min_shared_terms: int = 0) -> list[float]:
     """Small native token-overlap baseline with corpus inverse document frequency."""
@@ -115,8 +127,11 @@ def recall(
 
     Semantic search uses the existing index and CLI cosine threshold. Unlike the advice
     compiler, this path does not require a correction to match a fixed bucket.
-    ``min_shared_terms`` opts into lexical abstention; it only supports keyword
-    retrieval. ``max_corpus_bytes`` bounds an offline snapshot for host adapters.
+    ``min_shared_terms`` opts into keyword abstention: complete quoted/code query
+    spans supply no terms, and the floor must match correction text itself.
+    Ranking still uses original prompt plus correction. This conservative floor
+    can miss short or paraphrased tasks and is not semantic subject verification.
+    ``max_corpus_bytes`` bounds an offline snapshot for host adapters.
     """
     if limit < 1:
         raise ValueError("limit must be positive")
@@ -132,8 +147,11 @@ def recall(
                else _load_bounded_corpus(corpus, max_corpus_bytes))
     if method not in {"semantic", "keyword", "hybrid"}:
         raise ValueError("unknown retrieval method")
-    lexical = keyword_scores(prompt, [t.orig_prompt + "\n" + t.user_correction for t in triples],
-                             min_shared_terms=min_shared_terms)
+    query = _QUOTED_QUERY_SPANS.sub(" ", prompt) if min_shared_terms else prompt
+    lexical = keyword_scores(query, [t.orig_prompt + "\n" + t.user_correction for t in triples])
+    if min_shared_terms:
+        eligible = keyword_scores(query, [t.user_correction for t in triples], min_shared_terms=min_shared_terms)
+        lexical = [score if agreement > 0 else 0.0 for score, agreement in zip(lexical, eligible, strict=True)]
     lexical_ranked = sorted((i for i, score in enumerate(lexical) if score > 0), key=lambda i: (-lexical[i], i))
     index = compiler.load_index(home) if method != "keyword" else None
     ranked = []
