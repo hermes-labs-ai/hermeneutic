@@ -51,7 +51,7 @@
     "codex-plugin/.codex-plugin/plugin.json": "16f5dc6b5d14722a4447da921768da34cda1eb7175ef1896089e927c249668cd",
     "codex-plugin/hooks/hooks.json": "1ee46dac6f46ae484da821982fcd0aa298179b02adbead8a2e68b809a6006f90",
     "codex-plugin/scripts/codex-gate.py": "3a882181cb9d076e013aeb949619b107a56fe0a9b56ed56117032999ffe04679",
-    "pyproject.toml": "76cc10aaf320190cfb7ceb6251841155b6c5de209aa06b7481a0ead926e274a9",
+    "pyproject.toml": "78ae49c0758fdd6bd0d1c4a3fabbb3babc1dbb9861f8b4d362ea6d5ecb998f48",
     "gemini-extension.json": "9dd0f93460a8b3aa728a24441c3a790a444c094bc8f115f7b314ccf01d846a8b",
     "qwen-extension.json": "ec028d902ff3902f6db157a77a1b500ce5df476c9dda60c161917ebed2111812",
     "scripts/smoke-installed-cli.sh": "c808736fe88996021a8b135a23b53f464ac83a23c708061a58cdd1624f325a24",
